@@ -18,6 +18,13 @@
 
 ### Key Features
 
-### Technologies
+  - Secure login with a username and a password
+  - New users can create an account and then continue to the website
+  - Ability to drag and drop items into a ranked order and into a tier list
+  - Ability to add as many items as the user sees fit
+  - Stores past rankings for the user to look back on
+  - Ability to send rankings to other users, and see what they sent you
+
+
 
 
