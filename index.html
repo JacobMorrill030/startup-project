@@ -4,15 +4,20 @@
     </head>
     <body>
         <header>
-            <h1>RankMe</h1>
-            <menu>
-                <a href="">About</a>
-            </menu>
+            <h1>RankMe<sup>&reg;</sup></h1>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="rank.html">Start Ranking</a></li>
+                <li><a href="saved.html">View Saved Rankings</a></li>
+            </ul>
         </header>
         <main>
+            <hr />
             <h1>Welcome to RankMe!</h1>
+            <hr />
             <br />
-            <form method="get" action ="createAccount.html">
+            <form method="get" action="rank.html">
                 <div>
                     <input type="username" placeholder="username"/>
                 </div>
@@ -20,7 +25,10 @@
                     <input type="password" placeholder="password"/>
                 </div>
                 <br />
-                <button type="submit">Sign in</button> <button type="submit">Create Account</button>
+                <button type="submit">Sign in</button>
+            </form>
+            <form method="get" action="createAccount.html">
+                    <button type="submit">Create account</button> 
             </form>
         </main>
     </body>
