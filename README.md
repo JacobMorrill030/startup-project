@@ -46,6 +46,17 @@ I will use the required technologies in the following ways:
   - **DB/Login** - Store users, login credentials, rankings completed by the user, and rankings sent to and from the user.
   - **WebSocket** - Communicate the rankings being sent between different users.
 
+## HTML Deliverable
+
+### Things added
+
+- Added a feature where you can select one of your pervious rankings and send to people.
+- Turned the "view past rankings" button into a link that can be accessed from multiple pages on the website.
+- Added an About page where you can see read about the website and how you can use it.
+- Added an E and an F tier to the tier list on the ranking page.
+- Added a link to the top on all pages so you can see what people sent you.
+- Added a spot on the ranking page where you can see what user is on the app.
+
 
 
 
