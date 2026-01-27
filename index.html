@@ -1,14 +1,15 @@
 <html lang="eng"">
     <head>
-        <meta charset="UTF-8">
+        <meta name="viewport" charset="UTF-8"
+        content="width=device-width, initial-scale=1">
         <title>RankMe</title>
         <link rel="icon" type="image/png" href="icon.png">
     </head>
     <body>
         <header>
-            <h1>RankMe<sup>&reg;</sup></h1>
+            <h2>RankMe<sup>&reg;</sup></h2>
             <ul>
-                <li><a href="index.html">Home</a></li>
+                <li><a class="nav-item" href="index.html">Home</a></li>
                 <li><a href="about.html">About</a></li>
                 <li><a href="rank.html">Start Ranking</a></li>
                 <li><a href="saved.html">View Saved Rankings</a></li>
@@ -18,26 +19,25 @@
         <main>
             <hr />
             <h1>Welcome to RankMe!</h1>
-            <hr />
             <h3>Log In</h3>
-            <form method="get" action="rank.html">
-                <div>
-                    <input type="username" placeholder="username"/>
-                </div>
-                <p></p>
-                <div>
-                    <input type="password" placeholder="password"/>
-                </div>
-                <br />
-                <button type="submit">Sign in</button>
-            </form>
-            <form method="get" action="createAccount.html">
-                    <button type="submit">Create account</button> 
-            </form>
+            <div>
+                <input type="login" placeholder="username" size="30"/>
+            </div>
+            <p></p>
+            <div>
+                <input type="login" placeholder="password" size="30"/>
+            </div>
+            <br />
+            <br />
+            <div class="button-containter">
+                <a href="rank.html" class="btn">Sign In</a>
+                <a href="createAccount.html" class="btn">Create Account</a>
+            </div>
         </main>
     </body>
-
     <footer>
+        <br />
+        <br />
         <hr />
         <span>Jacob Morrill</span>
         <br />
