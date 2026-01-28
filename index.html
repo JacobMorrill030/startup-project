@@ -6,55 +6,38 @@
         <link rel="icon" type="image/png" href="icon.png">
         <link rel="stylesheet" href="main.css"/>
         <style>
-            h1 {
-                font-size: 50
+            .link-container {
+                text-align: right;
             }
-            input[type="login"] {
-                height: 50px;
-                font-size: 30px;
-                padding: 10px;
-                box-sizing: border-box;
-                border-radius: 5px;
-            }
-            h3 {
-                font-size: 30
-            }
-            .btn {
-                margin: 10px;
-                padding: 12px 50px;
-                background-color: gray; /* Blue background */
-                color: black;
-                border: none;
-                border-color: black;
-                border-radius: 5px;
-                text-decoration: none; /* Remove underline from links */
-                font-size: 16px;
-                cursor: pointer;
-                transition: background-color 0.3s ease;
+            .github {
+                margin: 15px;
+                top: -15px;
+                position: relative;
             }
         </style>
     </head>
     <body>
         <header>
-            <h2>RankMe<sup>&reg;</sup></h2>
-            <ul>
-                <li><a class="nav-item" href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="rank.html">Start Ranking</a></li>
-                <li><a href="saved.html">View Saved Rankings</a></li>
-                <li><a href="share.html">Messages</a></li>
-            </ul>
+            <div class="header-container">
+                <h3>RankMe<sup>&reg;</sup></h2>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="rank.html">Start Ranking</a>
+                    <li><a href="saved.html">View Saved Rankings</a></li>
+                    <li><a href="share.html">Messages</a></li>
+                </ul>
+            </div>
         </header>
         <main>
-            <hr />
             <h1>Welcome to RankMe!</h1>
-            <h3>Log In</h3>
+            <h2>Log In</h3>
             <div>
-                <input type="login" placeholder="username" size="30"/>
+                <input type="login" placeholder="username" size="25"/>
             </div>
             <p></p>
             <div>
-                <input type="login" placeholder="password" size="30"/>
+                <input type="password" placeholder="password" size="25"/>
             </div>
             <br />
             <br />
@@ -62,14 +45,14 @@
                 <a href="rank.html" class="btn">Sign In</a>
                 <a href="createAccount.html" class="btn">Create Account</a>
             </div>
+            <br />
+            <br />
         </main>
     </body>
     <footer>
-        <br />
-        <br />
-        <hr />
         <span>Jacob Morrill</span>
-        <br />
-        <a href="https://github.com/JacobMorrill567/startup-project">GitHub</a>
+        <div class="link-container">
+            <a class="github" href="https://github.com/JacobMorrill567/startup-project">GitHub</a>
+        </div>
     </footer>
 </html>
