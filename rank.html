@@ -5,85 +5,141 @@
         <link rel="icon" type="image/png" href="icon.png">
         <meta name="viewport" charset="UTF-8"
         content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="main.css"/>
+        <link rel="stylesheet" href="rank.css"/>
+        <style>
+            .title {
+                font-size: 20px;
+                padding: 5px;
+                box-sizing: border-box;
+                border-radius: 5px;
+            }
+            .title-label {
+                margin-left: 80px;
+                font-size: 25px;
+                text-align: center;
+            }
+            .save-share {
+                margin-left: 15px;
+                margin-right: 25px;
+                top: -30px;
+                position: relative;
+            }
+            .ranked-list {
+                margin-left: 40px;
+                cursor: pointer;
+            }
+            .ranked-item {
+                margin-top: 15px;
+            }
+            input[type="text"] {
+                font-size: 20px;
+                padding: 7px;
+                box-sizing: border-box;
+                border-radius: 5px;
+            }
+            ol li {
+                font-size: 30px;
+            }
+            .container {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+            }
+            .column {
+                padding: 10px;
+            }
+            .user-info {
+                margin: 20px;
+                font-size: 20px;
+            }
+            .save-share-container {
+                text-align: right;
+            }
+        </style>
     <body>
         <header>
-            <h1>RankMe<sup>&reg;</sup></h1>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="rank.html">Start Ranking</a></li>
-                <li><a href="saved.html">View Saved Rankings</a></li>
-                <li><a href="share.html">Messages</a></li>
-            </ul>
+            <menu>
+                <li class="Name">RankMe<sup>&reg;</sup></li>
+                <li class="nav-item"><a href="index.html">Home</a></li>
+                <li class="nav-item"><a href="about.html">About</a></li>
+                <li class="nav-item"><a href="rank.html">Start Ranking</a></li>
+                <li class="nav-item"><a href="saved.html">View Saved Rankings</a></li>
+                <li class="nav-item"><a href="share.html">Messages</a></li>
+            </menu>
         </header>
         <main>
-            <span>User: Unkown User</span>
-            <hr />
             <div>
-                <form method="get" action="saved.html">
-                    <lable>Title</lable>
-                    <input placeholder="title"/> <a href="">Save</a> <a href="share.html">Share</a>
-                </form>
+                <span class="user-info">User: Unkown User</span>
+                <label class="title-label">Title:</label>
+                <input class="title" placeholder="title" size="30"/> 
+                <div class="save-share-container">
+                    <a class="save-share" href="">Save</a> 
+                    <a class="save-share" href="share.html">Share</a>
+                </div>
             </div>
-            <hr />
-            <ol>
-                <li><input type="text" value="item" readonly></li>
-                <li><input type="text" value="item" readonly></li>
-                <li><input type="text" value="item" readonly></li>
-                <li><input type="text" value="item" readonly></li>
-                <li><input type="text" value="item" readonly></li>
-            </ol>
-            <button>+ Add Item</button>
-            <br />
-            <hr />
-            <table border="2" cellpadding="10">
-                <tr>
-                    <td>S</td>
-                    <td>___________________</td>
-                </tr>
-                <tr>
-                    <td>A</td>
-                    <td>___________________</td>
-                </tr>
-                <tr>
-                    <td>B</td>
-                    <td>___________________</td>
-                </tr>
-                <tr>
-                    <td>C</td>
-                    <td>___________________</td>
-                </tr>
-                <tr>
-                    <td>D</td>
-                    <td>___________________</td>
-                </tr>
-                <tr>
-                    <td>E</td>
-                    <td>___________________</td>
-                </tr>
-                <tr>
-                    <td>F</td>
-                    <td>___________________</td>
-                </tr>
-            </table>
-            <br />
-            <fieldset>
-                <ul>
-                    <li><input type="text" value="item" readonly></li>
-                    <li><input type="text" value="item" readonly></li>
-                    <li><input type="text" value="item" readonly></li>
-                    <li><input type="text" value="item" readonly></li>
-                    <li><input type="text" value="item" readonly></li>
-                </ul>
-            </fieldset>
-            <p>Use Provided Rankings</p>
-            <select>
-                <option value="option1" selected>Superheroes</option>
-                <option value="option2" selected>Fast Food Restaurants</option>
-                <option value="option3" selected>Types of Chairs</option>
-                <option value="option4" selected>Dinosaurs</option>
-                <option value="option5" selected>Star Wars Characters</option>
-            </select>
+            <div class="container">
+                <div class="column">
+                    <ol class="ranked_list">
+                        <li class="ranked-item"><input type="text" value="item" readonly></li>
+                        <li class="ranked-item"><input type="text" value="item" readonly></li>
+                        <li class="ranked-item"><input type="text" value="item" readonly></li>
+                        <li class="ranked-item"><input type="text" value="item" readonly></li>
+                        <li class="ranked-item"><input type="text" value="item" readonly></li>
+                    </ol>
+                    <button>+ Add Item</button>
+                    <p>Use Provided Rankings</p>
+                    <select>
+                        <option value="option1" selected>Superheroes</option>
+                        <option value="option2" selected>Fast Food Restaurants</option>
+                        <option value="option3" selected>Types of Chairs</option>
+                        <option value="option4" selected>Dinosaurs</option>
+                        <option value="option5" selected>Star Wars Characters</option>
+                    </select>
+                </div>
+                <div class="column">
+                    <br />
+                    <table border="2" cellpadding="30">
+                        <tr>
+                            <td>S</td>
+                            <td>______________________________________________</td>
+                        </tr>
+                        <tr>
+                            <td>A</td>
+                            <td>___________________</td>
+                        </tr>
+                        <tr>
+                            <td>B</td>
+                            <td>___________________</td>
+                        </tr>
+                        <tr>
+                            <td>C</td>
+                            <td>___________________</td>
+                        </tr>
+                        <tr>
+                            <td>D</td>
+                            <td>___________________</td>
+                        </tr>
+                    </table>
+                    <br />
+                    <fieldset>
+                        <ul>
+                            <li><input type="text" value="item" readonly></li>
+                            <li><input type="text" value="item" readonly></li>
+                            <li><input type="text" value="item" readonly></li>
+                            <li><input type="text" value="item" readonly></li>
+                            <li><input type="text" value="item" readonly></li>
+                        </ul>
+                    </fieldset>
+                </div>
+            </div>
         </main>
     </body>
+    <footer>
+        <span>Jacob Morrill</span>
+        <div class="link-container">
+            <span class="github">Source:</span>
+            <a class="github" href="https://github.com/JacobMorrill567/startup-project">GitHub</a>
+        </div>
+    </footer>
 </html>
