@@ -5,6 +5,7 @@
         <link rel="icon" type="image/png" href="icon.png">
         <meta name="viewport" charset="UTF-8"
         content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="account.css"/>
         <link rel="stylesheet" href="main.css"/>
         <style>
         </style>
@@ -12,36 +13,40 @@
     <body>
         <header>
             <div class="header-container">
-                <h3>RankMe<sup>&reg;</sup></h3>
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="rank.html">Start Ranking</a></li>
-                    <li><a href="saved.html">View Saved Rankings</a></li>
-                    <li><a href="share.html">Messages</a></li>
-                </ul>
+                <menu>
+                    <li class="Name">RankMe<sup>&reg;</sup></li>
+                    <li class="nav-item"><a href="index.html">Home</a></li>
+                    <li class="nav-item"><a href="about.html">About</a></li>
+                    <li class="nav-item"><a href="rank.html">Start Ranking</a></li>
+                    <li class="nav-item"><a href="saved.html">View Saved Rankings</a></li>
+                    <li class="nav-item"><a href="share.html">Messages</a></li>
+                </menu>
             </div>
         </header>
         <main>
             <h1>Create Account</h1>
             <h2>Enter Login Information</h3>
             <div>
-                <input type="login" placeholder="username"/>
+                <input type="login" placeholder="username" size="25"/>
             </div>
             <p></p>
             <div>
-                <input type="password" placeholder="password"/>
+                <input type="password" placeholder="password" size="25"/>
             </div>
             <div>
-                <input type="password" placeholder="confirm password"/>
+                <input type="password" placeholder="confirm password" size="25"/>
             </div>
+            <br />
             <br />
             <a href="index.html" class="btn">Create Account</a>
         </main>
     </body>
      <footer>
         <span>Jacob Morrill</span>
-        <br />
-        <a href="https://github.com/JacobMorrill567/startup-project">GitHub</a>
+        <br /> 
+        <div class="link-container">
+            <span class="github">Source:</span>
+            <a class="github" href="https://github.com/JacobMorrill567/startup-project">GitHub</a>
+        </div>
     </footer>
 </html>
