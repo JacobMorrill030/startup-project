@@ -1,0 +1,34 @@
+body {
+    background-color: rgba(81, 81, 151, 0.979);
+}
+main {
+    text-align: center;
+    color: rgb(240, 230, 230);
+    margin: 60px;
+}
+.btn {
+    margin: 10px;
+    padding: 12px 50px;
+    background-color: gray; /* Blue background */
+    color: black;
+    border: none;
+    border-color: black;
+    border-radius: 10px;
+    text-decoration: none; /* Remove underline from links */
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;   
+    font-weight: bold;                     
+}
+input[type="login"] {
+    font-size: 20px;
+    padding: 7px;
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+input[type="password"] {
+    font-size: 20px;
+    padding: 7px;
+    box-sizing: border-box;
+    border-radius: 5px;     
+}
