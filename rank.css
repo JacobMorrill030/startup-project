@@ -12,3 +12,10 @@
     transition: background-color 0.3s ease;   
     font-weight: bold;                     
 }
+.item-btn:hover {
+    background-color: rgba(128, 128, 128, 0.509);
+}
+.item-btn:active {
+    transform: scale(0.98);
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+}
