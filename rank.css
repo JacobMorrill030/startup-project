@@ -1,0 +1,14 @@
+.item-btn {
+    margin: 32px;
+    margin-left: 80px;
+    padding: 12px 75px;
+    background-color: gray; /* Blue background */
+    color: black;
+    border: none;
+    border-color: black;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;   
+    font-weight: bold;                     
+}
