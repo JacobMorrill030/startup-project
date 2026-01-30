@@ -6,6 +6,32 @@
         <meta name="viewport" charset="UTF-8"
         content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="main.css"/>
+        <!-- <link rel="stylesheet" href="account.css"/> -->
+        <style>
+            body {
+                background-color: rgba(81, 81, 151, 0.979);
+            }
+            main {
+                color: rgb(240, 230, 230);
+                font-size: 20px;
+                text-align: right;
+            }
+            .about {
+                margin-left: 50px;
+                margin-right: 40px;
+                margin: 40px;
+                text-align: left;
+            }
+            .container {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+                column-rule: 2px solid;
+            }
+            .image {
+                margin: 50px;
+            }
+        </style>
     </head>
     <body>
         <header>
@@ -19,14 +45,19 @@
             </menu>
         </header>
         <main>
-            <img src="https://th.bing.com/th/id/OIP.Ute4HICJ6dnW_j2KZBQ-owHaE7?w=289&h=193&c=7&r=0&o=7&dpr=1.5&pid=1.7&rm=3" width="300"/>
-            <hr />
-            <p>Have you ever debated with friends about the best pizza topping, the greatest ice cream flavor, or the most powerful superhero of all time—
-                but struggled to organize everyone’s opinions? RankMe gives you a fun and simple way to settle (or fuel) those arguments by letting you create 
-                custom rankings for any category you can imagine. Build ordered lists or tier lists, revisit your past rankings, 
-                and share them with others anytime. Instead of losing track of opinions or limiting discussions to in-person conversations, 
-                RankMe keeps your rankings organized, accessible, and saved forever. With RankMe, everyone gets a voice, and friendly debates
-                become more engaging, visual, and fun.</p>
+            <div class="container">
+                <div class="about">
+                        <p>Have you ever debated with friends about the best pizza topping, the greatest ice cream flavor, or the most powerful superhero of all time—
+                        but struggled to organize everyone’s opinions? RankMe gives you a fun and simple way to settle (or fuel) those arguments by letting you create 
+                        custom rankings for any category you can imagine. Build ordered lists or tier lists, revisit your past rankings, 
+                        and share them with others anytime. Instead of losing track of opinions or limiting discussions to in-person conversations, 
+                        RankMe keeps your rankings organized, accessible, and saved forever. With RankMe, everyone gets a voice, and friendly debates
+                        become more engaging, visual, and fun.</p>
+                </div>
+                <div class="image">
+                    <img src="https://th.bing.com/th/id/OIP.Ute4HICJ6dnW_j2KZBQ-owHaE7?w=289&h=193&c=7&r=0&o=7&dpr=1.5&pid=1.7&rm=3" width="500" height="400"/>
+                </div>
+            </div>
         </main>
     </body>
     <footer>
