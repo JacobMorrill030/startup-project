@@ -6,6 +6,18 @@ main {
     color: rgb(240, 230, 230);
     margin: 60px;
 }
+input[type="login"] {
+    font-size: 20px;
+    padding: 7px;
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+input[type="password"] {
+    font-size: 20px;
+    padding: 7px;
+    box-sizing: border-box;
+    border-radius: 5px;     
+}
 .btn {
     margin: 10px;
     padding: 12px 50px;
@@ -19,16 +31,4 @@ main {
     cursor: pointer;
     transition: background-color 0.3s ease;   
     font-weight: bold;                     
-}
-input[type="login"] {
-    font-size: 20px;
-    padding: 7px;
-    box-sizing: border-box;
-    border-radius: 5px;
-}
-input[type="password"] {
-    font-size: 20px;
-    padding: 7px;
-    box-sizing: border-box;
-    border-radius: 5px;     
 }
