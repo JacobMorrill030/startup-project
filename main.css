@@ -1,5 +1,10 @@
 * {
     font-family:sans-serif;
+    /* outline: 1px solid red; */
+}
+body {
+    width: 100%;
+    overflow-x: hidden;
 }
 header {
     width:100%;
@@ -39,7 +44,7 @@ menu {
     margin-top: 0px;
 }
 .nav-item {
-    display:inline;
+    display: inline;
     margin-right: 10px;
 }
 .header-container {
@@ -47,9 +52,9 @@ menu {
 }
 .link-container {
     text-align: right;
+    margin-right: 30px;
 }
 .github {
-    margin: 5px;
     top: -19px;
     position: relative;
 }
