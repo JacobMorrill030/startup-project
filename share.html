@@ -6,6 +6,7 @@
         <meta name="viewport" charset="UTF-8"
         content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="main.css"/>
+        <link rel="stylesheet" href="share.css"/>
     </head>
     <body>
         <header>
@@ -19,38 +20,125 @@
             </menu>
         </header>
         <main>
-            <hr />
-            <h1>Share</h1>
-            <div>
-                <input type="search" placeholder="Search by username"/>
+            <div class="container">
+                <div call="share-other">
+                    <h1 class="share">Share</h1>
+                    <div class="search-container">
+                        <input class="search-bar" type="search" placeholder="Search by username"/>
+                    </div>
+                    <br />
+                    <div class="scroll-user">
+                        <table class="search-user" border="1">
+                            <tr>
+                                <td class="search-data"><button class="search-button">GoldenCow@5543</button></td>
+                            </tr>
+                            <tr>
+                                <td class="search-data"><button class="search-button">anonymous_whale</button></td>
+                            </tr>
+                            <tr>
+                                <td class="search-data"><button class="search-button">joe</button></td>
+                            </tr>
+                            <tr>
+                                <td class="search-data"><button class="search-button">freddy_345</button></td>
+                            </tr>
+                            <tr>
+                                <td class="search-data"><button class="search-button">heehee_funnyman345</button></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <br />
+                    <button class="send">Send</button>
+                </div>
+                <div class="share-me">
+                    <h1>Shared with me</h1>
+                    <form method="get" action="saved.html">
+                        <button class="save">Save</button>
+                    </form>
+                    <div class="scroll-me">
+                        <button class="table-button">
+                            <div class="share-container">
+                                <div class="share-order">
+                                    <ol>
+                                        <li><input class="list-input" value="Moose Tracks" readonly></li>
+                                        <li><input class="list-input" value="Chocolate" readonly></li>
+                                        <li><input class="list-input" value="Vanilla" readonly></li>
+                                        <li><input class="list-input" value="Strawberry" readonly></li>
+                                    </ol>
+                                    <div class="title">
+                                        <p>Title: Ice cream flavors</p>
+                                    </div>
+                                </div>
+                                <div class="share-tier">
+                                    <table border="1" cellpadding="10">
+                                        <tr>
+                                            <td class="s-tier">S</td>
+                                            <td class="row">Moose Tracks</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="a-tier">A</td>
+                                            <td class="row">Chocolate</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="b-tier">B</td>
+                                            <td class="row">Vanilla</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="c-tier">C</td>
+                                            <td class="row">Strawberry</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="d-tier">D</td>
+                                            <td class="row"></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </button>
+                        GoldenCow@5543
+                        <button class="table-button">
+                            <div class="share-container">
+                                <div class="share-order">
+                                    <ol>
+                                        <li><input class="list-input" value="Dinosaur Jedi" readonly></li>
+                                        <li><input class="list-input" value="Obi-Wan Kenobi" readonly></li>
+                                        <li><input class="list-input" value="Anakin Skywalker" readonly></li>
+                                        <li><input class="list-input" value="Mace Windu" readonly></li>
+                                        <li><input class="list-input" value="Pon Krell" readonly></li>
+                                    </ol>
+                                    <div class="title">
+                                        <p>Title: Star Wars Jedi</p>
+                                    </div>
+                                </div>
+                                <div class="share-tier">
+                                    <table border="1" cellpadding="10">
+                                        <tr>
+                                            <td class="s-tier">S</td>
+                                            <td class="row">Dinosaur Jedi, Obi Wan-Kenobi, Anakin Skywalker</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="a-tier">A</td>
+                                            <td class="row"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="b-tier">B</td>
+                                            <td class="row">Mace Windu</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="c-tier">C</td>
+                                            <td class="row"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="d-tier">D</td>
+                                            <td class="row">Pon Krell</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </button>
+                        GoldenCow@5543
+                    </div>
+                </div>
             </div>
-            <br />
-            <table border="1" cellpadding="10">
-                <tr>
-                    <td><button>GoldenCow@5543</button></td>
-                </tr>
-                <tr>
-                    <td><button>anonymous_whale</button></td>
-                </tr>
-                <tr>
-                    <td><button>joe</button></td>
-                </tr>
-                <tr>
-                    <td><button>freddy_345</button></td>
-                </tr>
-            </table>
-            <br />
-            <button>Send</button>
-            <hr />
-            <h1>Shared with me</h1>
-            <table border="1" cellpadding="50">
-                <tr>
-                    <td>
-                    <b>Ranking with a tier list and ordered list</b><br>
-                </tr>
-            </table>
-            GoldenCow@5543
-
         </main>
     </body>
     <footer>
