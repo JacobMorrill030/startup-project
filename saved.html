@@ -3,44 +3,173 @@
         <meta charset="UTF-8">
         <title>Saved</title>
         <link rel="icon" type="image/png" href="icon.png">
+        <meta name="viewport" charset="UTF-8"
+        content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="main.css"/>
+        <link rel="stylesheet" href="saved.css"/>
     </head>
     <body>
         <header>
-            <h1>RankMe<sup>&reg;</sup></h1>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="rank.html">Start Ranking</a></li>
-                <li><a href="saved.html">View Saved Rankings</a></li>
-                <li><a href="share.html">Messages</a></li>
-            </ul>
+            <div class="header-container">
+                <menu>
+                    <li class="Name">RankMe<sup>&reg;</sup></li>
+                    <li class="nav-item"><a href="index.html">Home</a></li>
+                    <li class="nav-item"><a href="about.html">About</a></li>
+                    <li class="nav-item"><a href="rank.html">Start Ranking</a></li>
+                    <li class="nav-item"><a class = "active" href="saved.html">View Saved Rankings</a></li>
+                    <li class="nav-item"><a href="share.html">Messages</a></li>
+                </menu>
+            </div>
         </header>
         <main>
-            <hr />
-            <h1>Past Rankings</h1> Select on one you would like to share
-            <hr />
+            <span>
+                <form method="get" action="share.html">
+                    <h1>Past Rankings</h1> 
+                    <button class="share">Share</button>
+                    <p class="select">Select on one you would like to share</p>
+                </form>
+            </span>
             <br />
-            <form method="get" action="share.html">
-                <button>
-                    <table border="1" cellpadding="50">
-                        <tr>
-                            <td>
-                            <b>Ranking with a tier list and ordered list</b><br>
-                        </tr>
-                    </table>
-                </button>
-                <p>          
-
-                </p>
-                <button>
-                    <table border="1" cellpadding="50">
-                        <tr>
-                            <td>
-                            <b>Ranking with a tier list and ordered list</b><br>
-                        </tr>
-                    </table>
-                </button>
-            </form>
+            <div class="container">
+                <div class="col1">
+                    <button class="save-button">
+                        <div class="col1-container">
+                            <div class="col1-order">
+                                <ol>
+                                    <li><input class="list-input" value="Moose Tracks" readonly></li>
+                                    <li><input class="list-input" value="Chocolate" readonly></li>
+                                    <li><input class="list-input" value="Vanilla" readonly></li>
+                                    <li><input class="list-input" value="Strawberry" readonly></li>
+                                </ol>
+                                <div class="title">
+                                    <p class="title">Title: Ice cream flavors</p>
+                                </div>
+                            </div>
+                            <div class="col1-tier">
+                                <table border="1" cellpadding="15">
+                                    <tr>
+                                        <td class="s-tier">S</td>
+                                        <td class="row">Moose Tracks</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="a-tier">A</td>
+                                        <td class="row">Chocolate</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="b-tier">B</td>
+                                        <td class="row">Vanilla</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="c-tier">C</td>
+                                        <td class="row">Strawberry</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="d-tier">D</td>
+                                        <td class="row"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </button>
+                    Unkown User
+                    <button class="save-button">
+                        <div class="col1-container">
+                            <div class="col1-order">
+                                <ol>
+                                    <li><input class="list-input" value="5" readonly></li>
+                                    <li><input class="list-input" value="2" readonly></li>
+                                    <li><input class="list-input" value="10" readonly></li>
+                                    <li><input class="list-input" value="1" readonly></li>
+                                    <li><input class="list-input" value="4" readonly></li>
+                                    <li><input class="list-input" value="3" readonly></li>
+                                    <li><input class="list-input" value="9" readonly></li>
+                                    <li><input class="list-input" value="7" readonly></li>
+                                    <li><input class="list-input" value="8" readonly></li>
+                                    <li><input class="list-input" value="6" readonly></li>
+                                </ol>
+                                <div class="title">
+                                    <p class="title">Title: Numbers 1-10</p>
+                                </div>
+                            </div>
+                            <div class="col1-tier">
+                                <table border="1" cellpadding="15">
+                                    <tr>
+                                        <td class="s-tier">S</td>
+                                        <td class="row">5, 2, 10</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="a-tier">A</td>
+                                        <td class="row">1, 4</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="b-tier">B</td>
+                                        <td class="row">3, 9</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="c-tier">C</td>
+                                        <td class="row">7, 8</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="d-tier">D</td>
+                                        <td class="row">6</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </button>
+                    joe
+                    <p></p>
+                </div>
+                <div class="col2">
+                    <button class="save-button">
+                        <div class="col1-container">
+                            <div class="col1-order">
+                                <ol>
+                                    <li><input class="list-input" value="Moose Tracks" readonly></li>
+                                    <li><input class="list-input" value="Chocolate" readonly></li>
+                                    <li><input class="list-input" value="Vanilla" readonly></li>
+                                    <li><input class="list-input" value="Strawberry" readonly></li>
+                                </ol>
+                                <div class="title">
+                                    <p class="title">Title: Ice cream flavors</p>
+                                </div>
+                            </div>
+                            <div class="col1-tier">
+                                <table border="1" cellpadding="15">
+                                    <tr>
+                                        <td class="s-tier">S</td>
+                                        <td class="row">Moose Tracks</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="a-tier">A</td>
+                                        <td class="row">Chocolate</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="b-tier">B</td>
+                                        <td class="row">Vanilla</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="c-tier">C</td>
+                                        <td class="row">Strawberry</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="d-tier">D</td>
+                                        <td class="row"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </button>
+                    GoldenCow@5543
+                </div>
+            </div>
         </main>
     </body>
+    <footer>
+        <span>Jacob Morrill</span>
+        <div class="link-container">
+            <span class="github">Source:</span>
+            <a class="github" href="https://github.com/JacobMorrill567/startup-project">GitHub</a>
+        </div>
+    </footer>
 </html>
