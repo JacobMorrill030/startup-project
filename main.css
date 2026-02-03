@@ -22,7 +22,7 @@ footer {
     width:100%;
     background-color: rgb(221, 212, 212);
     color: rgba(81, 81, 151, 0.979);;
-    padding: 5px;
+    padding: 10px;
     a:link {
         color: blue;
     }
@@ -32,6 +32,10 @@ footer {
 }
 a {
     text-decoration: none;   
+}
+menu a.active {
+    color: purple;
+    font-weight: bold;
 }
 h1 {
     font-size: 45
@@ -45,7 +49,7 @@ menu {
 }
 .nav-item {
     display: inline;
-    margin-right: 10px;
+    margin-right: 15px;
 }
 .header-container {
     margin: 10px;
@@ -56,12 +60,13 @@ menu {
 }
 .github {
     top: -19px;
+    margin-right: 20px;
     position: relative;
 }
 .name {
     font-size:20;
+    margin-right: 15px;
     font-weight: bold;
     display:inline;
 }
-
 
