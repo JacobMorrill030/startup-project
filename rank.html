@@ -7,118 +7,6 @@
         content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="main.css"/>
         <link rel="stylesheet" href="rank.css"/>
-        <style>
-            .rank-info {
-                text-align: center;
-            }
-            .list-container {
-                margin-left: 25px;
-                margin-right: 50px;
-            }
-            .title {
-                font-size: 20px;
-                padding: 5px;
-                box-sizing: border-box;
-                border-radius: 5px;
-            }
-            .title-label {
-                font-size: 25px;
-                text-align: center;
-            }
-            .save-share {
-                margin-left: 20px;
-                font-size: 25px;
-            }
-            .ranked-list {
-                margin-left: 50px;
-                cursor: pointer;
-            }
-            .ranked-item {
-                margin-top: 15px;
-            }
-            input[type="text"] {
-                font-size: 20px;
-                padding: 7px;
-                box-sizing: border-box;
-                border-radius: 5px;
-                transition: all 0.3s ease;
-            }
-            input[type="text"]:hover {
-                border-color: #0c6cd2; /* Change border color */
-                cursor: pointer;
-            }
-            ol li {
-                font-size: 30px;
-            }
-            .container {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 20px;
-                column-rule: 2px solid;
-            }
-            .column {
-                padding: 10px;
-            }
-            .user-info {
-                font-size: 25px;
-                position: relative;
-            }
-            .user-info-container {
-                margin-right: 120px;
-            }
-            .save-share-container {
-                margin-left: 80px;
-            }
-            .drop-down {
-                margin-top: 40px;
-                margin-left: 85px;
-            }
-            .drop-down-box {
-                font-size: 20px;
-            }
-            table {
-                margin-right: 150px;
-                border-collapse: collapse;
-                width: 90%;
-                font-size: 30px;
-                text-align: center;
-            }
-            .s-tier {
-                background-color: red;
-            }
-            .a-tier {
-                background-color: orange;
-            }
-            .b-tier {
-                background-color: yellow;
-            }
-            .c-tier {
-                background-color: rgb(30, 210, 30);
-            }
-            .d-tier {
-                background-color: rgb(59, 59, 233);
-            }
-            .row {
-                width: 400px;
-                height: 125px;
-            }
-            .item-bank {
-                width: 600px;
-                height: 300;
-                margin-right: 100px;
-                padding: 20px;
-            }
-            .tier-list {
-                margin-right: 50px;
-            }
-            .list-item {
-                margin: 10px;
-                display: inline;
-            }
-            .bank-list {
-                list-style-type: none;
-            }
-        </style>
     <body>
         <header>
             <menu>
@@ -137,7 +25,7 @@
                 <label class="title-label">Title:</label>
                 <input class="title" placeholder="title" size="30"/> 
                 <span class="save-share-container">
-                    <a class="save-share" href="">Save</a> 
+                    <a class="save-share" href="saved.html">Save</a> 
                     <a class="save-share" href="share.html">Share</a>
                 </span>
             </div>
@@ -146,12 +34,12 @@
                 <div class="column">
                     <div class="list-container">
                         <ol class="ranked_list">
-                        <li class="ranked-item"><input type="text" value="item" readonly></li>
-                        <li class="ranked-item"><input type="text" value="item" readonly></li>
-                        <li class="ranked-item"><input type="text" value="item" readonly></li>
-                        <li class="ranked-item"><input type="text" value="item" readonly></li>
-                        <li class="ranked-item"><input type="text" value="item" readonly></li>
-                    </ol>
+                            <li class="ranked-item"><input type="text" value="item" readonly></li>
+                            <li class="ranked-item"><input type="text" value="item" readonly></li>
+                            <li class="ranked-item"><input type="text" value="item" readonly></li>
+                            <li class="ranked-item"><input type="text" value="item" readonly></li>
+                            <li class="ranked-item"><input type="text" value="item" readonly></li>
+                        </ol>
                     </div>
                     <button class="item-btn">+ Add Item</button>
                     <div class="drop-down">
@@ -167,7 +55,6 @@
                 </div>
                 <div class="column">
                     <br />
-                    <!-- <div class="tier-list"> -->
                         <table border="1" cellpadding="40">
                             <tr>
                                 <td class="s-tier">S</td>
@@ -200,7 +87,6 @@
                                 <li><input class="list-item" type="text" value="item" readonly></li>
                             </ul>
                         </fieldset>
-                    <!-- </div> -->
                 </div>
             </div>
         </main>
