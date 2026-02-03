@@ -77,5 +77,9 @@ For this deliverable I did the following:
 - Responsive to window resizing using flexbox and/or grid display
 - Use of different types of selectors including element, class, ID, and pseudo selectors
 
+### Things added from last time
 
+- Added a button to share past rankings with people as well.
+- When you click save on rank.html, it now takes you to saved.html.
+- Now, there is a sign in button instead of create account button on createAccount.html, and it takes you to rank.html. 
 
