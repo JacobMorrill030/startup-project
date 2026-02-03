@@ -68,6 +68,14 @@ For this deliverable I did the following:
 - Added a link to the top on all pages so you can see what people sent you.
 - Added a spot on the ranking page where you can see what user is on the app.
 
+## CSS Deliverable
+
+- Completed all prerequesites for this deliverable
+- Visually Appealing Colors and Layout
+- Use of CSS Framework
+- All visual elements styled using CSS
+- Responsive to window resizing using flexbox and/or grid display
+- Use of different types of selectors including element, class, ID, and pseudo selectors
 
 
 
