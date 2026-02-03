@@ -1,0 +1,106 @@
+body {
+    background-color: rgba(44, 44, 82, 0.979);
+}
+main {
+    color: rgb(240, 230, 230);
+}
+.share {
+    padding: 12px 75px;
+    margin-left: 150px;
+    background-color: gray; /* Blue background */
+    color: black;
+    border: none;
+    border-color: black;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.5s ease;   
+    font-weight: bold; 
+}
+.share:active {
+    transform: scale(0.98);
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+}
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    column-rule: 2px solid;
+}
+.col1 {
+    margin-left: 50px;
+}
+.col3 {
+    margin-right: 50px;
+}
+.col1-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    column-rule: 2px solid;
+}
+table {
+    border-collapse: collapse;
+    color: rgb(240, 230, 230);
+}
+.s-tier {
+    color: black;
+    background-color: red;
+}
+.a-tier {
+    color: black;
+    background-color: orange;
+}
+.b-tier {
+    color: black;
+    background-color: yellow;
+}
+.c-tier {
+    color: black;
+    background-color: rgb(30, 210, 30);
+}
+.d-tier {
+    color: black;
+    background-color: rgb(59, 59, 233);
+}
+.row {
+    width: 225px;
+    height: 30px;
+}
+.list-input {
+    width: 180px;
+    background-color: #1f1f39fa;
+    color: rgb(240, 230, 230);
+}
+.save-button {
+    width: 500px;
+    border-width: 1px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s ease; 
+    background-color: rgba(30, 30, 54, 0.979);
+    margin: 25px;
+    padding: 15px;
+
+}
+.save-button:active {
+    transform: scale(0.98);
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+}
+.past-rankings {
+    text-align: center;
+}
+h1 {
+    text-align: center;
+}
+.select {
+    text-align: right;
+    margin-right: 150px;
+    margin-top: -30px;
+}
+.title {
+    color: rgb(240, 230, 230);
+}
+ol {
+    color: rgb(240, 230, 230);
+}
