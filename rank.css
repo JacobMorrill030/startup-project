@@ -3,6 +3,7 @@ body {
 }
 main {
     color: rgb(240, 230, 230);
+    margin: 60px;
 }
 .item-btn {
     margin: 32px;
@@ -20,6 +21,7 @@ main {
 }
 .item-btn:hover {
     background-color: rgba(128, 128, 128, 0.509);
+    color: rgb(240, 230, 230);
 }
 .item-btn:active {
     transform: scale(0.98);
@@ -27,6 +29,9 @@ main {
 }
 .rank-info {
     text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 .list-container {
     width: 400px;
@@ -42,6 +47,8 @@ main {
     padding: 5px;
     box-sizing: border-box;
     border-radius: 5px;
+    background-color: rgb(188, 187, 187);
+    display: block;
 }
 .title-label {
     font-size: 25px;
@@ -76,44 +83,46 @@ ol li {
     font-size: 30px;
 }
 .container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    flex-direction: row;
     gap: 20px;
-    column-rule: 2px solid;
 }
 .column {
     padding: 10px;
+    flex: 1;
 }
 .user-info {
     font-size: 25px;
-    position: relative;
-}
-.user-info-container {
-    margin-right: 120px;
-}
-.save-share-container {
-    margin-left: 80px;
+    color: rgb(240, 230, 230);
 }
 .drop-down {
     margin-top: 40px;
     margin-left: 85px;
 }
 .drop-down-box {
+    background-color: gray;
     font-size: 20px;
 }
-table {
-    margin-right: 150px;
+.tier-list {
+    margin-top: -10px;
     border-collapse: collapse;
-    width: 90%;
     font-size: 30px;
     text-align: center;
     background-color: rgba(44, 44, 82, 0.112);
-    color: black;
-    border-color: black;
-    border: 2px;
+    border: 1px solid black;
+}
+.table-container {
+    padding: 10px;
+    scroll-behavior: smooth;
+    width: 100%;
+    overflow-x: auto;
+}
+th, td {
+    white-space: nowrap;
 }
 .s-tier {
     background-color: red;
+    width: 100px;
 }
 .a-tier {
     background-color: orange;
@@ -127,23 +136,36 @@ table {
 .d-tier {
     background-color: rgb(59, 59, 233);
 }
+tr {
+    width: 600px;
+    border: 1px solid black;
+}
 .row {
-    width: 400px;
-    height: 125px;
+    width: 500px;
+    height: 115px;
 }
 .item-bank {
     width: 600px;
-    height: 300;
+    height: 350;
     margin-right: 100px;
     padding: 20px;
+    border: 1px solid black;
 }
 .tier-list {
     margin-right: 50px;
 }
 .list-item {
-    margin: 10px;
+    margin: 5px;
     display: inline;
 }
 .bank-list {
     list-style-type: none;
+}
+@media(max-width: 800px) {
+    .container {
+        flex-direction: column;
+    }
+    .rank-info {
+        flex-direction: column;
+    }
 }

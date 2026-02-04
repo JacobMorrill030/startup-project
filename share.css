@@ -3,18 +3,20 @@ body {
 }
 main {
     color: rgb(240, 230, 230);
+    margin-top: 50px;
 }
 .container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 100px;
-    column-rule: 2px solid;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
 }
 .share-other {
-    padding: 20px;
+    flex: 1;
 }
 .share-me {
+    padding: 10px;
     margin-right: 80px;
+    flex: 1;
 }
 .scroll-me {
     overflow-y: auto;
@@ -41,7 +43,7 @@ main {
     overflow-y: auto;
     overflow-x: hidden;
     scroll-behavior: smooth;
-    height: 250px;
+    height: 290px;
     width: 500px;
 }
 .search-container{
@@ -50,6 +52,7 @@ main {
 .search-bar {
     font-size: 25px;
     border-radius: 5px;
+    background-color: rgb(188, 187, 187);
 }
 .share {
     margin-left: 100px;
@@ -81,7 +84,7 @@ main {
     background-color: rgba(31, 31, 57, 0.979);
 }
 .send {
-    margin: 40px;
+    margin: 15px;
     margin-left: 100px;
     padding: 12px 75px;
     background-color: gray; /* Blue background */
@@ -93,6 +96,10 @@ main {
     cursor: pointer;
     transition: background-color 0.3s ease;   
     font-weight: bold;                     
+}
+.send:hover {
+    background-color: rgba(128, 128, 128, 0.509);
+    color: rgb(240, 230, 230);
 }
 .save {
     padding: 12px 75px;
@@ -106,7 +113,15 @@ main {
     transition: background-color 0.5s ease;   
     font-weight: bold; 
 }
+.save:hover {
+    background-color: rgba(128, 128, 128, 0.509);
+    color: rgb(240, 230, 230);
+}
 .send:active {
+    transform: scale(0.98);
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+}
+.save:active {
     transform: scale(0.98);
     box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
 }
@@ -165,4 +180,9 @@ table {
 .title {
     margin: 30px;
     color: rgb(240, 230, 230);
+}
+@media(max-width: 800px) {
+    .container {
+        flex-direction: column;
+    }
 }

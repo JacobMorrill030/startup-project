@@ -6,8 +6,8 @@ main {
 }
 .share {
     padding: 12px 75px;
-    margin-left: 150px;
-    background-color: gray; /* Blue background */
+    margin-left: 175px;
+    background-color: gray; 
     color: black;
     border: none;
     border-color: black;
@@ -21,17 +21,20 @@ main {
     transform: scale(0.98);
     box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
 }
+.share:hover {
+    background-color: rgba(128, 128, 128, 0.509);
+    color: rgb(240, 230, 230);
+}
 .container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 50px;
-    column-rule: 2px solid;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
 }
 .col1 {
-    margin-left: 50px;
+    flex: 1;
 }
-.col3 {
-    margin-right: 50px;
+.col2 {
+    flex: 1;
 }
 .col1-container {
     display: grid;
@@ -81,7 +84,6 @@ table {
     background-color: rgba(30, 30, 54, 0.979);
     margin: 25px;
     padding: 15px;
-
 }
 .save-button:active {
     transform: scale(0.98);
@@ -94,13 +96,32 @@ h1 {
     text-align: center;
 }
 .select {
-    text-align: right;
-    margin-right: 150px;
-    margin-top: -30px;
+    margin-left: 150px;
+    flex: 1;
 }
 .title {
     color: rgb(240, 230, 230);
 }
 ol {
     color: rgb(240, 230, 230);
+}
+.rank-info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.rank-info h1 {
+    margin-left: 60px;
+    flex: 1;
+}
+.rank-info form {
+    flex: 1;
+}
+@media(max-width: 800px) {
+    .container {
+        flex-direction: column;
+    }
+    .ranking {
+        flex-direction: column;
+    }
 }
