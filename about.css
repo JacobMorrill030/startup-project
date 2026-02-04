@@ -1,0 +1,23 @@
+body {
+    background-color: rgba(44, 44, 82, 0.979);
+}
+main {
+    color: rgb(240, 230, 230);
+    font-size: 20px;
+    text-align: right;
+}
+.about {
+    margin-left: 50px;
+    margin-right: 40px;
+    margin: 40px;
+    text-align: left;
+}
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    column-rule: 2px solid;
+}
+.image {
+    margin: 50px;
+}
