@@ -1,5 +1,5 @@
 body {
-    background-color: rgba(81, 81, 151, 0.979);
+    background-color: rgba(44, 44, 82, 0.979); 
 }
 main {
     text-align: center;
@@ -21,12 +21,12 @@ input[type="password"] {
 .btn {
     margin: 10px;
     padding: 12px 50px;
-    background-color: gray; /* Blue background */
+    background-color: gray; 
     color: black;
     border: none;
     border-color: black;
     border-radius: 10px;
-    text-decoration: none; /* Remove underline from links */
+    text-decoration: none; 
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;   

@@ -21,6 +21,10 @@ main {
     transform: scale(0.98);
     box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
 }
+.share:hover {
+    background-color: rgba(128, 128, 128, 0.509);
+    color: rgb(240, 230, 230);
+}
 .container {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -81,7 +85,6 @@ table {
     background-color: rgba(30, 30, 54, 0.979);
     margin: 25px;
     padding: 15px;
-
 }
 .save-button:active {
     transform: scale(0.98);
