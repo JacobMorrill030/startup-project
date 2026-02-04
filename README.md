@@ -72,9 +72,10 @@ For this deliverable I did the following:
 
 - Completed all prerequesites for this deliverable
 - Visually Appealing Colors and Layout
-- Use of CSS Framework
+- Use of CSS Framework: Used Bootstrap framework for formatting headers and footers, as well as buttons and font colors.
 - All visual elements styled using CSS
-- Responsive to window resizing using flexbox and/or grid display
+- Responsive to window resizing using flexbox and/or grid display: Used flexbox.
+- Use of Imported font: Used 'Outfit'
 - Use of different types of selectors including element, class, ID, and pseudo selectors
 
 ### Things added from last time
