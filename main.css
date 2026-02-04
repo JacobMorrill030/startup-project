@@ -1,5 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Quicksand:wght@300..700&display=swap');
+
 * {
-    font-family:sans-serif;
+    font-family:'Outfit';
     /* outline: 1px solid red; */
 }
 body {
@@ -52,21 +54,40 @@ menu {
     margin-right: 15px;
 }
 .header-container {
-    margin: 10px;
+    margin: 0px !important;
 }
 .link-container {
     text-align: right;
     margin-right: 30px;
+    top: -50px;
+    display: inline;
 }
 .github {
-    top: -19px;
     margin-right: 20px;
     position: relative;
+    /* display: inline; */
 }
 .name {
     font-size:20;
-    margin-right: 15px;
+    margin-left: 25px;
     font-weight: bold;
     display:inline;
+}
+.author {
+    margin-right: 950px;
+    /* display: inline; */
+}
+@media (max-height: 500px) {
+  header {
+    display: none;
+  }
+  footer {
+    display: none;
+  }
+}
+@media (orientation: portrait) {
+  main {
+    flex-direction: column;
+  }
 }
 
