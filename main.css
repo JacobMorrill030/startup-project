@@ -51,7 +51,8 @@ menu {
 }
 .nav-item {
     display: inline;
-    margin-right: 15px;
+    margin-right: 5px;
+    font-size: 15px;
 }
 .header-container {
     margin: 0px !important;
@@ -60,22 +61,21 @@ menu {
     text-align: right;
     margin-right: 30px;
     top: -50px;
-    display: inline;
+    display: flex;
+    flex-direction: row;
 }
 .github {
-    margin-right: 20px;
+    margin-right: 10px;
     position: relative;
-    /* display: inline; */
 }
 .name {
     font-size:20;
-    margin-left: 25px;
+    margin-left: 10px;
     font-weight: bold;
     display:inline;
 }
 .author {
-    margin-right: 950px;
-    /* display: inline; */
+    margin-right: 20px;
 }
 @media (max-height: 500px) {
   header {

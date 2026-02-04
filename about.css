@@ -5,19 +5,28 @@ main {
     color: rgb(240, 230, 230);
     font-size: 20px;
     text-align: right;
+    display: inline;
 }
 .about {
     margin-left: 50px;
     margin-right: 40px;
     margin: 40px;
     text-align: left;
+    flex: 1;
 }
 .container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    column-rule: 2px solid;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+.container div{
+    margin: 20px;
 }
 .image {
-    margin: 50px;
+    flex: 1;
+}
+@media(max-width: 900px) {
+    .container {
+        flex-direction: column;
+    }
 }

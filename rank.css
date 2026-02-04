@@ -29,6 +29,9 @@ main {
 }
 .rank-info {
     text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 .list-container {
     width: 400px;
@@ -45,6 +48,7 @@ main {
     box-sizing: border-box;
     border-radius: 5px;
     background-color: rgb(188, 187, 187);
+    display: block;
 }
 .title-label {
     font-size: 25px;
@@ -79,24 +83,17 @@ ol li {
     font-size: 30px;
 }
 .container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    flex-direction: row;
     gap: 20px;
-    column-rule: 2px solid;
 }
 .column {
     padding: 10px;
+    flex: 1;
 }
 .user-info {
     font-size: 25px;
-    position: relative;
     color: rgb(240, 230, 230);
-}
-.user-info-container {
-    margin-right: 120px;
-}
-.save-share-container {
-    margin-left: 80px;
 }
 .drop-down {
     margin-top: 40px;
@@ -113,7 +110,15 @@ ol li {
     text-align: center;
     background-color: rgba(44, 44, 82, 0.112);
     border: 1px solid black;
-    overflow: hidden;
+}
+.table-container {
+    padding: 10px;
+    scroll-behavior: smooth;
+    width: 100%;
+    overflow-x: auto;
+}
+th, td {
+    white-space: nowrap;
 }
 .s-tier {
     background-color: red;
@@ -155,4 +160,12 @@ tr {
 }
 .bank-list {
     list-style-type: none;
+}
+@media(max-width: 800px) {
+    .container {
+        flex-direction: column;
+    }
+    .rank-info {
+        flex-direction: column;
+    }
 }
