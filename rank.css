@@ -60,8 +60,11 @@ main {
     font-size: 25px;
     color: rgb(240, 230, 230);
 }
-a:hover {
-    color: #daf511 !important; 
+.save-share a { 
+    color: rgb(240, 230, 230);
+}
+.save-share:hover {
+    color: rgb(186, 174, 174);
 }
 .ranked-list {
     margin-left: 50px;
