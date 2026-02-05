@@ -34,6 +34,7 @@ main {
     border-spacing: 0;
     overflow: hidden;
     background-color: rgb(177, 177, 177);
+    box-shadow: 3px 22px 22px 1px rgba(0, 0, 0, 0.24);
 }
 .search-data {
     padding: 10px 15px;
@@ -87,7 +88,7 @@ main {
     margin: 15px;
     margin-left: 100px;
     padding: 12px 75px;
-    background-color: gray; /* Blue background */
+    background-color: gray;
     color: black;
     border: none;
     border-color: black;
@@ -95,7 +96,8 @@ main {
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;   
-    font-weight: bold;                     
+    font-weight: bold;              
+    box-shadow: 3px 22px 22px 1px rgba(0, 0, 0, 0.24);       
 }
 .send:hover {
     background-color: rgba(128, 128, 128, 0.509);
@@ -103,7 +105,7 @@ main {
 }
 .save {
     padding: 12px 75px;
-    background-color: gray; /* Blue background */
+    background-color: gray;
     color: black;
     border: none;
     border-color: black;
@@ -112,6 +114,7 @@ main {
     cursor: pointer;
     transition: background-color 0.5s ease;   
     font-weight: bold; 
+    box-shadow: 3px 22px 22px 1px rgba(0, 0, 0, 0.24);
 }
 .save:hover {
     background-color: rgba(128, 128, 128, 0.509);
@@ -129,8 +132,16 @@ main {
     transform: scale(0.98);
     box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
 }
+.search-button:hover {
+    box-shadow: 3px 22px 22px 1px rgba(0, 0, 0, 0.24);
+    background-color: rgba(109, 108, 108, 0.402);
+    color: rgb(240, 230, 230);
+}
 .table-button:active {
     transform: scale(0.98);
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+}
+.table-button:hover {
     box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
 }
 table {

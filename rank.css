@@ -9,7 +9,7 @@ main {
     margin: 32px;
     margin-left: 80px;
     padding: 12px 75px;
-    background-color: gray; /* Blue background */
+    background-color: gray;
     color: black;
     border: none;
     border-color: black;
@@ -17,7 +17,8 @@ main {
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;   
-    font-weight: bold;                     
+    font-weight: bold;        
+    box-shadow: 3px 22px 22px 1px rgba(0, 0, 0, 0.24);             
 }
 .item-btn:hover {
     background-color: rgba(128, 128, 128, 0.509);
@@ -59,6 +60,9 @@ main {
     font-size: 25px;
     color: rgb(240, 230, 230);
 }
+a:hover {
+    color: #daf511 !important; 
+}
 .ranked-list {
     margin-left: 50px;
     cursor: pointer;
@@ -74,9 +78,10 @@ input[type="text"] {
     transition: all 0.3s ease;
     background-color: rgba(41, 41, 75, 0.979);
     color: rgb(240, 230, 230);
+    box-shadow: 3px 22px 22px 1px rgba(0, 0, 0, 0.24);
 }
 input[type="text"]:hover {
-    border-color: #daf511; /* Change border color */
+    border-color: #daf511; 
     cursor: pointer;
 }
 ol li {
@@ -110,6 +115,7 @@ ol li {
     text-align: center;
     background-color: rgba(44, 44, 82, 0.112);
     border: 1px solid black;
+    box-shadow: 3px 22px 22px 1px rgba(0, 0, 0, 0.24);   
 }
 .table-container {
     padding: 10px;
@@ -150,6 +156,7 @@ tr {
     margin-right: 100px;
     padding: 20px;
     border: 1px solid black;
+    box-shadow: 3px 22px 22px 1px rgba(0, 0, 0, 0.24);
 }
 .tier-list {
     margin-right: 50px;

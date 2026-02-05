@@ -16,6 +16,7 @@ main {
     cursor: pointer;
     transition: background-color 0.5s ease;   
     font-weight: bold; 
+    box-shadow: 3px 22px 22px 1px rgba(0, 0, 0, 0.24);
 }
 .share:active {
     transform: scale(0.98);
@@ -84,9 +85,13 @@ table {
     background-color: rgba(30, 30, 54, 0.979);
     margin: 25px;
     padding: 15px;
+    /* box-shadow: 3px 22px 22px 1px rgba(0, 0, 0, 0.24); */
 }
 .save-button:active {
     transform: scale(0.98);
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+}
+.save-button:hover {
     box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
 }
 .past-rankings {
