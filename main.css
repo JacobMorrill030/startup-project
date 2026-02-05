@@ -35,6 +35,10 @@ footer {
 a {
     text-decoration: none;   
 }
+menu a:hover {
+    color: purple;
+    font-weight: bold;
+}
 menu a.active {
     color: purple;
     font-weight: bold;
