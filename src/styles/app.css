@@ -4,15 +4,11 @@
     font-family:'Outfit';
     /* outline: 1px solid red; */
 }
-body {
-    width: 100%;
-    overflow-x: hidden;
-}
+
 header {
     width:100%;
     background-color: rgb(221, 212, 212);
     color: rgba(81, 81, 151, 0.979);
-
     a:link {
         color: rgba(81, 81, 151, 0.979);
     }
@@ -39,15 +35,9 @@ menu a:hover {
     color: purple;
     font-weight: bold;
 }
-menu a.active {
+.nav-item a.active {
     color: purple;
     font-weight: bold;
-}
-h1 {
-    font-size: 45
-}
-h2 {
-    font-size: 40
 }
 menu {
     padding: 0;
@@ -55,7 +45,7 @@ menu {
 }
 .nav-item {
     display: inline;
-    margin-right: 5px;
+    margin-right: 15px;
     font-size: 15px;
 }
 .header-container {
@@ -73,7 +63,8 @@ menu {
     position: relative;
 }
 .name {
-    font-size:20;
+    font-size: 20px;
+    margin-right: 15px;
     margin-left: 10px;
     font-weight: bold;
     display:inline;

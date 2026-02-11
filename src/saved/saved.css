@@ -29,7 +29,7 @@ main {
 .container {
     display: flex;
     flex-direction: row;
-    gap: 20px;
+    gap: 10px;
 }
 .col1 {
     flex: 1;
@@ -75,16 +75,17 @@ table {
     width: 180px;
     background-color: #1f1f39fa;
     color: rgb(240, 230, 230);
+    font-size: 20px;
 }
 .save-button {
-    width: 500px;
+    width: 475px;
     border-width: 1px;
     border-radius: 10px;
     cursor: pointer;
     transition: 0.3s ease; 
     background-color: rgba(30, 30, 54, 0.979);
     margin: 25px;
-    padding: 15px;
+    padding: 5px;
     /* box-shadow: 3px 22px 22px 1px rgba(0, 0, 0, 0.24); */
 }
 .save-button:active {
@@ -106,6 +107,8 @@ h1 {
 }
 .title {
     color: rgb(240, 230, 230);
+    background-color: rgba(30, 30, 54, 0.979);
+
 }
 ol {
     color: rgb(240, 230, 230);

@@ -1,7 +1,7 @@
 body {
     background-color: rgba(44, 44, 82, 0.979);
 }
-main {
+.main {
     color: rgb(240, 230, 230);
     font-size: 20px;
     text-align: right;
@@ -20,7 +20,7 @@ main {
     gap: 10px;
 }
 .container div{
-    margin: 20px;
+    margin: 10px;
 }
 .image {
     flex: 1;

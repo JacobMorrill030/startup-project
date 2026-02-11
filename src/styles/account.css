@@ -1,16 +1,19 @@
 body {
     background-color: rgba(44, 44, 82, 0.979); 
 }
-main {
-    text-align: center;
-    color: rgb(240, 230, 230);
-    margin: 60px;
+h1 {
+    font-size: 45px;
+}
+h2 {
+    font-size: 40px;
+    margin: 20px;
 }
 input[type="login"] {
     font-size: 20px;
     padding: 7px;
     box-sizing: border-box;
     border-radius: 5px;
+    margin: 20px;
 }
 input[type="password"] {
     font-size: 20px;
@@ -39,4 +42,12 @@ input[type="password"] {
 .btn:active {
     transform: scale(0.98);
     box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+}
+.button-container {
+    margin: 20px;
+}
+.welcome-container {
+    text-align: center;
+    position: relative;
+    top: 40px;
 }

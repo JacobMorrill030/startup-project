@@ -1,7 +1,7 @@
 body {
     background-color: rgba(44, 44, 82, 0.979);
 }
-main {
+.main {
     color: rgb(240, 230, 230);
     margin: 60px;
 }
@@ -28,12 +28,6 @@ main {
     transform: scale(0.98);
     box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
 }
-.rank-info {
-    text-align: center;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
 .list-container {
     width: 400px;
     height: 350px;
@@ -56,12 +50,14 @@ main {
     text-align: center;
 }
 .save-share {
-    margin-left: 20px;
-    font-size: 25px;
+    display: flex;
+    gap: 10px;
+}
+.save-share a { 
     color: rgb(240, 230, 230);
 }
-a:hover {
-    color: #daf511 !important; 
+.save-share:hover {
+    color: rgb(186, 174, 174);
 }
 .ranked-list {
     margin-left: 50px;
@@ -99,6 +95,7 @@ ol li {
 .user-info {
     font-size: 25px;
     color: rgb(240, 230, 230);
+    display: flex;
 }
 .drop-down {
     margin-top: 40px;
@@ -167,6 +164,19 @@ tr {
 }
 .bank-list {
     list-style-type: none;
+}
+.rank-info {
+    display: flex;
+    align-items: center;   /* vertical alignment */
+    gap: 20px;             /* space between red boxes */
+}
+.rank-info div {
+    display: inline;
+}
+.title-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 @media(max-width: 800px) {
     .container {
