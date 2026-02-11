@@ -7,10 +7,9 @@ export function Rank() {
   return (
     <main className="main">
     <div className="rank-info">
-        <div className="user">User: Unkown User</div>
+        <div className="user-info">User: Unkown User</div>
         <div className="title-group">
-            <label>Title:</label>
-            <input id="title" type="text" placeholder="title" />
+            <label>Title:</label><input id="title" placeholder="title" />
         </div>
         <div className="save-share">
             <NavLink to="/saved">Save</NavLink> 
@@ -21,7 +20,7 @@ export function Rank() {
     <div className="container">
         <div className="column">
             <div className="list-container">
-                <ol className="ranked_list">
+                <ol className="ranked-list">
                     <li className="ranked-item"><input type="text" value="item" readonly/></li>
                     <li className="ranked-item"><input type="text" value="item" readonly/></li>
                     <li className="ranked-item"><input type="text" value="item" readonly/></li>
@@ -69,13 +68,15 @@ export function Rank() {
             </div>
             <br />
             <fieldset className="item-bank">
-                <ul className="bank-list">
-                    <li><input className="list-item" type="text" value="item" readonly/></li>
-                    <li><input className="list-item" type="text" value="item" readonly/></li>
-                    <li><input className="list-item" type="text" value="item" readonly/></li>
-                    <li><input className="list-item" type="text" value="item" readonly/></li>
-                    <li><input className="list-item" type="text" value="item" readonly/></li>
-                </ul>
+                <div>
+                    <ul className="bank-list">
+                        <li><input className="list-item" type="text" value="item" readonly/></li>
+                        <li><input className="list-item" type="text" value="item" readonly/></li>
+                        <li><input className="list-item" type="text" value="item" readonly/></li>
+                        <li><input className="list-item" type="text" value="item" readonly/></li>
+                        <li><input className="list-item" type="text" value="item" readonly/></li>
+                    </ul>
+                </div>
             </fieldset>
         </div>
     </div>
