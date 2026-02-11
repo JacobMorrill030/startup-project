@@ -1,0 +1,135 @@
+body {
+    background-color: rgba(44, 44, 82, 0.979);
+}
+main {
+    color: rgb(240, 230, 230);
+}
+.share {
+    padding: 12px 75px;
+    margin-left: 175px;
+    background-color: gray; 
+    color: black;
+    border: none;
+    border-color: black;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.5s ease;   
+    font-weight: bold; 
+    box-shadow: 3px 22px 22px 1px rgba(0, 0, 0, 0.24);
+}
+.share:active {
+    transform: scale(0.98);
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+}
+.share:hover {
+    background-color: rgba(128, 128, 128, 0.509);
+    color: rgb(240, 230, 230);
+}
+.container {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+.col1 {
+    flex: 1;
+}
+.col2 {
+    flex: 1;
+}
+.col1-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    column-rule: 2px solid;
+}
+table {
+    border-collapse: collapse;
+    color: rgb(240, 230, 230);
+}
+.s-tier {
+    color: black;
+    background-color: red;
+}
+.a-tier {
+    color: black;
+    background-color: orange;
+}
+.b-tier {
+    color: black;
+    background-color: yellow;
+}
+.c-tier {
+    color: black;
+    background-color: rgb(30, 210, 30);
+}
+.d-tier {
+    color: black;
+    background-color: rgb(59, 59, 233);
+}
+.row {
+    width: 225px;
+    height: 30px;
+}
+.list-input {
+    width: 180px;
+    background-color: #1f1f39fa;
+    color: rgb(240, 230, 230);
+    font-size: 20px;
+}
+.save-button {
+    width: 475px;
+    border-width: 1px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s ease; 
+    background-color: rgba(30, 30, 54, 0.979);
+    margin: 25px;
+    padding: 5px;
+    /* box-shadow: 3px 22px 22px 1px rgba(0, 0, 0, 0.24); */
+}
+.save-button:active {
+    transform: scale(0.98);
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+}
+.save-button:hover {
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+}
+.past-rankings {
+    text-align: center;
+}
+h1 {
+    text-align: center;
+}
+.select {
+    margin-left: 150px;
+    flex: 1;
+}
+.title {
+    color: rgb(240, 230, 230);
+    background-color: rgba(30, 30, 54, 0.979);
+
+}
+ol {
+    color: rgb(240, 230, 230);
+}
+.rank-info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.rank-info h1 {
+    margin-left: 60px;
+    flex: 1;
+}
+.rank-info form {
+    flex: 1;
+}
+@media(max-width: 800px) {
+    .container {
+        flex-direction: column;
+    }
+    .ranking {
+        flex-direction: column;
+    }
+}

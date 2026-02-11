@@ -1,0 +1,199 @@
+body {
+    background-color: rgba(44, 44, 82, 0.979);
+}
+main {
+    color: rgb(240, 230, 230);
+    margin-top: 50px;
+}
+.container {
+    display: flex;
+    flex-direction: row;
+    gap: 100px;
+}
+.share-other {
+    flex: 1;
+}
+.share-me {
+    padding: 10px;
+    margin-right: 100px;
+    flex: 1;
+}
+.scroll-me {
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    height: 325px;
+    width: 500px;
+}
+.search-user {
+    margin-left: 100px;
+    width: 70%;
+    border-collapse: separate;
+    border-radius: 15px;
+    border: 1.5px solid;
+    border-spacing: 0;
+    overflow: hidden;
+    background-color: rgb(177, 177, 177);
+    box-shadow: 3px 22px 22px 1px rgba(0, 0, 0, 0.24);
+}
+.search-data {
+    padding: 10px 15px;
+    border: 1px solid #333;
+}
+.scroll-user {
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    height: 290px;
+    width: 500px;
+}
+.search-container{
+    margin-left: 100px;
+}
+.search-bar {
+    font-size: 25px;
+    border-radius: 5px;
+    background-color: rgb(188, 187, 187);
+}
+.share {
+    margin-left: 100px;
+}
+.share-table {
+    border-collapse: collapse;
+    margin: 50px;
+}
+.search-button {
+    padding: 12px;
+    width: 325px;
+    background-color: rgb(177, 177, 177);
+    color: black;
+    border: none;
+    border-color: black;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;   
+    font-weight: bold;                     
+}
+.table-button {
+    border-width: 1px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s ease; 
+    color: rgb(240, 230, 230);
+    margin: 20px;
+    background-color: rgba(31, 31, 57, 0.979);
+}
+.send {
+    margin: 15px;
+    margin-left: 100px;
+    padding: 12px 75px;
+    background-color: gray;
+    color: black;
+    border: none;
+    border-color: black;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;   
+    font-weight: bold;              
+    box-shadow: 3px 22px 22px 1px rgba(0, 0, 0, 0.24);       
+}
+.send:hover {
+    background-color: rgba(128, 128, 128, 0.509);
+    color: rgb(240, 230, 230);
+}
+.save {
+    padding: 12px 75px;
+    background-color: gray;
+    color: black;
+    border: none;
+    border-color: black;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.5s ease;   
+    font-weight: bold; 
+    box-shadow: 3px 22px 22px 1px rgba(0, 0, 0, 0.24);
+}
+.save:hover {
+    background-color: rgba(128, 128, 128, 0.509);
+    color: rgb(240, 230, 230);
+}
+.send:active {
+    transform: scale(0.98);
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+}
+.save:active {
+    transform: scale(0.98);
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+}
+.search-button:active {
+    transform: scale(0.98);
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+}
+.search-button:hover {
+    box-shadow: 3px 22px 22px 1px rgba(0, 0, 0, 0.24);
+    background-color: rgba(109, 108, 108, 0.402);
+    color: rgb(240, 230, 230);
+}
+.table-button:active {
+    transform: scale(0.98);
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+}
+.table-button:hover {
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+}
+table {
+    border-collapse: collapse;
+}
+.s-tier {
+    color: black;
+    background-color: red;
+}
+.a-tier {
+    color: black;
+    background-color: orange;
+}
+.b-tier {
+    color: black;
+    background-color: yellow;
+}
+.c-tier {
+    color: black;
+    background-color: rgb(30, 210, 30);
+}
+.d-tier {
+    color: black;
+    background-color: rgb(59, 59, 233);
+}
+.row {
+    width: 150px;
+    height: 30px;
+    color: rgb(240, 230, 230);
+}
+.list-input {
+    width: 140px;
+    background-color: rgba(25, 25, 46, 0.979);
+    color: rgb(240, 230, 230);
+}
+.share-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-rule: 2px solid;
+}
+.share-order {
+    padding: 10px;
+}
+.share-tier {
+    padding: 10px;
+}
+.title {
+    margin: 30px;
+    color: rgb(240, 230, 230);
+}
+@media(max-width: 800px) {
+    .container {
+        flex-direction: column;
+    }
+}

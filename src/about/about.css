@@ -1,0 +1,32 @@
+body {
+    background-color: rgba(44, 44, 82, 0.979);
+}
+.main {
+    color: rgb(240, 230, 230);
+    font-size: 20px;
+    text-align: right;
+    display: inline;
+}
+.about {
+    margin-left: 50px;
+    margin-right: 40px;
+    margin: 40px;
+    text-align: left;
+    flex: 1;
+}
+.container {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+.container div{
+    margin: 10px;
+}
+.image {
+    flex: 1;
+}
+@media(max-width: 900px) {
+    .container {
+        flex-direction: column;
+    }
+}
