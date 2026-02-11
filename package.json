@@ -1,0 +1,33 @@
+{
+  "dependencies": {
+    "bootstrap": "^5.3.8",
+    "react": "^19.2.4",
+    "react-bootstrap": "^2.10.10",
+    "react-dom": "^19.2.4",
+    "react-router-dom": "^7.13.0"
+  },
+  "name": "startup-project",
+  "version": "1.0.0",
+  "description": "Have you ever had a debate with your friends about what the best pizza topping is, best ice cream flavor, or the most powerful super hero of all time? But, maybe you didn't have a great way to show what you were saying, or there were to many opininons going around at once? Well, with RankMe, you can create your custom rankings about any category and with any items you want in an ordered list, or in a tier list. You can also see your previous rankings and share them with others! No need to restrict these fun arguments to person when you can have a platform that allows you to rank anything in a fun and organized way, and so you can have it with you forever. Now, everyone in the group can have a say in the discussion, and enjoy good friendly arguments, with RankMe.",
+  "main": "index.js",
+  "devDependencies": {
+    "vite": "^7.3.1"
+  },
+    "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JacobMorrill030/startup-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/JacobMorrill030/startup-project/issues"
+  },
+  "homepage": "https://github.com/JacobMorrill030/startup-project#readme"
+}
