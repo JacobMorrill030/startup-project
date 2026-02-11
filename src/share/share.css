@@ -18,6 +18,13 @@ main {
     margin-right: 100px;
     flex: 1;
 }
+.share-me h1 {
+    text-align: left;
+}
+.share-me form {
+    margin: 20px;
+    text-align: left;
+}
 .scroll-me {
     overflow-y: auto;
     overflow-x: hidden;
@@ -26,7 +33,8 @@ main {
     width: 500px;
 }
 .search-user {
-    margin-left: 100px;
+    /* margin-left: 100px; */
+    margin: auto;
     width: 70%;
     border-collapse: separate;
     border-radius: 15px;
@@ -51,12 +59,10 @@ main {
     margin-left: 100px;
 }
 .search-bar {
+    width: 75%;
     font-size: 25px;
     border-radius: 5px;
     background-color: rgb(188, 187, 187);
-}
-.share {
-    margin-left: 100px;
 }
 .share-table {
     border-collapse: collapse;
@@ -85,8 +91,7 @@ main {
     background-color: rgba(31, 31, 57, 0.979);
 }
 .send {
-    margin: 15px;
-    margin-left: 100px;
+    margin: 20px;
     padding: 12px 75px;
     background-color: gray;
     color: black;
