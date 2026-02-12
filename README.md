@@ -82,5 +82,17 @@ For this deliverable I did the following:
 
 - Added a button to share past rankings with people as well.
 - When you click save on rank.html, it now takes you to saved.html.
-- Now, there is a sign in button instead of create account button on createAccount.html, and it takes you to rank.html. 
+- Now, there is a sign in button instead of create account button on createAccount.html, and it takes you to rank.html. '
+
+## React Part 1: Routing Deliverable
+
+- Bundled using Vite: It is now easy to use.
+- Components: Brought code over from CSS and HTML and reworked them.
+- Router: Created the routing between compnents.
+
+### Things added from last time
+
+- Reformatted pages so they are nicer to look at, more flexible, and easier to use.
+- Formatted buttons so they are nicer to use.
+- Aligned elements on pages better.
 
