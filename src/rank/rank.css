@@ -6,8 +6,7 @@ body {
     margin: 60px;
 }
 .item-btn {
-    margin: 32px;
-    margin-left: 80px;
+    margin: 40px;
     padding: 12px 75px;
     background-color: gray;
     color: black;
@@ -23,10 +22,15 @@ body {
 .item-btn:hover {
     background-color: rgba(128, 128, 128, 0.509);
     color: rgb(240, 230, 230);
+    transition: all 0.3s ease;
 }
 .item-btn:active {
     transform: scale(0.98);
     box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+}
+.item-container {
+    display: flex;
+    justify-content: center;
 }
 .list-container {
     width: 400px;
@@ -50,12 +54,12 @@ body {
     cursor: pointer;
 }
 .ranked-item {
-    margin-top: 15px;
+    margin-top: 35px;
 }
 input[type="text"] {
     font-size: 20px;
+    /* width: 80%; */
     padding: 7px;
-    /* box-sizing: border-box; */
     border-radius: 5px;
     transition: all 0.3s ease;
     background-color: rgba(41, 41, 75, 0.979);
@@ -74,20 +78,28 @@ ol li {
     flex-direction: row;
     gap: 20px;
 }
-.column {
-    padding: 10px;
+.bank-container {
+    display: flex;
+    justify-content: center;
+}
+.column1 {
+    /* padding: 10px; */
     flex: 1;
 }
-.drop-down {
-    margin-top: 40px;
-    margin-left: 85px;
+.column2 {
+    flex: 1;
+}
+.drop-down h3 {
+    text-align: center;
+}
+.drop-down-container {
+    text-align: center;
 }
 .drop-down-box {
     background-color: gray;
     font-size: 20px;
 }
 .tier-list {
-    margin-top: -10px;
     border-collapse: collapse;
     font-size: 30px;
     text-align: center;
@@ -96,17 +108,12 @@ ol li {
     box-shadow: 3px 22px 22px 1px rgba(0, 0, 0, 0.24);   
 }
 .table-container {
-    padding: 10px;
     scroll-behavior: smooth;
     width: 100%;
     overflow-x: auto;
 }
-th, td {
-    white-space: nowrap;
-}
 .s-tier {
     background-color: red;
-    width: 100px;
 }
 .a-tier {
     background-color: orange;
@@ -121,12 +128,10 @@ th, td {
     background-color: rgb(59, 59, 233);
 }
 tr {
-    width: 100%;
     border: 1px solid black;
 }
-.row {
-    width: 100%;
-    height: 500px;
+.t-row {
+    width: 500px;
 }
 .item-bank {
     align-items: center;
@@ -141,10 +146,6 @@ tr {
 }
 .tier-list {
     margin-right: 50px;
-}
-.list-item {
-    margin: 5px;
-    /* display: inlines; */
 }
 .bank-list {
     list-style-type: none;
@@ -166,8 +167,9 @@ tr {
     color: rgb(240, 230, 230);
     margin: 10px;
 }
-.save-share:hover {
-    color: rgb(186, 174, 174);
+.save-share a:hover {
+    color: rgb(143, 133, 133);
+    transition: all 0.3s ease;
 }
 .user-info {
     flex: 1;
@@ -182,6 +184,7 @@ tr {
 }
 .title-group label {
     margin-right: 15px;
+    font-size: 25px;
 }
 @media(max-width: 800px) {
     .container {
