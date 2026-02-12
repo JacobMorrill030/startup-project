@@ -107,6 +107,7 @@ main {
 .send:hover {
     background-color: rgba(128, 128, 128, 0.509);
     color: rgb(240, 230, 230);
+    transition: all 0.3s ease;
 }
 .save {
     padding: 12px 75px;
@@ -141,6 +142,7 @@ main {
     box-shadow: 3px 22px 22px 1px rgba(0, 0, 0, 0.24);
     background-color: rgba(109, 108, 108, 0.402);
     color: rgb(240, 230, 230);
+    transition: all 0.3s ease;
 }
 .table-button:active {
     transform: scale(0.98);
@@ -181,6 +183,7 @@ table {
     width: 140px;
     background-color: rgba(25, 25, 46, 0.979);
     color: rgb(240, 230, 230);
+    cursor: pointer;
 }
 .share-container {
     display: grid;

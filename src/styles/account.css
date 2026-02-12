@@ -38,6 +38,7 @@ input[type="password"] {
 }
 .btn:hover {
     background-color: rgba(128, 128, 128, 0.509);
+    transition: all 0.3s ease;
 }
 .btn:active {
     transform: scale(0.98);
