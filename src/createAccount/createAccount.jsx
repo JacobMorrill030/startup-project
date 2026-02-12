@@ -9,7 +9,6 @@ export function CreateAccount() {
       <div className="welcome-container">
         <h1>Create Account</h1>
         <h2>Enter Login Information</h2>
-        <br />
         <div>
             <input type="login" placeholder="username" size="25"/>
         </div>

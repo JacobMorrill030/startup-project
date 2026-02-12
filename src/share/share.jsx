@@ -14,7 +14,7 @@ export function Share() {
    <main>
     <div className="container">
         <div className="share-other">
-            <h1 className="share">Share</h1>
+            <h1>Share</h1>
             <div className="search-container">
                 <input className="search-bar" type="search" placeholder="Search by username"/>
             </div>
@@ -105,7 +105,13 @@ export function Share() {
                             <table border="1" cellpadding="10">
                                 <tr>
                                     <td className="s-tier">S</td>
-                                    <td className="row">Dinosaur Jedi, Obi Wan-Kenobi, Anakin Skywalker</td>
+                                    <td className="row">Dinosaur Jedi, Obi</td>
+                                    <tr>
+                                        <td className="row">Obi Wan-Kenobi</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="row">Anakin Skywalker</td>
+                                    </tr>
                                 </tr>
                                 <tr>
                                     <td className="a-tier">A</td>

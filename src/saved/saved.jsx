@@ -1,4 +1,5 @@
 import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
 import './saved.css';
 
@@ -6,18 +7,23 @@ export function Saved() {
   const navigate = useNavigate(); 
   function toShare(e) { 
     e.preventDefault(); 
-    navigate('/share'); // <-- goes to the Play component 
+    navigate('/share'); 
   }
   return (
     <main>
       <div className="rank-info">
-          {/* <span> */}
-              <h1>Past Rankings</h1> 
-              <form onSubmit={toShare}>
-                  <button className="share">Share</button>
-              </form>
-          {/* </span> */}
-          <div className="select">Select on one you would like to share</div>
+        <div className="select">
+            <p></p>
+            <div>
+                <form onSubmit={toShare}>
+                    <button className="share">Share</button>
+                </form>
+            </div>
+            <p></p>
+            <div className="select-txt">Select one you would like to share</div>
+        </div>
+        <h1>Past Rankings</h1> 
+        <div className="empty"></div>
       </div>
       <br />
       <div className="container">

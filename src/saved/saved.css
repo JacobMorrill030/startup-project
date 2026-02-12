@@ -3,10 +3,11 @@ body {
 }
 main {
     color: rgb(240, 230, 230);
+    text-align: center;
 }
 .share {
+    /* margin: 20px; */
     padding: 12px 75px;
-    margin-left: 175px;
     background-color: gray; 
     color: black;
     border: none;
@@ -29,13 +30,14 @@ main {
 .container {
     display: flex;
     flex-direction: row;
-    gap: 10px;
+    /* gap: 10px; */
 }
 .col1 {
     flex: 1;
 }
 .col2 {
     flex: 1;
+    margin-right: 50px;
 }
 .col1-container {
     display: grid;
@@ -75,10 +77,10 @@ table {
     width: 180px;
     background-color: #1f1f39fa;
     color: rgb(240, 230, 230);
-    font-size: 20px;
+    font-size: 15px;
 }
 .save-button {
-    width: 475px;
+    width: 100%;
     border-width: 1px;
     border-radius: 10px;
     cursor: pointer;
@@ -86,7 +88,6 @@ table {
     background-color: rgba(30, 30, 54, 0.979);
     margin: 25px;
     padding: 5px;
-    /* box-shadow: 3px 22px 22px 1px rgba(0, 0, 0, 0.24); */
 }
 .save-button:active {
     transform: scale(0.98);
@@ -94,35 +95,36 @@ table {
 }
 .save-button:hover {
     box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+    transition: all 0.3s ease;
 }
 .past-rankings {
     text-align: center;
 }
-h1 {
-    text-align: center;
-}
 .select {
-    margin-left: 150px;
+    justify-content: center;
+    align-items: center;
     flex: 1;
 }
 .title {
     color: rgb(240, 230, 230);
     background-color: rgba(30, 30, 54, 0.979);
-
 }
 ol {
     color: rgb(240, 230, 230);
 }
+ol li {
+    font-size: 20px;
+}
 .rank-info {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 20px;
+    text-align: center;
 }
-.rank-info h1 {
-    margin-left: 60px;
+.empty {
     flex: 1;
 }
-.rank-info form {
+.rank-info h1 {
     flex: 1;
 }
 @media(max-width: 800px) {
