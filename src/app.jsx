@@ -23,6 +23,7 @@ export default function App() {
                     <li className="nav-item"><NavLink to ="rank">Start Ranking</NavLink></li>
                     <li className="nav-item"><NavLink to ="saved">View Saved Rankings</NavLink></li>
                     <li className="nav-item"><NavLink to ="share">Messages</NavLink></li>
+                    <li className="nav-item" id="logout"><NavLink to ="">Logout</NavLink></li>
                 </menu>
             </div>
         </header>
