@@ -95,7 +95,19 @@ function App() {
             <Route path='/rank' element={<Rank userName={userName} />} />
             <Route path='/saved' element={<Saved />} />
             <Route path='/share' element={<Share />} />
-            <Route path='/createAccount' element={<CreateAccount />} />
+            <Route
+              path='/createAccount'
+              element={
+                <CreateAccount
+                  userName={userName}
+                  authState={authState}
+                  onAuthChange={(newUser, newState) => {
+                    setUserName(newState === AuthState.Authenticated ? newUser : '');
+                    setAuthState(newState);
+                  }}
+                />
+              }
+            />
             <Route path='*' element={<NotFound />} />
         </Routes>
 
