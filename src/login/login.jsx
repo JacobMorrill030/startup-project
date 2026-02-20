@@ -29,6 +29,7 @@ export function Login({ userName, authState, onAuthChange}) {
                   userName={userName}
                   onLogout={() => onAuthChange('', AuthState.Unauthenticated)}
                 />
+                
             )}
 
             <h2>Log In</h2>
@@ -42,12 +43,6 @@ export function Login({ userName, authState, onAuthChange}) {
                 />
             )}
 
-            {/* when the user is unauthenticated we also show the manual form controls
-                so that the Sign‑in button can be disabled until both fields have a
-                value.  The <Unauthenticated> component also has its own inputs; you
-                can choose to remove the duplicates or keep one of the two. */}
-            {authState === AuthState.Unauthenticated && (
-              <>
                 <div className="login-container">
                     <input
                       type="login"
@@ -67,6 +62,13 @@ export function Login({ userName, authState, onAuthChange}) {
                     />
                 </div>
                 <br />
+
+            {/* when the user is unauthenticated we also show the manual form controls
+                so that the Sign‑in button can be disabled until both fields have a
+                value.  The <Unauthenticated> component also has its own inputs; you
+                can choose to remove the duplicates or keep one of the two. */}
+            {/* {authState === AuthState.Unauthenticated && ( */}
+              <>
                 <div className="button-containter">
                     <NavLink
                       to="rank"
@@ -79,19 +81,20 @@ export function Login({ userName, authState, onAuthChange}) {
                       Sign In
                     </NavLink>
                     <NavLink
-                      to="createAccount"
+                      to="/createAccount"
                       className="btn"
                       onClick={e => {
                         if (canSubmit) e.preventDefault();
+                        else onAuthChange(name, AuthState.Unauthenticated);
                       }}
                     >
                       Create Account
                     </NavLink>
                 </div>
-                <br />
+                <br/>
                 <br />
               </>
-            )}
+            {/* )} */}
         </div>
     </main>
   );
