@@ -2,7 +2,7 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/app.css';
 import './styles/account.css';
-import { BrowserRouter, NavLink, Route, Routes, useNavigate } from 'react-router-dom';
+import { BrowserRouter, NavLink, Route, Routes, useNavigate, Navigate } from 'react-router-dom';
 import { Login } from './login/login';
 import { About } from './about/about';
 import { Rank } from './rank/rank';
@@ -17,6 +17,12 @@ function App() {
     const currentAuthState = userName ? AuthState.Authenticated : AuthState.Unauthenticated;
     const [authState, setAuthState] = React.useState(currentAuthState);
 
+    // dev helper: confirm App mounts in browser console
+    React.useEffect(() => {
+      console.log('App mounted', { userName, authState });
+      return () => console.log('App unmounted');
+    }, []);
+
     function handleLogout() {
       localStorage.removeItem('userName');
       setUserName('');
@@ -30,37 +36,37 @@ function App() {
             <div className="header-container">
                 <menu>
                     <li className="name">
-                        <NavLink to ="">
+                        <NavLink to="/">
                             RankMe<sup>&reg;</sup>
                         </NavLink>
                     </li>
                     <li className="nav-item">
-                        <NavLink to ="">
+                        <NavLink to="/">
                             Home
                         </NavLink>
                     </li>
                     <li className="nav-item">
-                        <NavLink to ="about">
+                        <NavLink to="/about">
                             About
                         </NavLink>
                     </li>
                     {authState == AuthState.Authenticated && (
                         <li className="nav-item">
-                            <NavLink to ="rank">
+                            <NavLink to="/rank">
                                 Start Ranking
                             </NavLink>
                         </li>
                     )}
                     {authState == AuthState.Authenticated && (
                         <li className="nav-item">
-                            <NavLink to ="saved">
+                            <NavLink to="/saved">
                                 View Saved Rankings
                             </NavLink>
                         </li>
                     )}
                     {authState == AuthState.Authenticated && (
                         <li className="nav-item">
-                            <NavLink to ="share">
+                            <NavLink to="/share">
                                 Messages
                             </NavLink>
                         </li>
@@ -92,20 +98,33 @@ function App() {
               }
             />
             <Route path='/about' element={<About />} />
-            <Route path='/rank' element={<Rank userName={userName} />} />
+            <Route
+              path='/rank'
+              element={
+                authState === AuthState.Authenticated ? (
+                  <Rank userName={userName} />
+                ) : (
+                  <Navigate to='/' />
+                )
+              }
+            />
             <Route path='/saved' element={<Saved />} />
             <Route path='/share' element={<Share />} />
             <Route
               path='/createAccount'
               element={
-                <CreateAccount
-                  userName={userName}
-                  authState={authState}
-                  onAuthChange={(newUser, newState) => {
-                    setUserName(newState === AuthState.Authenticated ? newUser : '');
-                    setAuthState(newState);
-                  }}
-                />
+                authState === AuthState.Authenticated ? (
+                  <Navigate to='/rank' />
+                ) : (
+                  <CreateAccount
+                    userName={userName}
+                    authState={authState}
+                    onAuthChange={(newUser, newState) => {
+                      setUserName(newState === AuthState.Authenticated ? newUser : '');
+                      setAuthState(newState);
+                    }}
+                  />
+                )
               }
             />
             <Route path='*' element={<NotFound />} />

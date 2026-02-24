@@ -33,10 +33,10 @@ body {
     justify-content: center;
 }
 .list-container {
-    width: 400px;
+    width:400px;
     height: 350px;
     margin-left: 25px;
-    margin-right: 50px;
+    /* margin-right: 50px; */
     overflow-y: auto;
     overflow-x: hidden;
     scroll-behavior: smooth;
@@ -50,24 +50,43 @@ body {
     background-color: rgb(188, 187, 187);
 }
 .ranked-list {
-    margin-left: 50px;
+    margin-right: 50px;
     cursor: pointer;
 }
-.ranked-item {
-    margin-top: 35px;
+#bank-item {
+    text-align: center;
+}
+input[type="login"] {
+    font-size: 20px;
+    padding: 7px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    margin: 20px;
 }
 input[type="text"] {
     font-size: 20px;
-    /* width: 80%; */
+    width: 80%;
     padding: 7px;
     border-radius: 5px;
     transition: all 0.3s ease;
     background-color: rgba(41, 41, 75, 0.979);
     color: rgb(240, 230, 230);
-    box-shadow: 3px 22px 22px 1px rgba(0, 0, 0, 0.24);
+    box-shadow: 3px 22px 22px 1px rgba(24, 16, 16, 0.24);
 }
 input[type="text"]:hover {
     border-color: #daf511; 
+    cursor: pointer;
+}
+.input-container {
+    display: flex;
+    align-items: center;
+    /* gap: 8px; */
+}
+.color-square {
+    width: 35px;
+    height: 35px;
+    background-color: rgba(41, 41, 75, 0.979);
+    border: 1px solid #cec6c6; 
     cursor: pointer;
 }
 ol li {

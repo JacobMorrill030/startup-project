@@ -21,6 +21,9 @@ export function CreateAccount({ userName, authState, onAuthChange }) {
       setPassword('');
       setConfirm('');
     }
+    // if (authState === AuthState.Authenticated) {
+    //   return <p>Account created successfully!</p>
+    // }
   }, [authState]);
 
   return (
@@ -34,8 +37,6 @@ export function CreateAccount({ userName, authState, onAuthChange }) {
           />
         )}
 
-        <h2>Enter Login Information</h2>
-
         {authState === AuthState.Unauthenticated && (
           <Unauthenticated
               userName={userName}
@@ -45,53 +46,9 @@ export function CreateAccount({ userName, authState, onAuthChange }) {
           />
         )}
 
-        {/* {authState === AuthState.Unauthenticated && ( */}
+        {authState !== AuthState.Unkown && (
           <>
-            <div className="login-container">
-              <input
-                type="login"
-                placeholder="username"
-                size="25"
-                value={name}
-                onChange={e => setName(e.target.value)}
-              />
-            </div>
-            <div className="login-container">
-              <input
-                type="password"
-                placeholder="password"
-                size="25"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-              />
-            </div>
-            <div className="login-container">
-              <input
-                type="password"
-                placeholder="confirm password"
-                size="25"
-                value={confirm}
-                onChange={e => setConfirm(e.target.value)}
-              />
-            </div>
-            <br />
-            <div className="button-containter">
-              <NavLink
-                to="/rank"
-                className="btn"
-                onClick={e => {
-                  if (!canSubmit) e.preventDefault();
-                  else onAuthChange(name, AuthState.Authenticated);
-                }}
-              >
-                Create
-              </NavLink>
-            </div>
-          </>
-        {/* // )} */}
-
-        {authState === AuthState.Unauthenticated && (
-          <>
+          <h2>Enter Login Information</h2>
             <div className="login-container">
               <input
                 type="login"

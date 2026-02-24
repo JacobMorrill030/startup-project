@@ -32,8 +32,6 @@ export function Login({ userName, authState, onAuthChange}) {
                 
             )}
 
-            <h2>Log In</h2>
-
             {authState === AuthState.Unauthenticated && (
                 <Unauthenticated
                     userName={userName}
@@ -42,7 +40,7 @@ export function Login({ userName, authState, onAuthChange}) {
                     }}
                 />
             )}
-
+              <h2>Log In</h2>
                 <div className="login-container">
                     <input
                       type="login"
@@ -71,7 +69,7 @@ export function Login({ userName, authState, onAuthChange}) {
               <>
                 <div className="button-containter">
                     <NavLink
-                      to="rank"
+                      to="/rank"
                       className="btn"
                       onClick={e => {
                         if (!canSubmit) e.preventDefault();
@@ -84,8 +82,7 @@ export function Login({ userName, authState, onAuthChange}) {
                       to="/createAccount"
                       className="btn"
                       onClick={e => {
-                        if (canSubmit) e.preventDefault();
-                        else onAuthChange(name, AuthState.Unauthenticated);
+                        onAuthChange(name, AuthState.Unauthenticated);
                       }}
                     >
                       Create Account
