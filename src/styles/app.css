@@ -39,6 +39,10 @@ menu a:hover {
     color: purple;
     font-weight: bold;
 }
+#logout a.active {
+    color: rgba(81, 81, 151, 0.979);
+    font-weight: normal;
+}
 menu {
     padding: 0;
     margin-top: 0px;
@@ -47,6 +51,9 @@ menu {
     display: inline;
     margin-right: 15px;
     font-size: 15px;
+}
+#logout {
+    text-align: right;
 }
 .header-container {
     margin: 0px !important;
