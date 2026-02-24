@@ -1,68 +1,59 @@
 import React from 'react';
-import {SortableContext, verticalListSortingStrategy} from '@dnd-kit/sortable';
+import {useDroppable} from '@dnd-kit/core';
 import {Bank} from '../Tasks/bank';
 import '../rank.css';
 
+
+// helper cell component with droppable hook
+function Cell({id, children}) {
+    const {isOver, setNodeRef} = useDroppable({id});
+    return (
+        <td ref={setNodeRef} className={isOver ? 't-row over' : 't-row'}>
+            {children}
+        </td>
+    );
+}
+
 export const Table = ({tasks, onUpdateTask}) => {
-return (
-    <div>
-        <div className="table-container">
-            <table border="1" className="tier-list" cellpadding="30">
-                <tr>
-                    <td className="s-tier">S</td>
-                    <td className="t-row"></td>
-                </tr>
-                <tr>
-                    <td className="a-tier">A</td>
-                    <td className="t-row"></td>
-                </tr>
-                <tr>
-                    <td className="b-tier">B</td>
-                    <td className="t-row"></td>
-                </tr>
-                <tr>
-                    <td className="c-tier">C</td>
-                    <td className="t-row"></td>
-                </tr>
-                <tr>
-                    <td className="d-tier">D</td>
-                    <td className="t-row"></td>
-                </tr>
-            </table>
-        </div>
-        <br />
-        <fieldset className="item-bank">
-            <div>
-                <ul className="bank-list">
-                    <SortableContext items={tasks} strategy={verticalListSortingStrategy}>
-                        {tasks.map((task) => {
-                            return (
-                                <Bank
-                                    key={task.id}
-                                    id={task.id}
-                                    title={task.title}
-                                    onChange={onUpdateTask}
-                                />
-                            );
-                        })}
-                    </SortableContext>
-                    {/* {items.map((item, index) => (
-                        <div key={index} className="bank-container">
-                        <li>
-                            <input
-                            id='bank-item'
-                            className="list-item"
-                            type="text"
-                            placeholder="item"
-                            value={item}
-                            readonly
-                            />
-                        </li>
-                        </div>
-                    ))} */}
-                </ul>
+    // tasks array contains location property
+    const cells = ['S','A','B','C','D'];
+
+    return (
+        <div>
+            <div className="table-container">
+                <table border="1" className="tier-list" cellPadding="30">
+                    {cells.map(tier => (
+                        <tr key={tier}>
+                            <td className={`${tier.toLowerCase()}-tier`}>{tier}</td>
+                            <Cell id={tier}>
+                                {tasks.filter(t => t.location === tier).map(t => (
+                                    <Bank
+                                        key={t.id}
+                                        id={t.id}
+                                        title={t.title}
+                                        onChange={onUpdateTask}
+                                    />
+                                ))}
+                            </Cell>
+                        </tr>
+                    ))}
+                </table>
             </div>
-        </fieldset>
-    </div>    
-);
+            <br />
+            <fieldset className="item-bank">
+                <div>
+                    <ul className="bank-list">
+                        {tasks.filter(t => t.location === 'bank').map(task => (
+                            <Bank
+                                key={task.id}
+                                id={task.id}
+                                title={task.title}
+                                onChange={onUpdateTask}
+                            />
+                        ))}
+                    </ul>
+                </div>
+            </fieldset>
+        </div>
+    );
 }

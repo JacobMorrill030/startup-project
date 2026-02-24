@@ -36,7 +36,6 @@ body {
     width:400px;
     height: 350px;
     margin-left: 25px;
-    /* margin-right: 50px; */
     overflow-y: auto;
     overflow-x: hidden;
     scroll-behavior: smooth;
@@ -126,6 +125,11 @@ ol li {
     border: 1px solid black;
     box-shadow: 3px 22px 22px 1px rgba(0, 0, 0, 0.24);   
 }
+table td ul, table td li {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
 .table-container {
     scroll-behavior: smooth;
     width: 100%;
@@ -167,6 +171,9 @@ tr {
     margin-right: 50px;
 }
 .bank-list {
+    list-style-type: none;
+}
+.bank-list li {
     list-style-type: none;
 }
 .rank-info {

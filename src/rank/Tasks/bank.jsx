@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {useSortable} from '@dnd-kit/sortable';
+import {useDraggable} from '@dnd-kit/core';
 import {CSS} from '@dnd-kit/utilities';
 import '../rank.css';
 
 export const Bank = ({id, title, onChange}) => {
     const {attributes, listeners, setNodeRef, 
-        transform, transition} = useSortable({id});
+        transform, transition} = useDraggable({id});
 
     const [value, setValue] = useState(title);
 
@@ -31,7 +31,7 @@ export const Bank = ({id, title, onChange}) => {
                 <div className="input-container">
                     <input
                         type="text"
-                        readonly
+                        readOnly
                         value={value}
                     />
                 </div>
