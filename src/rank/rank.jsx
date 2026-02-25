@@ -11,26 +11,40 @@ import '../styles/app.css';
 export function Rank({ userName }) {
     const [items, setItems] = React.useState(['']);
     // tasks represents the ordered (sortable) list
+    // tasks now track where they live: "bank" or tier letters S,A,B,C,D
     const [tasks, setTasks] = React.useState([
-            {id: 0, title: 'Item 1'},
+            {id: 0, title: 'Item 1', location: 'bank'},
     ]);
 
     const updateTaskTitle = (id, newTitle) => {
         setTasks(ts => ts.map(t => t.id === id ? {...t, title: newTitle} : t));
     };
 
+    // move a task to a specific location (bank or tier)
+    const moveTask = (id, location) => {
+        setTasks(ts => ts.map(t => t.id === id ? {...t, location} : t));
+    };
+
     const handleDragEnd = event => {
         const {active, over} = event;
-        if (active.id === over.id) {
+        if (!over) return;
+
+        // if dropped over a tier cell, update location
+        const tierIds = ['S','A','B','C','D'];
+        if (tierIds.includes(over.id)) {
+            moveTask(active.id, over.id);
             return;
         }
+
+        // otherwise we may be reordering within bank
+        if (active.id === over.id) return;
         setTasks(ts => {
-            const originalPos = ts.findIndex(task => task.id === active.id);
-            const newPos = ts.findIndex(task => task.id === over.id);
-    
-            return arrayMove(ts, originalPos, newPos);
+            const activeIndex = ts.findIndex(task => task.id === active.id);
+            const overIndex = ts.findIndex(task => task.id === over.id);
+            if (activeIndex === -1 || overIndex === -1) return ts;
+            return arrayMove(ts, activeIndex, overIndex);
         })
-        }
+    }
 
         const sensors = useSensors(
         useSensor(PointerSensor), 
@@ -41,7 +55,7 @@ export function Rank({ userName }) {
         );
 
     function addItem() {
-        setTasks(ts => [...ts, {id: ts.length ? ts[ts.length-1].id + 1 : 0, title: ''}]);
+        setTasks(ts => [...ts, {id: ts.length ? ts[ts.length-1].id + 1 : 0, title: '', location: 'bank'}]);
         setItems(it => [...it, '']);
     }
 
@@ -103,73 +117,9 @@ export function Rank({ userName }) {
                     <Table tasks={tasks} onUpdateTask={updateTaskTitle} />
                 </div>
             </DndContext>
-            {/* <div className="table-container">
-                <table border="1" className="tier-list" cellpadding="30">
-                    <tr>
-                        <td className="s-tier">S</td>
-                        <td className="t-row"></td>
-                    </tr>
-                    <tr>
-                        <td className="a-tier">A</td>
-                        <td className="t-row"></td>
-                    </tr>
-                    <tr>
-                        <td className="b-tier">B</td>
-                        <td className="t-row"></td>
-                    </tr>
-                    <tr>
-                        <td className="c-tier">C</td>
-                        <td className="t-row"></td>
-                    </tr>
-                    <tr>
-                        <td className="d-tier">D</td>
-                        <td className="t-row"></td>
-                    </tr>
-                </table>
-            </div>
-            <br />
-            <fieldset className="item-bank">
-                <div>
-                    <ul className="bank-list">
-                        {items.map((item, index) => (
-                          <div key={index} className="bank-container">
-                            <li>
-                              <input
-                                id='bank-item'
-                                className="list-item"
-                                type="text"
-                                placeholder="item"
-                                value={item}
-                                readonly
-                              />
-                            </li>
-                          </div>
-                        ))}
-                    </ul>
-                </div>
-            </fieldset> */}
+           
         </div>
     </div>
 </main>
   );
 }
-
-// <div
-//   key={index}
-//   className="bank-container"
-//   draggable
-//   onDragStart={e => handleDragStart(e, index)}
-//   onDragOver={e => handleDragOver(e, index)}
-//   onDrop={e => handleDrop(e, index)}
-// >
-//   <li className={draggedIndex === index ? 'dragging' : ''}>
-//     <input
-//       className="list-item"
-//       type="text"
-//       placeholder="item"
-//       value={item}
-//       draggable={false}
-//       onChange={e => updateItem(index, e.target.value)}
-//     />
-//   </li>
-// </div>
