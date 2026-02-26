@@ -52,3 +52,8 @@ input[type="password"] {
     position: relative;
     top: 40px;
 }
+.login-error {
+    color: rgb(255, 255, 255);
+    font-size: 16px;
+    margin-top: 6px;
+}
