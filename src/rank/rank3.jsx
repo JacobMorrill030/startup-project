@@ -50,7 +50,6 @@ export function Rank({ userName }) {
             sensors={sensors} 
             onDragEnd={handleDragEnd}
             collisionDetection={closestCorners}>
-                {/* <Input onAddTask={addTask}/> */}
             <div className="list-container">
                 <Column tasks={tasks} onUpdateTask={updateTaskTitle} />
             </div>

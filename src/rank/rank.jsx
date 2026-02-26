@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { NavLink } from 'react-router-dom';
 import {DndContext, closestCorners, useSensors, useSensor, PointerSensor, TouchSensor, KeyboardSensor} from '@dnd-kit/core';
 import {sortableKeyboardCoordinates} from '@dnd-kit/sortable';
@@ -20,10 +20,20 @@ export function Rank({ userName }) {
         setTasks(ts => ts.map(t => t.id === id ? {...t, title: newTitle} : t));
     };
 
+    const deleteTask = (id) => {
+        setTasks(ts => ts.filter(t => t.id !== id));
+    };
+
+    const [title, setTitle] = useState(() => localStorage.getItem("title") || "");
+
     // move a task to a specific location (bank or tier)
     const moveTask = (id, location) => {
         setTasks(ts => ts.map(t => t.id === id ? {...t, location} : t));
     };
+
+    useEffect(() => {
+        localStorage.setItem("title", title);
+    }, [title]);
 
     const handleDragEnd = event => {
         const {active, over} = event;
@@ -59,6 +69,11 @@ export function Rank({ userName }) {
         setItems(it => [...it, '']);
     }
 
+    // function handleInput(id, value) { 
+    //     setTasks(ts => ts.map(t => t.id === id ? 
+    //     {...t, title: value} : t)); 
+    // }
+
     function updateItem(index, value) {
         const updatedItems = [...items];
         updatedItems[index] = value;
@@ -70,7 +85,7 @@ export function Rank({ userName }) {
     <div className="rank-info">
         <div className="user-info">User: {userName}</div>
         <div className="title-group">
-            <label>Title:</label><input id="title" placeholder="title" />
+            <label>Title:</label><input id="title" placeholder="title" value={title} onChange={(e) => setTitle(e.target.value)} />
         </div>
         <div className="save-share">
             <NavLink to="/saved">Save</NavLink> 
@@ -87,7 +102,7 @@ export function Rank({ userName }) {
                     onDragEnd={handleDragEnd}
                     collisionDetection={closestCorners}>
                     <div className="list-container">
-                        <Column tasks={tasks} onUpdateTask={updateTaskTitle} />
+                        <Column tasks={tasks} onUpdateTask={updateTaskTitle} onDeleteTask={deleteTask} />
                     </div>
                     </DndContext>
                 </div>

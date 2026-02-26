@@ -16,7 +16,7 @@ export const Bank = ({id, title, onChange}) => {
 
     const style = {
         transition,
-        transform: CSS.Transform.toString(transform),
+        transform: CSS.Translate.toString(transform),
     };
 
     return (
@@ -30,6 +30,7 @@ export const Bank = ({id, title, onChange}) => {
             <li id="bank-item" className="bank-item">
                 <div className="input-container">
                     <input
+                        className="bank-input"
                         type="text"
                         readOnly
                         value={value}

@@ -14,6 +14,7 @@ import { AuthState } from './login/authState';
 function App() {
     const navigate = useNavigate();
     const [userName, setUserName] = React.useState(localStorage.getItem('userName') || '');
+    const [title, setTitle] = React.useState(localStorage.getItem('title') || '');
     const currentAuthState = userName ? AuthState.Authenticated : AuthState.Unauthenticated;
     const [authState, setAuthState] = React.useState(currentAuthState);
 
@@ -25,9 +26,11 @@ function App() {
 
     function handleLogout() {
       localStorage.removeItem('userName');
+      localStorage.removeItem('title');
       setUserName('');
       setAuthState(AuthState.Unauthenticated);
       navigate('/');
+      setTitle('');
     }
 
   return (
