@@ -50,6 +50,7 @@ export const Task = ({id, title, onChange, onDelete}) => {
                         onBlur={() => setShowButton(false)} 
                         type="text"
                         placeholder="item"
+                        value={value}
                         onChange={handleInput}
                         onPointerDown={e => {
                             e.stopPropagation();

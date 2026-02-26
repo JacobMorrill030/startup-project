@@ -1,5 +1,6 @@
 body {
     background-color: rgba(44, 44, 82, 0.979);
+    overflow-x: hidden;
 }
 main {
     color: rgb(240, 230, 230);

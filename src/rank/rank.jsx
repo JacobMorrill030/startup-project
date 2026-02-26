@@ -8,13 +8,41 @@ import {Column} from './components/Column';
 import {Table} from './components/Table';
 import '../styles/app.css';
 
+const TASKS_STORAGE_KEY = 'rankTasks';
+
+const DEFAULT_TASKS = [
+    {id: 0, title: '', location: 'bank'},
+];
+
+const isValidTask = (task) => (
+    task &&
+    typeof task.id === 'number' &&
+    typeof task.title === 'string' &&
+    typeof task.location === 'string'
+);
+
 export function Rank({ userName }) {
     const [items, setItems] = React.useState(['']);
     // tasks represents the ordered (sortable) list
     // tasks now track where they live: "bank" or tier letters S,A,B,C,D
-    const [tasks, setTasks] = React.useState([
-            {id: 0, title: 'Item 1', location: 'bank'},
-    ]);
+    const [tasks, setTasks] = React.useState(() => {
+        const savedTasks = localStorage.getItem(TASKS_STORAGE_KEY);
+        if (!savedTasks) return DEFAULT_TASKS;
+
+        try {
+            const parsed = JSON.parse(savedTasks);
+            if (Array.isArray(parsed) && parsed.every(isValidTask)) {
+                return parsed;
+            }
+            return DEFAULT_TASKS;
+        } catch {
+            return DEFAULT_TASKS;
+        }
+    });
+
+    function handleSave() {
+        localStorage.clear();
+    }
 
     const updateTaskTitle = (id, newTitle) => {
         setTasks(ts => ts.map(t => t.id === id ? {...t, title: newTitle} : t));
@@ -34,6 +62,10 @@ export function Rank({ userName }) {
     useEffect(() => {
         localStorage.setItem("title", title);
     }, [title]);
+
+    useEffect(() => {
+        localStorage.setItem(TASKS_STORAGE_KEY, JSON.stringify(tasks));
+    }, [tasks]);
 
     const handleDragEnd = event => {
         const {active, over} = event;
@@ -69,11 +101,6 @@ export function Rank({ userName }) {
         setItems(it => [...it, '']);
     }
 
-    // function handleInput(id, value) { 
-    //     setTasks(ts => ts.map(t => t.id === id ? 
-    //     {...t, title: value} : t)); 
-    // }
-
     function updateItem(index, value) {
         const updatedItems = [...items];
         updatedItems[index] = value;
@@ -88,7 +115,7 @@ export function Rank({ userName }) {
             <label>Title:</label><input id="title" placeholder="title" value={title} onChange={(e) => setTitle(e.target.value)} />
         </div>
         <div className="save-share">
-            <NavLink to="/saved">Save</NavLink> 
+            <NavLink to="/saved" onClick={handleSave}>Save</NavLink> 
             <NavLink to="/share">Share</NavLink>
         </div>
     </div>
