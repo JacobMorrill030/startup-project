@@ -1,9 +1,12 @@
 body {
     background-color: rgba(44, 44, 82, 0.979);
+    align-items: center;
+    justify-content: center;
 }
 main {
     color: rgb(240, 230, 230);
     text-align: center;
+    min-height: 100vh;
 }
 .share {
     /* margin: 20px; */
@@ -79,6 +82,18 @@ table {
     color: rgb(240, 230, 230);
     font-size: 15px;
 }
+.saved-rankings {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: start;
+    padding: 0 20px;
+}
+.saved-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
 .save-button {
     width: 100%;
     border-width: 1px;
@@ -86,7 +101,7 @@ table {
     cursor: pointer;
     transition: 0.3s ease; 
     background-color: rgba(30, 30, 54, 0.979);
-    margin: 25px;
+    margin: 0;
     padding: 5px;
 }
 .save-button:active {
@@ -99,6 +114,20 @@ table {
 }
 .past-rankings {
     text-align: center;
+}
+.delete-saved {
+    width: fit-content;
+    padding: 8px 18px;
+    border: none;
+    border-radius: 8px;
+    background-color: gray;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+}
+.delete-saved:hover {
+    background-color: rgba(128, 128, 128, 0.509);
+    color: rgb(240, 230, 230);
 }
 .select {
     justify-content: center;
@@ -133,5 +162,8 @@ ol li {
     }
     .ranking {
         flex-direction: column;
+    }
+    .saved-rankings {
+        grid-template-columns: 1fr;
     }
 }

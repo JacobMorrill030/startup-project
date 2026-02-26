@@ -152,6 +152,9 @@ main {
 .table-button:hover {
     box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
 }
+.table-button[aria-pressed='true'] {
+    outline: 2px solid rgb(240, 230, 230);
+}
 table {
     border-collapse: collapse;
 }

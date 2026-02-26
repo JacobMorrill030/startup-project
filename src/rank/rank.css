@@ -38,8 +38,8 @@ body {
     justify-content: center;
 }
 .list-container {
-    width:400px;
-    height: 350px;
+    width: 400px;
+    height: 500px;
     margin-left: 25px;
     overflow-y: auto;
     overflow-x: hidden;
