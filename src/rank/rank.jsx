@@ -9,6 +9,7 @@ import {Table} from './components/Table';
 import '../styles/app.css';
 
 const TASKS_STORAGE_KEY = 'rankTasks';
+const SAVED_RANKINGS_STORAGE_KEY = 'savedRankings';
 
 const DEFAULT_TASKS = [
     {id: 0, title: '', location: 'bank'},
@@ -120,7 +121,60 @@ export function Rank({ userName }) {
     });
 
     function handleSave() {
-        localStorage.clear();
+        const tiers = { S: [], A: [], B: [], C: [], D: [] };
+
+        tasks.forEach((task) => {
+            if (!task || typeof task.title !== 'string') return;
+            const trimmedTitle = task.title.trim();
+            if (!trimmedTitle) return;
+
+            if (tiers[task.location]) {
+                tiers[task.location].push(trimmedTitle);
+            }
+        });
+
+        const orderedItems = [
+            ...tiers.S,
+            ...tiers.A,
+            ...tiers.B,
+            ...tiers.C,
+            ...tiers.D,
+        ];
+
+        const rankingToSave = {
+            id: `my-${Date.now()}`,
+            from: userName || 'Unknown',
+            title: title.trim() || 'Untitled Ranking',
+            orderedItems,
+            tiers,
+            savedId: `my-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+            savedAt: new Date().toISOString(),
+        };
+
+        const savedRaw = localStorage.getItem(SAVED_RANKINGS_STORAGE_KEY);
+        let savedRankings = [];
+
+        if (savedRaw) {
+            try {
+                const parsed = JSON.parse(savedRaw);
+                if (Array.isArray(parsed)) {
+                    savedRankings = parsed;
+                }
+            } catch {
+                savedRankings = [];
+            }
+        }
+
+        localStorage.setItem(
+            SAVED_RANKINGS_STORAGE_KEY,
+            JSON.stringify([rankingToSave, ...savedRankings])
+        );
+
+        localStorage.removeItem(TASKS_STORAGE_KEY);
+        localStorage.removeItem('title');
+        setTasks(DEFAULT_TASKS.map(item => ({ ...item })));
+        setTitle('');
+        setSelectedRanking('');
     }
 
     const updateTaskTitle = (id, newTitle) => {

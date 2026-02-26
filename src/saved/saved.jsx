@@ -80,8 +80,8 @@ export function Saved() {
                         <p>Title: {ranking.title}</p>
                       </div>
                     </div>
-                    <div>
-                      <table border="1" cellPadding="10">
+                    <div className="saved-tier-wrap">
+                      <table className="saved-tier-table" border="1" cellPadding="12">
                         <tbody>
                           {['S', 'A', 'B', 'C', 'D'].map((tier) => (
                             <tr key={`${rankingKey}-${tier}`}>
@@ -93,7 +93,7 @@ export function Saved() {
                       </table>
                     </div>
                   </div>
-                  <div className="past-rankings">From: {ranking.from || 'Unknown'}</div>
+                  <div className="past-rankings">User: {ranking.from || 'Unknown'}</div>
                 </button>
                 <button
                   className="delete-saved"

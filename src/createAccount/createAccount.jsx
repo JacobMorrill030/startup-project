@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Unauthenticated } from './unauthenticated';
 import { Authenticated } from './authenticated';
-import { AuthState } from './authState';
+import { AuthState } from '../login/authState';
 import '../styles/account.css';
 import '../styles/app.css';
 
@@ -45,7 +45,7 @@ export function CreateAccount({ userName, authState, onAuthChange }) {
           />
         )}
 
-        {authState !== AuthState.Unkown && (
+        {authState !== AuthState.Unknown && (
           <>
           <h2>Enter Login Information</h2>
             <div className="login-container">

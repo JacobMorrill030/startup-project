@@ -18,15 +18,16 @@ function App() {
     const currentAuthState = userName ? AuthState.Authenticated : AuthState.Unauthenticated;
     const [authState, setAuthState] = React.useState(currentAuthState);
 
-    // dev helper: confirm App mounts in browser console
     React.useEffect(() => {
-      console.log('App mounted', { userName, authState });
-      return () => console.log('App unmounted');
-    }, []);
+      if (authState === AuthState.Authenticated && userName) {
+        localStorage.setItem('userName', userName);
+      } else {
+        localStorage.removeItem('userName');
+      }
+    }, [authState, userName]);
 
     function handleLogout() {
-      localStorage.removeItem('userName');
-      localStorage.removeItem('title');
+      localStorage.clear();
       setUserName('');
       setAuthState(AuthState.Unauthenticated);
       navigate('/');
@@ -93,7 +94,6 @@ function App() {
                   userName={userName}
                   authState={authState}
                   onAuthChange={(newUser, newState) => {
-                    // clear stored name when logging out
                     setUserName(newState === AuthState.Authenticated ? newUser : '');
                     setAuthState(newState);
                   }}
