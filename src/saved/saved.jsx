@@ -20,6 +20,7 @@ const parseSavedRankings = () => {
 export function Saved() {
   const navigate = useNavigate(); 
   const [savedRankings, setSavedRankings] = React.useState(() => parseSavedRankings());
+  const [pendingDeleteKey, setPendingDeleteKey] = React.useState(null);
 
   React.useEffect(() => {
     const refreshSavedRankings = () => setSavedRankings(parseSavedRankings());
@@ -38,6 +39,20 @@ export function Saved() {
     );
     setSavedRankings(updatedRankings);
     localStorage.setItem(SAVED_RANKINGS_STORAGE_KEY, JSON.stringify(updatedRankings));
+  }
+
+  function requestDelete(targetKey) {
+    setPendingDeleteKey(targetKey);
+  }
+
+  function cancelDelete() {
+    setPendingDeleteKey(null);
+  }
+
+  function confirmDelete() {
+    if (!pendingDeleteKey) return;
+    deleteSavedRanking(pendingDeleteKey);
+    setPendingDeleteKey(null);
   }
 
   return (
@@ -98,7 +113,7 @@ export function Saved() {
                 <button
                   className="delete-saved"
                   type="button"
-                  onClick={() => deleteSavedRanking(rankingKey)}
+                  onClick={() => requestDelete(rankingKey)}
                 >
                   Delete
                 </button>
@@ -107,6 +122,18 @@ export function Saved() {
             })
         )}
       </div>
+      {pendingDeleteKey && (
+        <div className="confirm-overlay" role="dialog" aria-modal="true" aria-labelledby="delete-confirm-title">
+          <div className="confirm-card">
+            <h2 id="delete-confirm-title">Delete saved ranking?</h2>
+            <p>This action cannot be undone.</p>
+            <div className="confirm-actions">
+              <button className="confirm-cancel" type="button" onClick={cancelDelete}>Cancel</button>
+              <button className="confirm-delete" type="button" onClick={confirmDelete}>Delete</button>
+            </div>
+          </div>
+        </div>
+      )}
   </main>
   );
 }

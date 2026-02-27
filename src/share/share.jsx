@@ -38,6 +38,20 @@ export function Share() {
   const navigate = useNavigate(); 
     const [selectedId, setSelectedId] = React.useState('');
     const selectedRanking = SHARED_WITH_ME.find(ranking => ranking.id === selectedId);
+    const [showSent, setShowSent] = React.useState(false);
+    const MESSAGE_TIMEOUT_MS = 2000;
+
+    React.useEffect(() => {
+        if (!showSent) {
+            return;
+        }
+
+        const timeoutId = setTimeout(() => {
+            setShowSent(false);
+        }, MESSAGE_TIMEOUT_MS);
+
+        return () => clearTimeout(timeoutId);
+    }, [showSent]);
 
     function toSaved(e) {
     e.preventDefault(); 
@@ -102,7 +116,10 @@ export function Share() {
                 </table>
             </div>
             <br />
-            <button className="send">Send</button>
+            <button className="send" onClick={() => setShowSent(true)}>Send</button>
+            {showSent && (
+                <div className="send-status">Message sent successfully.</div>
+                )}
         </div>
         <div className="share-me">
             <h1>Shared with me</h1>

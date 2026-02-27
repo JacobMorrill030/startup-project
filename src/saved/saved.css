@@ -122,7 +122,17 @@ table {
 }
 .saved-tier-table {
     width: 100%;
-    table-layout: auto;
+    table-layout: fixed;
+}
+.saved-tier-table td:first-child {
+    width: 52px;
+    min-width: 52px;
+    max-width: 52px;
+    text-align: center;
+    white-space: nowrap;
+}
+.saved-tier-table td:last-child {
+    width: calc(100% - 52px);
 }
 .past-rankings {
     color: rgb(240, 230, 230);
@@ -168,6 +178,50 @@ ol li {
 }
 .rank-info h1 {
     flex: 1;
+}
+.confirm-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+.confirm-card {
+    background-color: rgba(30, 30, 54, 0.979);
+    color: rgb(240, 230, 230);
+    padding: 24px;
+    border-radius: 12px;
+    min-width: 320px;
+    border: 1px solid rgb(143, 133, 133);
+    box-shadow: 3px 22px 22px 1px rgba(0, 0, 0, 0.24);
+}
+.confirm-actions {
+    margin-top: 18px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+.confirm-cancel,
+.confirm-delete {
+    border: none;
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.confirm-cancel {
+    background-color: gray;
+    color: black;
+}
+.confirm-delete {
+    background-color: rgb(59, 59, 233);
+    color: rgb(240, 230, 230);
+}
+.confirm-cancel:hover,
+.confirm-delete:hover {
+    opacity: 0.9;
 }
 @media(max-width: 800px) {
     .container {

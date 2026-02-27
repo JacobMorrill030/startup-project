@@ -110,6 +110,10 @@ main {
     color: rgb(240, 230, 230);
     transition: all 0.3s ease;
 }
+.send-status {
+    margin-top: 8px;
+    color: rgb(240, 230, 230);
+}
 .save {
     padding: 12px 75px;
     background-color: gray;
