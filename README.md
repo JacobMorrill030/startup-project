@@ -96,3 +96,13 @@ For this deliverable I did the following:
 - Formatted buttons so they are nicer to use.
 - Aligned elements on pages better.
 
+## React Part 2: Interactivity Deliverable
+
+- Completed prerequesites for deliverable (GitHub link, Git Commits, and deployed Simon).
+- All functionality is mocked out- Drag and droppable items in the ordered list and the tier list. Can save rankings you have done, and rankings sent to you. Used setTimeout to simulate sending rankings to others.
+- Hooks - Used useState and useEffect on the drag-drop functionality, authenticating the user, and saving and clearing rankings.
+
+### Things added from last time
+- Added logout link in the header to sign out.
+- Changed border-radius on the saved-rank buttons.
+
