@@ -1,9 +1,12 @@
 body {
     background-color: rgba(44, 44, 82, 0.979);
+    align-items: center;
+    justify-content: center;
 }
 main {
     color: rgb(240, 230, 230);
     text-align: center;
+    min-height: 100vh;
 }
 .share {
     /* margin: 20px; */
@@ -70,14 +73,30 @@ table {
     background-color: rgb(59, 59, 233);
 }
 .row {
-    width: 225px;
-    height: 30px;
+    width: auto;
+    min-width: 0;
+    height: auto;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
 }
 .list-input {
     width: 180px;
     background-color: #1f1f39fa;
     color: rgb(240, 230, 230);
     font-size: 15px;
+}
+.saved-rankings {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: start;
+    padding: 0 20px;
+}
+.saved-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 .save-button {
     width: 100%;
@@ -86,7 +105,7 @@ table {
     cursor: pointer;
     transition: 0.3s ease; 
     background-color: rgba(30, 30, 54, 0.979);
-    margin: 25px;
+    margin: 0;
     padding: 5px;
 }
 .save-button:active {
@@ -97,8 +116,41 @@ table {
     box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
     transition: all 0.3s ease;
 }
-.past-rankings {
+.saved-tier-wrap {
+    width: 100%;
+    overflow-x: auto;
+}
+.saved-tier-table {
+    width: 100%;
+    table-layout: fixed;
+}
+.saved-tier-table td:first-child {
+    width: 52px;
+    min-width: 52px;
+    max-width: 52px;
     text-align: center;
+    white-space: nowrap;
+}
+.saved-tier-table td:last-child {
+    width: calc(100% - 52px);
+}
+.past-rankings {
+    color: rgb(240, 230, 230);
+    text-align: center;
+}
+.delete-saved {
+    width: fit-content;
+    padding: 8px 18px;
+    border: none;
+    border-radius: 8px;
+    background-color: gray;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+}
+.delete-saved:hover {
+    background-color: rgba(128, 128, 128, 0.509);
+    color: rgb(240, 230, 230);
 }
 .select {
     justify-content: center;
@@ -127,11 +179,58 @@ ol li {
 .rank-info h1 {
     flex: 1;
 }
+.confirm-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+.confirm-card {
+    background-color: rgba(30, 30, 54, 0.979);
+    color: rgb(240, 230, 230);
+    padding: 24px;
+    border-radius: 12px;
+    min-width: 320px;
+    border: 1px solid rgb(143, 133, 133);
+    box-shadow: 3px 22px 22px 1px rgba(0, 0, 0, 0.24);
+}
+.confirm-actions {
+    margin-top: 18px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+.confirm-cancel,
+.confirm-delete {
+    border: none;
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.confirm-cancel {
+    background-color: gray;
+    color: black;
+}
+.confirm-delete {
+    background-color: rgb(59, 59, 233);
+    color: rgb(240, 230, 230);
+}
+.confirm-cancel:hover,
+.confirm-delete:hover {
+    opacity: 0.9;
+}
 @media(max-width: 800px) {
     .container {
         flex-direction: column;
     }
     .ranking {
         flex-direction: column;
+    }
+    .saved-rankings {
+        grid-template-columns: 1fr;
     }
 }

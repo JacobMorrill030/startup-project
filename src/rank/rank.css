@@ -19,6 +19,11 @@ body {
     font-weight: bold;        
     box-shadow: 3px 22px 22px 1px rgba(0, 0, 0, 0.24);             
 }
+#delete-btn {
+    margin: 5px;
+    padding: 10px 30px;
+    align-self: center;
+}
 .item-btn:hover {
     background-color: rgba(128, 128, 128, 0.509);
     color: rgb(240, 230, 230);
@@ -33,8 +38,8 @@ body {
     justify-content: center;
 }
 .list-container {
-    width:400px;
-    height: 350px;
+    width: 400px;
+    height: 500px;
     margin-left: 25px;
     overflow-y: auto;
     overflow-x: hidden;
@@ -94,18 +99,29 @@ ol li {
 .container {
     display: flex;
     flex-direction: row;
-    gap: 20px;
+    /* gap: 20px; */
 }
 .bank-container {
     display: flex;
     justify-content: center;
 }
+.bank-item {
+    width: 250px;
+}
+.bank-item .input-container {
+    width: 80%;
+}
+.bank-input {
+    width: 225px;
+    min-width: 225px;
+    max-width: 225px;
+    box-sizing: border-box;
+}
 .column1 {
-    /* padding: 10px; */
     flex: 1;
 }
 .column2 {
-    flex: 1;
+    flex: 2;
 }
 .drop-down h3 {
     text-align: center;
@@ -154,12 +170,12 @@ tr {
     border: 1px solid black;
 }
 .t-row {
-    width: 650px;
+    width: 800px;
 }
 .item-bank {
     align-items: center;
-    width: 500px;
-    height: 350;
+    width: 550px;
+    /* height: 350px; */
     padding: 20px;
     border: 1px solid black;
     box-shadow: 3px 22px 22px 1px rgba(0, 0, 0, 0.24);
@@ -172,9 +188,18 @@ tr {
 }
 .bank-list {
     list-style-type: none;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 8px;
+    row-gap: 10px;
+    margin: 0;
+    padding: 0;
 }
 .bank-list li {
     list-style-type: none;
+}
+.item-bank .bank-container {
+    justify-content: flex-start;
 }
 .rank-info {
     display: flex;
@@ -218,5 +243,8 @@ tr {
     }
     .rank-info {
         flex-direction: column;
+    }
+    .bank-list {
+        grid-template-columns: 1fr;
     }
 }

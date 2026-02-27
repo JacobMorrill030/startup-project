@@ -9,6 +9,7 @@ import '../styles/app.css';
 export function Login({ userName, authState, onAuthChange}) {
   const [name, setName] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [showValidation, setShowValidation] = React.useState(false);
   const canSubmit = name.trim() !== '' && password !== '';
 
   // when the auth state flips back to unauthenticated clear the fields so we
@@ -17,6 +18,7 @@ export function Login({ userName, authState, onAuthChange}) {
     if (authState === AuthState.Unauthenticated) {
       setName('');
       setPassword('');
+      setShowValidation(false);
     }
   }, [authState]);
 
@@ -47,7 +49,12 @@ export function Login({ userName, authState, onAuthChange}) {
                       placeholder="username"
                       size="25"
                       value={name}
-                      onChange={e => setName(e.target.value)}
+                      onChange={e => {
+                        setName(e.target.value);
+                        if (showValidation) {
+                          setShowValidation(false);
+                        }
+                      }}
                     />
                 </div>
                 <div className="login-container">
@@ -56,9 +63,17 @@ export function Login({ userName, authState, onAuthChange}) {
                       placeholder="password"
                       size="25"
                       value={password}
-                      onChange={e => setPassword(e.target.value)}
+                      onChange={e => {
+                        setPassword(e.target.value);
+                        if (showValidation) {
+                          setShowValidation(false);
+                        }
+                      }}
                     />
                 </div>
+                {showValidation && (
+                  <div className="login-error">Please enter a username and password.</div>
+                )}
                 <br />
 
             {/* when the user is unauthenticated we also show the manual form controls
@@ -72,8 +87,14 @@ export function Login({ userName, authState, onAuthChange}) {
                       to="/rank"
                       className="btn"
                       onClick={e => {
-                        if (!canSubmit) e.preventDefault();
-                        else onAuthChange(name, AuthState.Authenticated);
+                        if (!canSubmit) {
+                          e.preventDefault();
+                          setShowValidation(true);
+                        }
+                        else {
+                          setShowValidation(false);
+                          onAuthChange(name, AuthState.Authenticated);
+                        }
                       }}
                     >
                       Sign In

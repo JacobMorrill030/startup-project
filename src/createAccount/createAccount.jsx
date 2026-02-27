@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Unauthenticated } from './unauthenticated';
 import { Authenticated } from './authenticated';
-import { AuthState } from './authState';
+import { AuthState } from '../login/authState';
 import '../styles/account.css';
 import '../styles/app.css';
 
@@ -10,6 +10,7 @@ export function CreateAccount({ userName, authState, onAuthChange }) {
   const [name, setName] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [confirm, setConfirm] = React.useState('');
+  const [validationMessage, setValidationMessage] = React.useState('');
   const canSubmit =
     name.trim() !== '' &&
     password !== '' &&
@@ -20,10 +21,8 @@ export function CreateAccount({ userName, authState, onAuthChange }) {
       setName('');
       setPassword('');
       setConfirm('');
+      setValidationMessage('');
     }
-    // if (authState === AuthState.Authenticated) {
-    //   return <p>Account created successfully!</p>
-    // }
   }, [authState]);
 
   return (
@@ -46,7 +45,7 @@ export function CreateAccount({ userName, authState, onAuthChange }) {
           />
         )}
 
-        {authState !== AuthState.Unkown && (
+        {authState !== AuthState.Unknown && (
           <>
           <h2>Enter Login Information</h2>
             <div className="login-container">
@@ -55,7 +54,12 @@ export function CreateAccount({ userName, authState, onAuthChange }) {
                 placeholder="username"
                 size="25"
                 value={name}
-                onChange={e => setName(e.target.value)}
+                onChange={e => {
+                  setName(e.target.value);
+                  if (validationMessage) {
+                    setValidationMessage('');
+                  }
+                }}
               />
             </div>
             <div className="login-container">
@@ -64,7 +68,12 @@ export function CreateAccount({ userName, authState, onAuthChange }) {
                 placeholder="password"
                 size="25"
                 value={password}
-                onChange={e => setPassword(e.target.value)}
+                onChange={e => {
+                  setPassword(e.target.value);
+                  if (validationMessage) {
+                    setValidationMessage('');
+                  }
+                }}
               />
             </div>
             <div className="login-container">
@@ -73,17 +82,37 @@ export function CreateAccount({ userName, authState, onAuthChange }) {
                 placeholder="confirm password"
                 size="25"
                 value={confirm}
-                onChange={e => setConfirm(e.target.value)}
+                onChange={e => {
+                  setConfirm(e.target.value);
+                  if (validationMessage) {
+                    setValidationMessage('');
+                  }
+                }}
               />
             </div>
+            {validationMessage && (
+                  <div className="login-error">{validationMessage}</div>
+                )}
             <br />
             <div className="button-containter">
               <NavLink
                 to="/rank"
                 className="btn"
                 onClick={e => {
-                  if (!canSubmit) e.preventDefault();
-                  else onAuthChange(name, AuthState.Authenticated);
+                  if (!canSubmit) {
+                    if (!name.trim()) {
+                      setValidationMessage('Please enter a username and password.');
+                    } else if (!password || !confirm) {
+                      setValidationMessage('Please enter and confirm your password.');
+                    } else if (password !== confirm) {
+                      setValidationMessage('Password and confirm password do not match.');
+                    }
+                    e.preventDefault();
+                  }
+                  else {
+                    setValidationMessage('');
+                    onAuthChange(name, AuthState.Authenticated);
+                  }
                 }}
               >
                 Create

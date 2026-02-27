@@ -3,7 +3,7 @@ import {SortableContext, verticalListSortingStrategy} from '@dnd-kit/sortable';
 import {Task} from '../Tasks/task';
 import '../rank.css';
 
-export const Column = ({tasks, onUpdateTask}) => {
+export const Column = ({tasks, onUpdateTask, onDeleteTask}) => {
     return (
         <div className="column">
             <div className="list-container">
@@ -16,6 +16,7 @@ export const Column = ({tasks, onUpdateTask}) => {
                                     id={task.id}
                                     title={task.title}
                                     onChange={onUpdateTask}
+                                    onDelete={onDeleteTask}
                                 />
                             );
                         })}

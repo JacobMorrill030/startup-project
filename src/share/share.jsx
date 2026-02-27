@@ -3,13 +3,90 @@ import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './share.css';
 
+const SAVED_RANKINGS_STORAGE_KEY = 'savedRankings';
+
+const SHARED_WITH_ME = [
+    {
+        id: 'shared-1',
+        from: 'GoldenCow@5543',
+        title: 'Ice cream flavors',
+        orderedItems: ['Moose Tracks', 'Chocolate', 'Vanilla', 'Strawberry'],
+        tiers: {
+            S: ['Moose Tracks'],
+            A: ['Chocolate'],
+            B: ['Vanilla'],
+            C: ['Strawberry'],
+            D: [],
+        },
+    },
+    {
+        id: 'shared-2',
+        from: 'GoldenCow@5543',
+        title: 'Star Wars Jedi',
+        orderedItems: ['Dinosaur Jedi', 'Obi-Wan Kenobi', 'Anakin Skywalker', 'Mace Windu', 'Pon Krell'],
+        tiers: {
+            S: ['Dinosaur Jedi', 'Obi-Wan Kenobi', 'Anakin Skywalker'],
+            A: [],
+            B: ['Mace Windu'],
+            C: [],
+            D: ['Pon Krell'],
+        },
+    },
+];
+
 export function Share() {
   const navigate = useNavigate(); 
+    const [selectedId, setSelectedId] = React.useState('');
+    const selectedRanking = SHARED_WITH_ME.find(ranking => ranking.id === selectedId);
+    const [showSent, setShowSent] = React.useState(false);
+    const MESSAGE_TIMEOUT_MS = 2000;
 
-  function toSaved(e) { 
+    React.useEffect(() => {
+        if (!showSent) {
+            return;
+        }
+
+        const timeoutId = setTimeout(() => {
+            setShowSent(false);
+        }, MESSAGE_TIMEOUT_MS);
+
+        return () => clearTimeout(timeoutId);
+    }, [showSent]);
+
+    function toSaved(e) {
     e.preventDefault(); 
+        if (!selectedRanking) {
+            return;
+        }
+
+        const savedRaw = localStorage.getItem(SAVED_RANKINGS_STORAGE_KEY);
+        let savedRankings = [];
+
+        if (savedRaw) {
+            try {
+                const parsed = JSON.parse(savedRaw);
+                if (Array.isArray(parsed)) {
+                    savedRankings = parsed;
+                }
+            } catch {
+                savedRankings = [];
+            }
+        }
+
+        const rankingToSave = {
+            ...selectedRanking,
+            savedId: `${selectedRanking.id}-${Date.now()}`,
+            savedAt: new Date().toISOString(),
+        };
+
+        localStorage.setItem(
+            SAVED_RANKINGS_STORAGE_KEY,
+            JSON.stringify([rankingToSave, ...savedRankings])
+        );
+
     navigate('/saved'); 
   }
+
   return (
    <main>
     <div className="container">
@@ -39,101 +116,53 @@ export function Share() {
                 </table>
             </div>
             <br />
-            <button className="send">Send</button>
+            <button className="send" onClick={() => setShowSent(true)}>Send</button>
+            {showSent && (
+                <div className="send-status">Message sent successfully.</div>
+                )}
         </div>
         <div className="share-me">
             <h1>Shared with me</h1>
             <form onSubmit={toSaved}>
-                <button className="save">Save</button>
+                <button className="save" disabled={!selectedRanking}>Save</button>
             </form>
             <div className="scroll-me">
-                <button className="table-button">
-                    <div className="share-container">
-                        <div className="share-order">
-                            <ol>
-                                <li><input className="list-input" value="Moose Tracks" readonly/></li>
-                                <li><input className="list-input" value="Chocolate" readonly/></li>
-                                <li><input className="list-input" value="Vanilla" readonly/></li>
-                                <li><input className="list-input" value="Strawberry" readonly/></li>
-                            </ol>
-                            <div className="title">
-                                <p>Title: Ice cream flavors</p>
+                {SHARED_WITH_ME.map((ranking) => (
+                  <div key={ranking.id}>
+                    <button
+                      className="table-button"
+                      type="button"
+                      onClick={() => setSelectedId(ranking.id)}
+                      aria-pressed={selectedId === ranking.id}
+                    >
+                        <div className="share-container">
+                            <div className="share-order">
+                                <ol>
+                                    {ranking.orderedItems.map((item) => (
+                                      <li key={item}><input className="list-input" value={item} readOnly/></li>
+                                    ))}
+                                </ol>
+                                <div className="title">
+                                    <p>Title: {ranking.title}</p>
+                                </div>
+                            </div>
+                            <div className="share-tier">
+                                <table border="1" cellPadding="10">
+                                    <tbody>
+                                        {['S', 'A', 'B', 'C', 'D'].map((tier) => (
+                                          <tr key={`${ranking.id}-${tier}`}>
+                                              <td className={`${tier.toLowerCase()}-tier`}>{tier}</td>
+                                              <td className="row">{(ranking.tiers[tier] || []).join(', ')}</td>
+                                          </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                        <div className="share-tier">
-                            <table border="1" cellpadding="10">
-                                <tr>
-                                    <td className="s-tier">S</td>
-                                    <td className="row">Moose Tracks</td>
-                                </tr>
-                                <tr>
-                                    <td className="a-tier">A</td>
-                                    <td className="row">Chocolate</td>
-                                </tr>
-                                <tr>
-                                    <td className="b-tier">B</td>
-                                    <td className="row">Vanilla</td>
-                                </tr>
-                                <tr>
-                                    <td className="c-tier">C</td>
-                                    <td className="row">Strawberry</td>
-                                </tr>
-                                <tr>
-                                    <td className="d-tier">D</td>
-                                    <td className="row"></td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </button>
-                GoldenCow@5543
-                <button className="table-button">
-                    <div className="share-container">
-                        <div className="share-order">
-                            <ol>
-                                <li><input className="list-input" value="Dinosaur Jedi" readonly/></li>
-                                <li><input className="list-input" value="Obi-Wan Kenobi" readonly/></li>
-                                <li><input className="list-input" value="Anakin Skywalker" readonly/></li>
-                                <li><input className="list-input" value="Mace Windu" readonly/></li>
-                                <li><input className="list-input" value="Pon Krell" readonly/></li>
-                            </ol>
-                            <div className="title">
-                                <p>Title: Star Wars Jedi</p>
-                            </div>
-                        </div>
-                        <div className="share-tier">
-                            <table border="1" cellpadding="10">
-                                <tr>
-                                    <td className="s-tier">S</td>
-                                    <td className="row">Dinosaur Jedi, Obi</td>
-                                    <tr>
-                                        <td className="row">Obi Wan-Kenobi</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="row">Anakin Skywalker</td>
-                                    </tr>
-                                </tr>
-                                <tr>
-                                    <td className="a-tier">A</td>
-                                    <td className="row"></td>
-                                </tr>
-                                <tr>
-                                    <td className="b-tier">B</td>
-                                    <td className="row">Mace Windu</td>
-                                </tr>
-                                <tr>
-                                    <td className="c-tier">C</td>
-                                    <td className="row"></td>
-                                </tr>
-                                <tr>
-                                    <td className="d-tier">D</td>
-                                    <td className="row">Pon Krell</td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </button>
-                GoldenCow@5543
+                    </button>
+                    {ranking.from}
+                  </div>
+                ))}
             </div>
         </div>
     </div>

@@ -1,5 +1,6 @@
 body {
     background-color: rgba(44, 44, 82, 0.979);
+    overflow-x: hidden;
 }
 main {
     color: rgb(240, 230, 230);
@@ -109,6 +110,10 @@ main {
     color: rgb(240, 230, 230);
     transition: all 0.3s ease;
 }
+.send-status {
+    margin-top: 8px;
+    color: rgb(240, 230, 230);
+}
 .save {
     padding: 12px 75px;
     background-color: gray;
@@ -150,6 +155,9 @@ main {
 }
 .table-button:hover {
     box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+}
+.table-button[aria-pressed='true'] {
+    outline: 2px solid rgb(240, 230, 230);
 }
 table {
     border-collapse: collapse;

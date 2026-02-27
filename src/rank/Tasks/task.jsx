@@ -3,7 +3,8 @@ import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
 import '../rank.css';
 
-export const Task = ({id, title, onChange}) => {
+export const Task = ({id, title, onChange, onDelete}) => {
+    const [showButton, setShowButton] = useState(false); 
     const {attributes, listeners, setNodeRef, 
         transform, transition} = useSortable({id});
 
@@ -27,6 +28,12 @@ export const Task = ({id, title, onChange}) => {
         transform: CSS.Transform.toString(transform),
     };
 
+    const handleDelete = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        onDelete?.(id);
+    };
+
     return (
         <div 
             ref={setNodeRef} 
@@ -39,14 +46,22 @@ export const Task = ({id, title, onChange}) => {
                 <div className="input-container">
                     <div className="color-square"></div>
                     <input
+                        onFocus={() => setShowButton(true)} 
+                        onBlur={() => setShowButton(false)} 
                         type="text"
                         placeholder="item"
+                        value={value}
                         onChange={handleInput}
-                        onPointerDown={e => e.stopPropagation()} /* prevent drag start when clicking input */
+                        onPointerDown={e => {
+                            e.stopPropagation();
+                        }}
                         onKeyDown={e => e.stopPropagation()}  /* allow space/arrow keys */
                         onKeyUp={e => e.stopPropagation()}
                     />
                 </div>
+                {showButton && ( <button className="item-btn" id="delete-btn" onMouseDown={e => { e.preventDefault(); e.stopPropagation(); }} onPointerDown={e => e.stopPropagation()} onTouchStart={e => e.stopPropagation()} onClick={handleDelete}>
+                    Delete Item
+                </button> )}
             </li>
         </div>
     );
