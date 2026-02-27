@@ -73,9 +73,11 @@ table {
     background-color: rgb(59, 59, 233);
 }
 .row {
+    margin-left: 5px;
+    padding: 8px;
     width: auto;
     min-width: 0;
-    height: auto;
+    height: fit-content;
     white-space: normal;
     overflow-wrap: anywhere;
     word-break: break-word;
