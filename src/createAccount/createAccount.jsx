@@ -121,8 +121,6 @@ export function CreateAccount({ userName, authState, onAuthChange }) {
           </>
         )}
       </div>
-      <br />
-      <br />
     </main>
   );
 }
