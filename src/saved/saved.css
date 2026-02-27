@@ -118,6 +118,10 @@ table {
     box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
     transition: all 0.3s ease;
 }
+.save-button:focus {
+    border: 2px solid white;
+    outline: none;
+}
 .saved-tier-wrap {
     width: 100%;
     overflow-x: auto;
