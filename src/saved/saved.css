@@ -103,7 +103,7 @@ table {
 .save-button {
     width: 100%;
     border-width: 1px;
-    border-radius: 10px;
+    border-radius: 0px;
     cursor: pointer;
     transition: 0.3s ease; 
     background-color: rgba(30, 30, 54, 0.979);
