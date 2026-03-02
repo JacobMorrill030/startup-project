@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './share.css';
 
@@ -35,11 +35,15 @@ const SHARED_WITH_ME = [
 ];
 
 export function Share() {
-  const navigate = useNavigate(); 
-    const [selectedId, setSelectedId] = React.useState('');
-    const selectedRanking = SHARED_WITH_ME.find(ranking => ranking.id === selectedId);
-    const [showSent, setShowSent] = React.useState(false);
-    const MESSAGE_TIMEOUT_MS = 2000;
+  const navigate = useNavigate();
+  const location = useLocation();
+  const rankingToShare = location.state?.rankingToShare;
+  const [selectedId, setSelectedId] = React.useState('');
+  const selectedRanking = SHARED_WITH_ME.find(ranking => ranking.id === selectedId);
+  const [showSent, setShowSent] = React.useState(false);
+  const [displayRanking, setDisplayRanking] = React.useState(true);
+  const [selectedUser, setSelectedUser] = React.useState(null);
+  const MESSAGE_TIMEOUT_MS = 2000;
 
     React.useEffect(() => {
         if (!showSent) {
@@ -91,41 +95,80 @@ export function Share() {
    <main>
     <div className="container">
         <div className="share-other">
+            <div className="display-ranking">
+                {rankingToShare && displayRanking && (
+                    <div className="ranking-display">
+                        <div className="share-container">
+                            <div className="share-order">
+                                <ol>
+                                    {(rankingToShare.orderedItems || []).map((item, index) => (
+                                        <li key={index}><input className="list-input" value={item} readOnly/></li>
+                                    ))}
+                                </ol>
+                                <div className="title">
+                                    <p>Title: {rankingToShare.title}</p>
+                                </div>
+                            </div>
+                            <div className="share-tier">
+                                <table border="1" cellPadding="10">
+                                    <tbody>
+                                        {['S', 'A', 'B', 'C', 'D'].map((tier) => (
+                                            <tr key={tier}>
+                                                <td className={`${tier.toLowerCase()}-tier`}>{tier}</td>
+                                                <td className="row">{((rankingToShare.tiers && rankingToShare.tiers[tier]) || []).join(', ')}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div>User: {rankingToShare.from || 'Unknown'}</div>
+                    </div>
+                )}
+            </div>
             <h1>Share</h1>
-            <div className="search-container">
+             <div className="search-container">
                 <input className="search-bar" type="search" placeholder="Search by username"/>
             </div>
             <br />
             <div className="scroll-user">
                 <table className="search-user" border="1">
                     <tr>
-                        <td className="search-data"><button className="search-button">GoldenCow@5543</button></td>
+                        <td className="search-data"><button onClick={() => setSelectedUser('GoldenCow@5543')}  className="search-button">GoldenCow@5543</button></td>
                     </tr>
                     <tr>
-                        <td className="search-data"><button className="search-button">anonymous_whale</button></td>
+                        <td className="search-data"><button onClick={() => setSelectedUser('anonymous_whale')} className="search-button">anonymous_whale</button></td>
                     </tr>
                     <tr>
-                        <td className="search-data"><button className="search-button">joe</button></td>
+                        <td className="search-data"><button onClick={() => setSelectedUser('joe')} className="search-button">joe</button></td>
                     </tr>
                     <tr>
-                        <td className="search-data"><button className="search-button">freddy_345</button></td>
+                        <td className="search-data"><button onClick={() => setSelectedUser('freddy_345')} className="search-button">freddy_345</button></td>
                     </tr>
                     <tr>
-                        <td className="search-data"><button className="search-button">heehee_funnyman345</button></td>
+                        <td className="search-data"><button onClick={() => setSelectedUser('heehee_funnyman345')} className="search-button">heehee_funnyman345</button></td>
                     </tr>
                 </table>
             </div>
             <br />
-            <button className="send" onClick={() => setShowSent(true)}>Send</button>
-            {showSent && (
+            {rankingToShare && displayRanking && selectedUser && (
+            <button className="send" onClick={() => {
+                setShowSent(true);
+                setDisplayRanking(false);
+            }}>Send</button>
+                )}
+            {showSent && rankingToShare && selectedUser && (
                 <div className="send-status">Message sent successfully.</div>
                 )}
         </div>
         <div className="share-me">
             <h1>Shared with me</h1>
-            <form onSubmit={toSaved}>
-                <button className="save" disabled={!selectedRanking}>Save</button>
-            </form>
+            <div className="save-text">
+                <form onSubmit={toSaved}>
+                    <button className="save" disabled={!selectedRanking}>Save</button>
+                </form>
+                <p>Select one you would like to save</p>
+            </div>
             <div className="scroll-me">
                 {SHARED_WITH_ME.map((ranking) => (
                   <div key={ranking.id}>

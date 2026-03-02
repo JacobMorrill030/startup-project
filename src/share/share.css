@@ -9,29 +9,31 @@ main {
 .container {
     display: flex;
     flex-direction: row;
-    gap: 100px;
+    gap: 25px;
 }
 .share-other {
+    margin-top: 20px;
     flex: 1;
 }
 .share-me {
-    padding: 10px;
-    margin-right: 100px;
     flex: 1;
-}
-.share-me h1 {
-    text-align: left;
 }
 .share-me form {
     margin: 20px;
-    text-align: left;
+}
+.save-text {
+    display: block;
+    text-align: center;
+    align-items: center;
+    position: relative;
+    margin-right: 500px;
 }
 .scroll-me {
     overflow-y: auto;
     overflow-x: hidden;
     scroll-behavior: smooth;
     height: 325px;
-    width: 500px;
+    width: 550px;
 }
 .search-user {
     /* margin-left: 100px; */
@@ -86,6 +88,9 @@ main {
     cursor: pointer;
     transition: background-color 0.3s ease;   
     font-weight: bold;                     
+}
+.ranking-display {
+    background-color: rgba(31, 31, 57, 0.979);
 }
 .table-button {
     border-width: 1px;

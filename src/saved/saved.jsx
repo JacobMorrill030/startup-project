@@ -21,6 +21,9 @@ export function Saved() {
   const navigate = useNavigate(); 
   const [savedRankings, setSavedRankings] = React.useState(() => parseSavedRankings());
   const [pendingDeleteKey, setPendingDeleteKey] = React.useState(null);
+  const [deleteButton, setDeleteButton] = React.useState(null);
+  const [selectedRanking, setSelectedRanking] = React.useState(null); 
+  const [shareRanking, setShareRanking] = React.useState(false);
 
   React.useEffect(() => {
     const refreshSavedRankings = () => setSavedRankings(parseSavedRankings());
@@ -29,8 +32,12 @@ export function Saved() {
   }, []);
 
   function toShare(e) { 
-    e.preventDefault(); 
-    navigate('/share'); 
+    e.preventDefault();
+    if (selectedRanking) {
+      navigate('/share', { state: { rankingToShare: selectedRanking } });
+    } else {
+      navigate('/share');
+    }
   }
 
   function deleteSavedRanking(targetKey) {
@@ -81,7 +88,17 @@ export function Saved() {
 
             return (
               <div className="saved-card" key={rankingKey}>
-                <button className="save-button" type="button">
+                <button 
+                  className="save-button" 
+                  type="button" 
+                  onClick={() => {
+                    setDeleteButton(rankingKey);
+                    setSelectedRanking(ranking);
+                    setShareRanking(true);
+                  }} 
+                  onBlur={() => setDeleteButton(null)}
+                  style={{ border: selectedRanking === ranking ? '3px solid white' : 'none' }}
+                >
                   <div className="col1-container">
                     <div>
                       <ol>
@@ -110,13 +127,16 @@ export function Saved() {
                   </div>
                   <div className="past-rankings">User: {ranking.from || 'Unknown'}</div>
                 </button>
-                <button
+                {deleteButton === rankingKey && (<button
                   className="delete-saved"
                   type="button"
-                  onClick={() => requestDelete(rankingKey)}
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    requestDelete(rankingKey);
+                  }}
                 >
                   Delete
-                </button>
+                </button>)}
                 </div>
               );
             })
