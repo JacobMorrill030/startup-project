@@ -6,7 +6,6 @@ body {
 main {
     color: rgb(240, 230, 230);
     text-align: center;
-    min-height: 100vh;
 }
 .share {
     /* margin: 20px; */
