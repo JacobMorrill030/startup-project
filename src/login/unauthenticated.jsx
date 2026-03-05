@@ -19,7 +19,7 @@ export function Unauthenticated(props) {
 
   return (
     <>
-      <div>
+      {/* <div> */}
         {/* <div className="login-container">
                 <input type="login" placeholder="username" size="25"/>
             </div>
@@ -37,7 +37,7 @@ export function Unauthenticated(props) {
             </div>
             <br />
             <br /> */}
-      </div>
+      {/* </div> */}
 
       {/* <MessageDialog message={displayError} onHide={() => setDisplayError(null)} /> */}
     </>
