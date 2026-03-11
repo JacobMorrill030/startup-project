@@ -8,6 +8,7 @@ const authCookieName = 'token';
 
 // The users are saved in memory and disappear whenever the service is restarted.
 let users = [];
+let rankings = [];
 
 // The service port. In production the front-end code is statically hosted by the service on the same port.
 const port = process.argv.length > 2 ? process.argv[2] : 3000;
@@ -118,6 +119,46 @@ function setAuthCookie(res, authToken) {
     sameSite: 'strict',
   });
 }
+
+// retieve the rankings for the authenticated user, sorted by saved date with the most recent first
+apiRouter.get('/get/rankings', verifyAuth, async (req, res) => {
+  const user = await findUser('token', req.cookies[authCookieName]);
+  req.cookies[authCookieName];
+  const userRankings = rankings.filter(r => r.userName === user.userName)
+  .sort((a, b) => new Date(b.savedAt) - new Date(a.savedAt));
+  res.json(userRankings);
+});
+
+// post the ranking for the authenticated user, create a 
+// new ranking if the user doesn't have one with the same title
+apiRouter.post('/post/rankings', verifyAuth, async (req, res) => {
+  const user = await findUser('token', req.cookies[authCookieName]);
+  const {title, orderedItems, tiers} = req.body || {};
+
+  const rankingToSave = {
+    id: uuid.v4(),
+    userName: user.userName,
+    title: (title || '').trim() || 'Untitled Ranking',
+    orderedItems: Array.isArray(orderedItems) ? orderedItems : [],
+    tiers: tiers || {S: [], A: [], B: [], C: [], D: []},
+    savedAt: new Date().toISOString(),
+  };
+  
+  rankings.unshift(rankingToSave);
+  res.status(201).json(rankingToSave);
+});
+
+// deletes rankings with the specified id for the authentcated user
+apiRouter.delete('/rankings/:id', verifyAuth, async (req, res) => {
+  const user = await findUser('token', req.cookies[authCookieName]);
+  const before = rankings.length;
+  rankings = rankings.filter(r => !(r.id === req.params.id && r.userName === user.userName));
+
+  if (rankings.length === before) {
+    return res.status(404).json({ ok: false, msg: 'Ranking not found' });
+  }
+  res.status(204).end();
+});
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
