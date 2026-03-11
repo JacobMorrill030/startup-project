@@ -1,5 +1,6 @@
 import React from 'react';
-import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, NavLink, Route, Routes, useNavigate } from 'react-router-dom';
+import { MessageDialog } from './messageDialog';
 import { Unauthenticated } from './unauthenticated';
 import { Authenticated } from './authenticated';
 import { AuthState } from './authState';
@@ -7,10 +8,12 @@ import '../styles/account.css';
 import '../styles/app.css';
 
 export function Login({ userName, authState, onAuthChange}) {
+  const navigate = useNavigate();
   const [name, setName] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [showValidation, setShowValidation] = React.useState(false);
   const canSubmit = name.trim() !== '' && password !== '';
+  const [displayError, setDisplayError] = React.useState(null);
 
   // when the auth state flips back to unauthenticated clear the fields so we
   // don't keep showing the previous credentials
@@ -21,6 +24,34 @@ export function Login({ userName, authState, onAuthChange}) {
       setShowValidation(false);
     }
   }, [authState]);
+
+  async function loginUser() {
+    loginOrCreate(`/api/auth/login`);
+  }
+
+  async function loginOrCreate(endpoint) {
+    try {
+      const response = await fetch(endpoint, {
+        method: 'post',
+        credentials: 'include',
+        body: JSON.stringify({ userName: name, password: password }),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      });
+
+      if (response?.status === 200) {
+        localStorage.setItem('userName', name);
+        onAuthChange(name, AuthState.Authenticated);
+        navigate('/rank');
+      } else {
+        const body = await response.json();
+        setDisplayError(`⚠ Error: ${body.msg || 'Request failed'}`);
+      }
+    } catch (error) {
+      setDisplayError(`⚠ Network error calling ${endpoint}: ${error.message}`);
+    }
+  }
 
   return (
     <main>
@@ -35,7 +66,7 @@ export function Login({ userName, authState, onAuthChange}) {
 
         {authState === AuthState.Authenticated && (
           <main>
-            <h1 className="welcome-message">Welcome back, {userName}!</h1>
+            <p className="welcome-message">Welcome back, {userName}!</p>
           </main>
         )}
 
@@ -83,32 +114,32 @@ export function Login({ userName, authState, onAuthChange}) {
             <br />
           <>
             <div className="button-containter">
-                <NavLink
-                  to="/rank"
+                <button
                   className="btn"
-                  onClick={e => {
+                  onClick={async e => {
                     if (!canSubmit) {
                       e.preventDefault();
                       setShowValidation(true);
                     }
                     else {
                       setShowValidation(false);
-                      onAuthChange(name, AuthState.Authenticated);
+                      await loginUser();
                     }
                   }}
                 >
                   Sign In
-                </NavLink>
-                <NavLink
-                  to="/createAccount"
+                </button>
+                <button
                   className="btn"
-                  onClick={e => {
+                  onClick={async e => {
                     onAuthChange(name, AuthState.Unauthenticated);
+                    navigate('/create-account');
                   }}
                 >
                   Create Account
-                </NavLink>
+                </button>
               </div>
+              <MessageDialog message={displayError} onHide={() => setDisplayError(null)} />
             </>
           </>
         )}

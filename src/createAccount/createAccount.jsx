@@ -1,16 +1,19 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { Unauthenticated } from './unauthenticated';
 import { Authenticated } from './authenticated';
 import { AuthState } from '../login/authState';
+import { MessageDialog } from '../login/messageDialog';
 import '../styles/account.css';
 import '../styles/app.css';
 
 export function CreateAccount({ userName, authState, onAuthChange }) {
+  const navigate = useNavigate();
   const [name, setName] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [confirm, setConfirm] = React.useState('');
   const [validationMessage, setValidationMessage] = React.useState('');
+  const [displayError, setDisplayError] = React.useState(null);
   const canSubmit =
     name.trim() !== '' &&
     password !== '' &&
@@ -24,6 +27,34 @@ export function CreateAccount({ userName, authState, onAuthChange }) {
       setValidationMessage('');
     }
   }, [authState]);
+
+  async function createUser() {
+    loginOrCreate(`/api/auth/create`);
+  }
+
+  async function loginOrCreate(endpoint) {
+    try {
+      const response = await fetch(endpoint, {
+        method: 'post',
+        credentials: 'include',
+        body: JSON.stringify({ userName: name, password: password }),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      });
+
+      if (response?.status === 200) {
+        localStorage.setItem('userName', name);
+        onAuthChange(name, AuthState.Authenticated);
+        navigate('/rank');
+      } else {
+        const body = await response.json();
+        setDisplayError(`⚠ Error: ${body.msg || 'Request failed'}`);
+      }
+    } catch (error) {
+      setDisplayError(`⚠ Network error calling ${endpoint}: ${error.message}`);
+    }
+  }
 
   return (
     <main>
@@ -95,10 +126,9 @@ export function CreateAccount({ userName, authState, onAuthChange }) {
                 )}
             <br />
             <div className="button-containter">
-              <NavLink
-                to="/rank"
+              <button
                 className="btn"
-                onClick={e => {
+                onClick={async e => {
                   if (!canSubmit) {
                     if (!name.trim()) {
                       setValidationMessage('Please enter a username and password.');
@@ -111,13 +141,14 @@ export function CreateAccount({ userName, authState, onAuthChange }) {
                   }
                   else {
                     setValidationMessage('');
-                    onAuthChange(name, AuthState.Authenticated);
+                    await createUser();
                   }
                 }}
               >
                 Create
-              </NavLink>
+              </button>
             </div>
+            <MessageDialog message={displayError} onHide={() => setDisplayError(null)} />
           </>
         )}
       </div>
