@@ -133,7 +133,7 @@ export function Login({ userName, authState, onAuthChange}) {
                   className="btn"
                   onClick={async e => {
                     onAuthChange(name, AuthState.Unauthenticated);
-                    navigate('/create-account');
+                    navigate('/createAccount');
                   }}
                 >
                   Create Account

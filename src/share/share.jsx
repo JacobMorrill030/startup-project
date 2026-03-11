@@ -43,6 +43,7 @@ export function Share() {
   const [showSent, setShowSent] = React.useState(false);
   const [displayRanking, setDisplayRanking] = React.useState(true);
   const [selectedUser, setSelectedUser] = React.useState(null);
+  const [sending, setSending] = React.useState(false);
   const MESSAGE_TIMEOUT_MS = 2000;
 
     React.useEffect(() => {
@@ -56,6 +57,21 @@ export function Share() {
 
         return () => clearTimeout(timeoutId);
     }, [showSent]);
+
+    React.useEffect(() => {
+        if (!sending) {
+            return;
+        }
+
+        const timeoutId = setTimeout(() => {
+            setSending(false);
+            setShowSent(true);
+        }, MESSAGE_TIMEOUT_MS);
+
+        return () => clearTimeout(timeoutId);
+    }, [sending]);
+
+    
 
     function toSaved(e) {
     e.preventDefault(); 
@@ -153,13 +169,16 @@ export function Share() {
             <br />
             {rankingToShare && displayRanking && selectedUser && (
             <button className="send" onClick={() => {
-                setShowSent(true);
+                setSending(true);
                 setDisplayRanking(false);
             }}>Send</button>
                 )}
-            {showSent && rankingToShare && selectedUser && (
-                <div className="send-status">Message sent successfully.</div>
+            {sending && rankingToShare && selectedUser && (
+                <div className="send-status">Sending...</div>
                 )}
+            {showSent && rankingToShare && selectedUser && (
+                <div className="send-status">Ranking sent to {selectedUser}!</div>
+            )}
         </div>
         <div className="share-me">
             <h1>Shared with me</h1>

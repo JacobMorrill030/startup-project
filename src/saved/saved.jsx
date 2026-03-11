@@ -69,7 +69,7 @@ export function Saved() {
             <p></p>
             <div>
                 <form onSubmit={toShare}>
-                    <button className="share">Share</button>
+                    <button className="share" disabled={!selectedRanking}>Share</button>
                 </form>
             </div>
             <p></p>
