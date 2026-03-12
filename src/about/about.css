@@ -6,7 +6,7 @@ body {
     font-size: 20px;
     min-height: 100vh;
     text-align: right;
-    display: inline;
+    display: inline-block;
 }
 .about {
     margin-left: 50px;
