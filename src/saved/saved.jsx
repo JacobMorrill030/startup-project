@@ -17,18 +17,63 @@ const parseSavedRankings = () => {
   }
 };
 
-export function Saved() {
+export function Saved({ userName }) {
   const navigate = useNavigate(); 
   const [savedRankings, setSavedRankings] = React.useState(() => parseSavedRankings());
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [loadError, setLoadError] = React.useState('');
   const [pendingDeleteKey, setPendingDeleteKey] = React.useState(null);
   const [deleteButton, setDeleteButton] = React.useState(null);
   const [selectedRanking, setSelectedRanking] = React.useState(null); 
-  const [shareRanking, setShareRanking] = React.useState(false);
 
   React.useEffect(() => {
     const refreshSavedRankings = () => setSavedRankings(parseSavedRankings());
     window.addEventListener('storage', refreshSavedRankings);
     return () => window.removeEventListener('storage', refreshSavedRankings);
+  }, []);
+
+  React.useEffect(() => {
+    let ignore = false;
+
+    async function loadSavedRankings() {
+      setIsLoading(true);
+      setLoadError('');
+
+      try {
+        const response = await fetch('/api/get/rankings', {
+          method: 'GET',
+          credentials: 'include',
+        });
+
+        if (!response.ok) {
+          const body = await response.json().catch(() => null);
+          throw new Error(body?.msg || 'Unable to load saved rankings');
+        }
+
+        const rankings = await response.json();
+        if (ignore) {
+          return;
+        }
+
+        const nextRankings = Array.isArray(rankings) ? rankings : [];
+        setSavedRankings(nextRankings);
+        localStorage.setItem(SAVED_RANKINGS_STORAGE_KEY, JSON.stringify(nextRankings));
+      } catch (error) {
+        if (!ignore) {
+          setLoadError(error.message || 'Unable to load saved rankings');
+        }
+      } finally {
+        if (!ignore) {
+          setIsLoading(false);
+        }
+      }
+    }
+
+    loadSavedRankings();
+
+    return () => {
+      ignore = true;
+    };
   }, []);
 
   function toShare(e) { 
@@ -40,7 +85,17 @@ export function Saved() {
     }
   }
 
-  function deleteSavedRanking(targetKey) {
+  async function deleteSavedRanking(targetKey) {
+    const response = await fetch(`/api/rankings/${targetKey}`, {
+      method: 'DELETE',
+      credentials: 'include',
+    });
+
+    if (!response.ok) {
+      const body = await response.json().catch(() => null);
+      throw new Error(body?.msg || 'Unable to delete ranking');
+    }
+
     const updatedRankings = savedRankings.filter(
       (ranking) => (ranking.savedId || ranking.id) !== targetKey
     );
@@ -56,10 +111,18 @@ export function Saved() {
     setPendingDeleteKey(null);
   }
 
-  function confirmDelete() {
+  async function confirmDelete() {
     if (!pendingDeleteKey) return;
-    deleteSavedRanking(pendingDeleteKey);
-    setPendingDeleteKey(null);
+
+    try {
+      await deleteSavedRanking(pendingDeleteKey);
+      setPendingDeleteKey(null);
+      if (selectedRanking && (selectedRanking.savedId || selectedRanking.id) === pendingDeleteKey) {
+        setSelectedRanking(null);
+      }
+    } catch (error) {
+      setLoadError(error.message || 'Unable to delete ranking');
+    }
   }
 
   return (
@@ -80,7 +143,11 @@ export function Saved() {
       </div>
       <br />
       <div className="saved-rankings">
-        {savedRankings.length === 0 ? (
+        {isLoading ? (
+          'loading saved rankings...'
+        ) : loadError ? (
+          loadError
+        ) : savedRankings.length === 0 ? (
           'you have no saved rankings yet'
         ) : (
           savedRankings.map((ranking) => {
@@ -94,7 +161,6 @@ export function Saved() {
                   onClick={() => {
                     setDeleteButton(rankingKey);
                     setSelectedRanking(ranking);
-                    setShareRanking(true);
                   }} 
                   onBlur={() => setDeleteButton(null)}
                   style={{ border: selectedRanking === ranking ? '3px solid white' : 'none' }}
@@ -125,7 +191,7 @@ export function Saved() {
                       </table>
                     </div>
                   </div>
-                  <div className="past-rankings">User: {ranking.from || 'Unknown'}</div>
+                  <div className="past-rankings">User: {userName || 'Unknown'}</div>
                 </button>
                 {deleteButton === rankingKey && (<button
                   className="delete-saved"

@@ -6,6 +6,23 @@ const app = express();
 
 const authCookieName = 'token';
 
+function createRankingRecord(userName, ranking = {}) {
+  const timestamp = new Date().toISOString();
+  const savedId = ranking.savedId || ranking.id || uuid.v4();
+
+  return {
+    ...ranking,
+    id: savedId,
+    savedId,
+    userName,
+    from: userName,
+    title: typeof ranking.title === 'string' && ranking.title.trim() ? ranking.title.trim() : 'Untitled Ranking',
+    orderedItems: Array.isArray(ranking.orderedItems) ? ranking.orderedItems : [],
+    tiers: ranking.tiers || { S: [], A: [], B: [], C: [], D: [] },
+    savedAt: ranking.savedAt || timestamp,
+  };
+}
+
 // The users are saved in memory and disappear whenever the service is restarted.
 let users = [];
 let rankings = [];
@@ -114,7 +131,7 @@ async function findUser(field, value) {
 function setAuthCookie(res, authToken) {
   res.cookie(authCookieName, authToken, {
     maxAge: 1000 * 60 * 60 * 24 * 365,
-    secure: true,
+    secure: process.env.NODE_ENV === 'production',
     httpOnly: true,
     sameSite: 'strict',
   });
@@ -133,17 +150,11 @@ apiRouter.get('/get/rankings', verifyAuth, async (req, res) => {
 // new ranking if the user doesn't have one with the same title
 apiRouter.post('/post/rankings', verifyAuth, async (req, res) => {
   const user = await findUser('token', req.cookies[authCookieName]);
-  const {title, orderedItems, tiers} = req.body || {};
+  const rankingToSave = createRankingRecord(user.userName, req.body);
 
-  const rankingToSave = {
-    id: uuid.v4(),
-    userName: user.userName,
-    title: (title || '').trim() || 'Untitled Ranking',
-    orderedItems: Array.isArray(orderedItems) ? orderedItems : [],
-    tiers: tiers || {S: [], A: [], B: [], C: [], D: []},
-    savedAt: new Date().toISOString(),
-  };
-  
+  rankings = rankings.filter(
+    (ranking) => !(ranking.id === rankingToSave.id && ranking.userName === user.userName)
+  );
   rankings.unshift(rankingToSave);
   res.status(201).json(rankingToSave);
 });

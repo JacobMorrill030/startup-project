@@ -113,7 +113,7 @@ function App() {
             />
             <Route path='/saved' element={
               authState === AuthState.Authenticated ? (
-              <Saved />) : (
+              <Saved userName={userName} />) : (
                 <Navigate to='/' />
               )
             } />
