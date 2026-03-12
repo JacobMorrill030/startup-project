@@ -4,7 +4,9 @@
     font-family:'Outfit';
     /* outline: 1px solid red; */
 }
-
+main {
+    min-height: 100vh;
+}
 header {
     width:100%;
     background-color: rgb(221, 212, 212);

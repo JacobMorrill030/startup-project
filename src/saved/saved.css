@@ -6,7 +6,6 @@ body {
 main {
     color: rgb(240, 230, 230);
     text-align: center;
-    min-height: 100vh;
 }
 .share {
     /* margin: 20px; */
@@ -73,9 +72,11 @@ table {
     background-color: rgb(59, 59, 233);
 }
 .row {
+    margin-left: 5px;
+    padding: 8px;
     width: auto;
     min-width: 0;
-    height: auto;
+    height: fit-content;
     white-space: normal;
     overflow-wrap: anywhere;
     word-break: break-word;
@@ -101,7 +102,7 @@ table {
 .save-button {
     width: 100%;
     border-width: 1px;
-    border-radius: 10px;
+    border-radius: 0px;
     cursor: pointer;
     transition: 0.3s ease; 
     background-color: rgba(30, 30, 54, 0.979);
@@ -115,6 +116,10 @@ table {
 .save-button:hover {
     box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
     transition: all 0.3s ease;
+}
+.save-button:focus {
+    border: 2px solid white;
+    outline: none;
 }
 .saved-tier-wrap {
     width: 100%;

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { NavLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {DndContext, closestCorners, useSensors, useSensor, PointerSensor, TouchSensor, KeyboardSensor} from '@dnd-kit/core';
 import {sortableKeyboardCoordinates} from '@dnd-kit/sortable';
 import {arrayMove} from '@dnd-kit/sortable';
@@ -7,6 +7,7 @@ import './rank.css';
 import {Column} from './components/Column';
 import {Table} from './components/Table';
 import '../styles/app.css';
+
 
 const TASKS_STORAGE_KEY = 'rankTasks';
 const SAVED_RANKINGS_STORAGE_KEY = 'savedRankings';
@@ -101,6 +102,7 @@ const isValidTask = (task) => (
 );
 
 export function Rank({ userName }) {
+    const navigate = useNavigate();
     const [items, setItems] = React.useState(['']);
     const [selectedRanking, setSelectedRanking] = useState('');
     // tasks represents the ordered (sortable) list
@@ -120,7 +122,7 @@ export function Rank({ userName }) {
         }
     });
 
-    function handleSave() {
+    async function handleSave() {
         const tiers = { S: [], A: [], B: [], C: [], D: [] };
 
         tasks.forEach((task) => {
@@ -169,12 +171,24 @@ export function Rank({ userName }) {
             SAVED_RANKINGS_STORAGE_KEY,
             JSON.stringify([rankingToSave, ...savedRankings])
         );
-
-        localStorage.removeItem(TASKS_STORAGE_KEY);
-        localStorage.removeItem('title');
-        setTasks(DEFAULT_TASKS.map(item => ({ ...item })));
-        setTitle('');
-        setSelectedRanking('');
+        const response = await fetch('/api/post/rankings', {
+            method: 'POST',
+            credentials: 'include',
+            body: JSON.stringify(rankingToSave),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        });
+        if (!response.ok) {
+            return alert('Error saving ranking to server');
+        } else {
+            localStorage.removeItem(TASKS_STORAGE_KEY);
+            localStorage.removeItem('title');
+            setTasks(DEFAULT_TASKS.map(item => ({ ...item })));
+            setTitle('');
+            setSelectedRanking('');
+            navigate('/saved');
+        }
     }
 
     const updateTaskTitle = (id, newTitle) => {
@@ -265,7 +279,7 @@ export function Rank({ userName }) {
             <label>Title:</label><input id="title" placeholder="title" value={title} onChange={(e) => setTitle(e.target.value)} />
         </div>
         <div className="save-share">
-            <NavLink to="/saved" onClick={handleSave}>Save and Clear</NavLink> 
+            <button onClick={handleSave}>Save and Clear</button>
         </div>
     </div>
     <br />

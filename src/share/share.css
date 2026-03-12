@@ -9,29 +9,31 @@ main {
 .container {
     display: flex;
     flex-direction: row;
-    gap: 100px;
+    gap: 25px;
 }
 .share-other {
+    margin-top: 20px;
     flex: 1;
 }
 .share-me {
-    padding: 10px;
-    margin-right: 100px;
     flex: 1;
-}
-.share-me h1 {
-    text-align: left;
 }
 .share-me form {
     margin: 20px;
-    text-align: left;
+}
+.save-text {
+    display: block;
+    text-align: center;
+    align-items: center;
+    position: relative;
+    margin-right: 500px;
 }
 .scroll-me {
     overflow-y: auto;
     overflow-x: hidden;
     scroll-behavior: smooth;
     height: 325px;
-    width: 500px;
+    width: 550px;
 }
 .search-user {
     /* margin-left: 100px; */
@@ -48,6 +50,10 @@ main {
 .search-data {
     padding: 10px 15px;
     border: 1px solid #333;
+}
+.search-button:focus {
+    background-color: rgba(109, 108, 108, 0.402);
+    outline: none;
 }
 .scroll-user {
     overflow-y: auto;
@@ -66,6 +72,7 @@ main {
     background-color: rgb(188, 187, 187);
 }
 .share-table {
+    /* border-radius: 15px; */
     border-collapse: collapse;
     margin: 50px;
 }
@@ -79,12 +86,14 @@ main {
     border-radius: 10px;
     font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s ease;   
     font-weight: bold;                     
+}
+.ranking-display {
+    background-color: rgba(31, 31, 57, 0.979);
 }
 .table-button {
     border-width: 1px;
-    border-radius: 10px;
+    border-radius: 0px;
     cursor: pointer;
     transition: 0.3s ease; 
     color: rgb(240, 230, 230);
@@ -146,8 +155,11 @@ main {
 .search-button:hover {
     box-shadow: 3px 22px 22px 1px rgba(0, 0, 0, 0.24);
     background-color: rgba(109, 108, 108, 0.402);
-    color: rgb(240, 230, 230);
     transition: all 0.3s ease;
+}
+.search-button:focus {
+    background-color: rgba(109, 108, 108, 0.402);
+    outline: none;
 }
 .table-button:active {
     transform: scale(0.98);
@@ -157,7 +169,7 @@ main {
     box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
 }
 .table-button[aria-pressed='true'] {
-    outline: 2px solid rgb(240, 230, 230);
+    border: 2px solid white;
 }
 table {
     border-collapse: collapse;

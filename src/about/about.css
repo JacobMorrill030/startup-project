@@ -4,8 +4,9 @@ body {
 .main {
     color: rgb(240, 230, 230);
     font-size: 20px;
+    min-height: 100vh;
     text-align: right;
-    display: inline;
+    display: inline-block;
 }
 .about {
     margin-left: 50px;
