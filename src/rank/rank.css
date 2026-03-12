@@ -141,10 +141,22 @@ ol li {
     border: 1px solid black;
     box-shadow: 3px 22px 22px 1px rgba(0, 0, 0, 0.24);   
 }
-table td ul, table td li {
+.tier-list td ul, .tier-list td li {
     margin: 0;
     padding: 0;
     list-style-type: none;
+}
+.tier-cell-items {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 10px;
+}
+.tier-cell-items.order-normal {
+    flex-direction: row;
+}
+.tier-cell-items.order-reverse {
+    flex-direction: row-reverse;
 }
 .table-container {
     scroll-behavior: smooth;

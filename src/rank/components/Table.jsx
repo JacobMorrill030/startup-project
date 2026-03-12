@@ -1,6 +1,7 @@
 import React from 'react';
 import {useDroppable} from '@dnd-kit/core';
 import {Bank} from '../Tasks/bank';
+import {SortableContext, verticalListSortingStrategy} from '@dnd-kit/sortable';
 import '../rank.css';
 
 
@@ -26,14 +27,16 @@ export const Table = ({tasks, onUpdateTask}) => {
                         <tr key={tier}>
                             <td className={`${tier.toLowerCase()}-tier`}>{tier}</td>
                             <Cell id={tier}>
-                                {tasks.filter(t => t.location === tier).map(t => (
-                                    <Bank
-                                        key={t.id}
-                                        id={t.id}
-                                        title={t.title}
-                                        onChange={onUpdateTask}
-                                    />
-                                ))}
+                                <div className="tier-cell-items order-normal">
+                                    {tasks.filter(t => t.location === tier).map(t => (
+                                        <Bank
+                                            key={t.id}
+                                            id={t.id}
+                                            title={t.title}
+                                            onChange={onUpdateTask}
+                                        />
+                                    ))}
+                                </div>
                             </Cell>
                         </tr>
                     ))}

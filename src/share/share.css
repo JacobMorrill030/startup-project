@@ -86,7 +86,6 @@ main {
     border-radius: 10px;
     font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s ease;   
     font-weight: bold;                     
 }
 .ranking-display {
@@ -157,6 +156,10 @@ main {
     box-shadow: 3px 22px 22px 1px rgba(0, 0, 0, 0.24);
     background-color: rgba(109, 108, 108, 0.402);
     transition: all 0.3s ease;
+}
+.search-button:focus {
+    background-color: rgba(109, 108, 108, 0.402);
+    outline: none;
 }
 .table-button:active {
     transform: scale(0.98);
