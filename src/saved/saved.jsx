@@ -167,6 +167,7 @@ export function Saved({ userName }) {
                 >
                   <div className="col1-container">
                     <div>
+                      <p style={{ color: 'white' }}>Title: {ranking.title}</p>
                       <ol>
                         {(ranking.orderedItems || []).map((item) => (
                           <li key={`${rankingKey}-${item}`}>
@@ -174,9 +175,6 @@ export function Saved({ userName }) {
                           </li>
                         ))}
                       </ol>
-                      <div className="title">
-                        <p>Title: {ranking.title}</p>
-                      </div>
                     </div>
                     <div className="saved-tier-wrap">
                       <table className="saved-tier-table" border="1" cellPadding="12">
