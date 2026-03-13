@@ -130,10 +130,22 @@ ol li {
 }
 .drop-down-container {
     text-align: center;
+    margin: 20px;
 }
 .drop-down-box {
     background-color: gray;
     font-size: 20px;
+}
+.random-ranking-form {
+    margin-top: 40px;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+#random-btn {
+    margin: 10px;
+    /* /* padding: 10px 30px; */
+    /* justify-content: center; */
 }
 .tier-list {
     border-collapse: collapse;
@@ -189,7 +201,7 @@ tr {
 .item-bank {
     align-items: center;
     width: 550px;
-    /* height: 350px; */
+    min-height: 325px;
     padding: 20px;
     border: 1px solid black;
     box-shadow: 3px 22px 22px 1px rgba(0, 0, 0, 0.24);
