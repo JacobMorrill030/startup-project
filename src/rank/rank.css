@@ -115,6 +115,8 @@ ol li {
     width: 225px;
     min-width: 225px;
     max-width: 225px;
+    margin-top: -30px;
+    margin-bottom: -30px;
     box-sizing: border-box;
 }
 .column1 {
