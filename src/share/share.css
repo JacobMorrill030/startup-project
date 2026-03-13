@@ -196,7 +196,7 @@ table {
 }
 .row {
     width: 150px;
-    height: 30px;
+    height: fit-content;
     color: rgb(240, 230, 230);
 }
 .list-input {

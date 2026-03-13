@@ -79,7 +79,12 @@ export function Saved({ userName }) {
   function toShare(e) { 
     e.preventDefault();
     if (selectedRanking) {
-      navigate('/share', { state: { rankingToShare: selectedRanking } });
+      const rankingToShare = {
+        ...selectedRanking,
+        from: selectedRanking.userName || selectedRanking.from || userName || 'Unknown',
+        userName: selectedRanking.userName || selectedRanking.from || userName || 'Unknown',
+      };
+      navigate('/share', { state: { rankingToShare } });
     } else {
       navigate('/share');
     }
@@ -189,7 +194,7 @@ export function Saved({ userName }) {
                       </table>
                     </div>
                   </div>
-                  <div className="past-rankings">User: {userName || 'Unknown'}</div>
+                  <div className="past-rankings">User: {ranking.from || ranking.userName || 'Unknown'}</div>
                 </button>
                 {deleteButton === rankingKey && (<button
                   className="delete-saved"

@@ -138,6 +138,7 @@ table {
 }
 .saved-tier-table td:last-child {
     width: calc(100% - 52px);
+    height: fit-content;
 }
 .past-rankings {
     color: rgb(240, 230, 230);
