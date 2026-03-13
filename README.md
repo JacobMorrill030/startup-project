@@ -106,3 +106,18 @@ For this deliverable I did the following:
 - Added logout link in the header to sign out.
 - Changed border-radius on the saved-rank buttons.
 
+## Service Deliverable
+
+- Completed Prerequesites
+- Created a Node.js server and express HTTP service.
+- Implemented static middleware for the frontend.
+- Call to a third party endpoint: Calls a service that randomly generates 10 words every time, and then uploads them for the user to rank.
+- Backend service endpoints: Endpoints for authenticating, creating, and deleting users. Also endpoints for posting, getting, and deleting rankings.
+- Frontend calls service endpoints with the fetch function.
+- Supports registration, login, logout, and restricted endpoint: All of this done on the backend.
+- Uses BCrypt to hash passwords.
+
+  ### Things added from last time
+  - Deleted save button on the share page: It was getting complicated to figure out, so I decided to remove it.
+  - Added generate random button that renders 10 random words when pressed.
+
