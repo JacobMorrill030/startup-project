@@ -79,7 +79,12 @@ export function Saved({ userName }) {
   function toShare(e) { 
     e.preventDefault();
     if (selectedRanking) {
-      navigate('/share', { state: { rankingToShare: selectedRanking } });
+      const rankingToShare = {
+        ...selectedRanking,
+        from: selectedRanking.userName || selectedRanking.from || userName || 'Unknown',
+        userName: selectedRanking.userName || selectedRanking.from || userName || 'Unknown',
+      };
+      navigate('/share', { state: { rankingToShare } });
     } else {
       navigate('/share');
     }
@@ -167,6 +172,7 @@ export function Saved({ userName }) {
                 >
                   <div className="col1-container">
                     <div>
+                      <p style={{ color: 'white' }}>Title: {ranking.title}</p>
                       <ol>
                         {(ranking.orderedItems || []).map((item) => (
                           <li key={`${rankingKey}-${item}`}>
@@ -174,9 +180,6 @@ export function Saved({ userName }) {
                           </li>
                         ))}
                       </ol>
-                      <div className="title">
-                        <p>Title: {ranking.title}</p>
-                      </div>
                     </div>
                     <div className="saved-tier-wrap">
                       <table className="saved-tier-table" border="1" cellPadding="12">
@@ -191,7 +194,7 @@ export function Saved({ userName }) {
                       </table>
                     </div>
                   </div>
-                  <div className="past-rankings">User: {userName || 'Unknown'}</div>
+                  <div className="past-rankings">User: {ranking.from || ranking.userName || 'Unknown'}</div>
                 </button>
                 {deleteButton === rankingKey && (<button
                   className="delete-saved"

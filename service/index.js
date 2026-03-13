@@ -6,19 +6,56 @@ const app = express();
 
 const authCookieName = 'token';
 
+const TIER_KEYS = ['S', 'A', 'B', 'C', 'D'];
+
+function normalizeText(value) {
+return String(value || '').trim().toLowerCase();
+}
+
+function normalizeItems(items) {
+if (!Array.isArray(items)) return [];
+return items
+.map((item) => normalizeText(item))
+.filter(Boolean);
+}
+
+function normalizeTiers(tiers) {
+const safe = tiers && typeof tiers === 'object' ? tiers : {};
+return TIER_KEYS.reduce((acc, key) => {
+acc[key] = normalizeItems(safe[key]);
+return acc;
+}, {});
+}
+
+
+function buildRankingFingerprint(ranking = {}) {
+const normalized = {
+title: normalizeText(ranking.title || 'Untitled Ranking'),
+orderedItems: normalizeItems(ranking.orderedItems),
+tiers: normalizeTiers(ranking.tiers),
+};
+return JSON.stringify(normalized);
+}
+
 function createRankingRecord(userName, ranking = {}) {
   const timestamp = new Date().toISOString();
   const savedId = ranking.savedId || ranking.id || uuid.v4();
+  const tiers = normalizeTiers(ranking.tiers);
+  const rankingOwner =
+    (typeof ranking.from === 'string' && ranking.from.trim()) ||
+    (typeof ranking.userName === 'string' && ranking.userName.trim()) ||
+    userName;
 
   return {
     ...ranking,
     id: savedId,
     savedId,
     userName,
-    from: userName,
+    from: rankingOwner,
     title: typeof ranking.title === 'string' && ranking.title.trim() ? ranking.title.trim() : 'Untitled Ranking',
     orderedItems: Array.isArray(ranking.orderedItems) ? ranking.orderedItems : [],
-    tiers: ranking.tiers || { S: [], A: [], B: [], C: [], D: [] },
+    tiers,
+    fingerprint: buildRankingFingerprint({ ...ranking, tiers }),
     savedAt: ranking.savedAt || timestamp,
   };
 }
@@ -152,11 +189,28 @@ apiRouter.post('/post/rankings', verifyAuth, async (req, res) => {
   const user = await findUser('token', req.cookies[authCookieName]);
   const rankingToSave = createRankingRecord(user.userName, req.body);
 
-  rankings = rankings.filter(
-    (ranking) => !(ranking.id === rankingToSave.id && ranking.userName === user.userName)
+  const existingIndex = rankings.findIndex(
+    (ranking) =>
+      ranking.userName === user.userName &&
+      ranking.fingerprint === rankingToSave.fingerprint
   );
+
+  if (existingIndex !== -1) {
+    const existing = rankings[existingIndex];
+    const updated = {
+      ...existing,
+      ...rankingToSave,
+      id: existing.id,
+      savedId: existing.savedId,
+      savedAt: existing.savedAt,
+    };
+    rankings.splice(existingIndex, 1);
+    rankings.unshift(updated);
+    return res.status(200).json(updated);
+  }
+
   rankings.unshift(rankingToSave);
-  res.status(201).json(rankingToSave);
+  return res.status(201).json(rankingToSave);
 });
 
 // deletes rankings with the specified id for the authentcated user

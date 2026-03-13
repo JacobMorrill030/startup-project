@@ -117,7 +117,13 @@ function App() {
                 <Navigate to='/' />
               )
             } />
-            <Route path='/share' element={<Share />} />
+            <Route path='/share' element={
+              authState === AuthState.Authenticated ? (
+                <Share />
+              ) : (
+                <Navigate to='/' />
+              )
+            } />
             <Route
               path='/createAccount'
               element={

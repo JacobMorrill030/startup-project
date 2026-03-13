@@ -3,13 +3,12 @@ import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
 import '../rank.css';
 
-export const Task = ({id, title, onChange, onDelete}) => {
+export const Task = ({id, title, onChange, onDelete, onTypedChange}) => {
     const [showButton, setShowButton] = useState(false); 
     const {attributes, listeners, setNodeRef, 
         transform, transition} = useSortable({id});
 
     const [value, setValue] = useState(title);
-
     // keep local input in sync if parent updates the title
     useEffect(() => {
         setValue(title);
@@ -20,6 +19,7 @@ export const Task = ({id, title, onChange, onDelete}) => {
         setValue(newVal);
         if (onChange) {
             onChange(id, newVal);
+            onTypedChange?.(true);
         }
     };
 

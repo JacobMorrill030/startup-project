@@ -105,6 +105,8 @@ export function Rank({ userName }) {
     const navigate = useNavigate();
     const [items, setItems] = React.useState(['']);
     const [selectedRanking, setSelectedRanking] = useState('');
+    const [sorted, setSorted] = useState(false);
+    const [typed, setTyped] = useState(false);
     // tasks represents the ordered (sortable) list
     // tasks now track where they live: "bank" or tier letters S,A,B,C,D
     const [tasks, setTasks] = React.useState(() => {
@@ -167,10 +169,11 @@ export function Rank({ userName }) {
             }
         }
 
-        localStorage.setItem(
-            SAVED_RANKINGS_STORAGE_KEY,
-            JSON.stringify([rankingToSave, ...savedRankings])
-        );
+        // localStorage.setItem(
+        //     SAVED_RANKINGS_STORAGE_KEY,
+        //     JSON.stringify([rankingToSave, ...savedRankings])
+        // );
+
         const response = await fetch('/api/post/rankings', {
             method: 'POST',
             credentials: 'include',
@@ -187,6 +190,8 @@ export function Rank({ userName }) {
             setTasks(DEFAULT_TASKS.map(item => ({ ...item })));
             setTitle('');
             setSelectedRanking('');
+            setSorted(false);
+            setTyped(false);
             navigate('/saved');
         }
     }
@@ -208,6 +213,8 @@ export function Rank({ userName }) {
         if (!value) {
             setTasks(DEFAULT_TASKS.map(item => ({...item})));
             setTitle('');
+            setSorted(false);
+            setTyped(false);
             return;
         }
 
@@ -215,6 +222,7 @@ export function Rank({ userName }) {
         setTitle(providedRankingTitles[value] || '');
         if (ranking) {
             setTasks(ranking.map(item => ({...item})));
+            setTyped(true);
         }
     };
 
@@ -239,6 +247,7 @@ export function Rank({ userName }) {
         const tierIds = ['S','A','B','C','D'];
         if (tierIds.includes(over.id)) {
             moveTask(active.id, over.id);
+            setSorted(true);
             return;
         }
 
@@ -263,6 +272,7 @@ export function Rank({ userName }) {
     function addItem() {
         setTasks(ts => [...ts, {id: ts.length ? ts[ts.length-1].id + 1 : 0, title: '', location: 'bank'}]);
         setItems(it => [...it, '']);
+        setTyped(true);
     }
 
     function updateItem(index, value) {
@@ -276,10 +286,13 @@ export function Rank({ userName }) {
     <div className="rank-info">
         <div className="user-info">User: {userName}</div>
         <div className="title-group">
-            <label>Title:</label><input id="title" placeholder="title" value={title} onChange={(e) => setTitle(e.target.value)} />
+            <label>Title:</label><input id="title" placeholder="title" value={title} onChange={(e) => {
+                setTitle(e.target.value);
+                setTyped(true);
+            }} />
         </div>
         <div className="save-share">
-            <button onClick={handleSave}>Save and Clear</button>
+            <button className="item-btn" id="delete-btn" onClick={handleSave} disabled ={!sorted && !typed}>Save and Clear</button>
         </div>
     </div>
     <br />
@@ -292,7 +305,12 @@ export function Rank({ userName }) {
                     onDragEnd={handleDragEnd}
                     collisionDetection={closestCorners}>
                     <div className="list-container">
-                        <Column tasks={tasks} onUpdateTask={updateTaskTitle} onDeleteTask={deleteTask} />
+                        <Column
+                            tasks={tasks}
+                            onUpdateTask={updateTaskTitle}
+                            onDeleteTask={deleteTask}
+                            onTypedChange={setTyped}
+                        />
                     </div>
                     </DndContext>
                 </div>

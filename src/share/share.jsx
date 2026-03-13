@@ -38,6 +38,7 @@ export function Share() {
   const navigate = useNavigate();
   const location = useLocation();
   const rankingToShare = location.state?.rankingToShare;
+    const rankingOwner = rankingToShare?.from || rankingToShare?.userName || 'Unknown';
   const [selectedId, setSelectedId] = React.useState('');
   const selectedRanking = SHARED_WITH_ME.find(ranking => ranking.id === selectedId);
   const [showSent, setShowSent] = React.useState(false);
@@ -73,39 +74,33 @@ export function Share() {
 
     
 
-    function toSaved(e) {
-    e.preventDefault(); 
+    async function toSaved(e) {
+        e.preventDefault(); 
         if (!selectedRanking) {
             return;
         }
 
-        const savedRaw = localStorage.getItem(SAVED_RANKINGS_STORAGE_KEY);
-        let savedRankings = [];
-
-        if (savedRaw) {
-            try {
-                const parsed = JSON.parse(savedRaw);
-                if (Array.isArray(parsed)) {
-                    savedRankings = parsed;
-                }
-            } catch {
-                savedRankings = [];
-            }
-        }
-
         const rankingToSave = {
             ...selectedRanking,
+            from: selectedRanking.from || selectedRanking.userName || 'Unknown',
             savedId: `${selectedRanking.id}-${Date.now()}`,
             savedAt: new Date().toISOString(),
         };
 
-        localStorage.setItem(
-            SAVED_RANKINGS_STORAGE_KEY,
-            JSON.stringify([rankingToSave, ...savedRankings])
-        );
-
-    navigate('/saved'); 
-  }
+        const response = await fetch('/api/post/rankings', {
+            method: 'POST',
+            credentials: 'include',
+            body: JSON.stringify(rankingToSave),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        });
+        if (!response.ok) {
+            return alert('Error saving ranking to server');
+        } else {
+            navigate('/saved'); 
+        }
+    }
 
   return (
    <main>
@@ -138,7 +133,7 @@ export function Share() {
                                 </table>
                             </div>
                         </div>
-                        <div>User: {rankingToShare.from || 'Unknown'}</div>
+                        <div>User: {rankingOwner}</div>
                     </div>
                 )}
             </div>
@@ -222,7 +217,7 @@ export function Share() {
                             </div>
                         </div>
                     </button>
-                    {ranking.from}
+                                        User: {ranking.from || ranking.userName || 'Unknown'}
                   </div>
                 ))}
             </div>
