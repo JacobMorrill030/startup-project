@@ -18,10 +18,11 @@ function Cell({id, children}) {
 export const Table = ({tasks, onUpdateTask}) => {
     // tasks array contains location property
     const cells = ['S','A','B','C','D'];
+    const {isOver: isBankOver, setNodeRef: setBankNodeRef} = useDroppable({id: 'bank'});
 
     return (
         <div>
-            <div className="table-container">
+            {/* <div className="table-container"> */}
                 <table border="1" className="tier-list" cellPadding="30">
                     {cells.map(tier => (
                         <tr key={tier}>
@@ -41,9 +42,9 @@ export const Table = ({tasks, onUpdateTask}) => {
                         </tr>
                     ))}
                 </table>
-            </div>
+            {/* </div> */}
             <br />
-            <fieldset className="item-bank">
+            <fieldset ref={setBankNodeRef} className={isBankOver ? 'item-bank over' : 'item-bank'}>
                 <div>
                     <ul className="bank-list">
                         {tasks.filter(t => t.location === 'bank').map(task => (

@@ -158,7 +158,7 @@ export function Rank({ userName }) {
         };
 
         const savedRaw = localStorage.getItem(SAVED_RANKINGS_STORAGE_KEY);
-        // let savedRankings = [];
+        let savedRankings = [];
 
         if (savedRaw) {
             try {
@@ -199,6 +199,7 @@ export function Rank({ userName }) {
 
     const deleteTask = (id) => {
         setTasks(ts => ts.filter(t => t.id !== id));
+        setTyped(true);
     };
 
     const [title, setTitle] = useState(() => localStorage.getItem("title") || "");
@@ -245,6 +246,23 @@ export function Rank({ userName }) {
         if (tierIds.includes(over.id)) {
             moveTask(active.id, over.id);
             setSorted(true);
+            return;
+        }
+
+        const overTask = tasks.find(task => task.id === over.id);
+        if (over.id === 'bank' || overTask?.location === 'bank') {
+            moveTask(active.id, 'bank');
+            setSorted(true);
+
+            // If dropped over a specific bank item, keep reorder behavior.
+            if (overTask && active.id !== over.id) {
+                setTasks(ts => {
+                    const activeIndex = ts.findIndex(task => task.id === active.id);
+                    const overIndex = ts.findIndex(task => task.id === over.id);
+                    if (activeIndex === -1 || overIndex === -1) return ts;
+                    return arrayMove(ts, activeIndex, overIndex);
+                });
+            }
             return;
         }
 
@@ -310,7 +328,7 @@ export function Rank({ userName }) {
             }} />
         </div>
         <div className="save-share">
-            <button className="item-btn" id="delete-btn" onClick={handleSave} disabled ={!sorted && !typed}>Save and Clear</button>
+            <button className="item-btn" id="delete-btn" onClick={handleSave} disabled={!sorted && !typed}>Save and Clear</button>
         </div>
     </div>
     <br />
