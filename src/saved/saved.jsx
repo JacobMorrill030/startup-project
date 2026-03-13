@@ -194,7 +194,7 @@ export function Saved({ userName }) {
                       </table>
                     </div>
                   </div>
-                  <div className="past-rankings">User: {ranking.from || ranking.userName || 'Unknown'}</div>
+                  {/* <div className="past-rankings">User: {ranking.from || ranking.userName || 'Unknown'}</div> */}
                 </button>
                 {deleteButton === rankingKey && (<button
                   className="delete-saved"

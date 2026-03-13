@@ -176,22 +176,23 @@ export function Share() {
             )}
         </div>
         <div className="share-me">
+            <div></div>
             <h1>Shared with me</h1>
-            <div className="save-text">
+            {/* <div className="save-text">
                 <form onSubmit={toSaved}>
                     <button className="save" disabled={!selectedRanking}>Save</button>
                 </form>
                 <p>Select one you would like to save</p>
-            </div>
+            </div> */}
             <div className="scroll-me">
                 {SHARED_WITH_ME.map((ranking) => (
                   <div key={ranking.id}>
-                    <button
+                    {/* <button
                       className="table-button"
                       type="button"
                       onClick={() => setSelectedId(ranking.id)}
                       aria-pressed={selectedId === ranking.id}
-                    >
+                    > */}
                         <div className="share-container">
                             <div className="share-order">
                                 <ol>
@@ -216,7 +217,7 @@ export function Share() {
                                 </table>
                             </div>
                         </div>
-                    </button>
+                    {/* </button> */}
                                         User: {ranking.from || ranking.userName || 'Unknown'}
                   </div>
                 ))}

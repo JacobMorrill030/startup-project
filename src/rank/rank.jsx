@@ -11,6 +11,7 @@ import '../styles/app.css';
 
 const TASKS_STORAGE_KEY = 'rankTasks';
 const SAVED_RANKINGS_STORAGE_KEY = 'savedRankings';
+const RANDOM_WORDS_ENDPOINT = "https://random-word-api.herokuapp.com/word?number=10"
 
 const DEFAULT_TASKS = [
     {id: 0, title: '', location: 'bank'},
@@ -83,7 +84,7 @@ const providedRankings = {
     option2: fastFoodRestaurants,
     option3: typesOfChairs,
     option4: dinosaurs,
-    starWarsCharacters,
+    option5: starWarsCharacters,
 };
 
 const providedRankingTitles = {
@@ -107,6 +108,7 @@ export function Rank({ userName }) {
     const [selectedRanking, setSelectedRanking] = useState('');
     const [sorted, setSorted] = useState(false);
     const [typed, setTyped] = useState(false);
+    const [wordsLoading, setWordsLoading] = useState(false);
     // tasks represents the ordered (sortable) list
     // tasks now track where they live: "bank" or tier letters S,A,B,C,D
     const [tasks, setTasks] = React.useState(() => {
@@ -156,7 +158,7 @@ export function Rank({ userName }) {
         };
 
         const savedRaw = localStorage.getItem(SAVED_RANKINGS_STORAGE_KEY);
-        let savedRankings = [];
+        // let savedRankings = [];
 
         if (savedRaw) {
             try {
@@ -168,11 +170,6 @@ export function Rank({ userName }) {
                 savedRankings = [];
             }
         }
-
-        // localStorage.setItem(
-        //     SAVED_RANKINGS_STORAGE_KEY,
-        //     JSON.stringify([rankingToSave, ...savedRankings])
-        // );
 
         const response = await fetch('/api/post/rankings', {
             method: 'POST',
@@ -275,10 +272,31 @@ export function Rank({ userName }) {
         setTyped(true);
     }
 
-    function updateItem(index, value) {
-        const updatedItems = [...items];
-        updatedItems[index] = value;
-        setItems(updatedItems);
+    async function generateRandomWords(event) {
+        event.preventDefault();
+        setWordsLoading(true);
+        try {
+            const response = await fetch(RANDOM_WORDS_ENDPOINT);
+            if (!response.ok) {
+                throw new Error('Failed to load random words');
+            }
+            const words = await response.json();
+            const randomWordTasks = words.map((word, index) => ({
+                id: index,
+                title: word,
+                location: 'bank',
+            }));
+            setTasks(randomWordTasks);
+            setTitle('Random Words');
+            setSelectedRanking('randomWords');
+            setSorted(false);
+            setTyped(true);
+        } catch {
+            alert('Error loading random words');
+        } finally {
+            setWordsLoading(false);
+        }
+
     }
 
   return (
@@ -331,9 +349,20 @@ export function Rank({ userName }) {
                         <option value="option2">Fast Food Restaurants</option>
                         <option value="option3">Types of Chairs</option>
                         <option value="option4">Dinosaurs</option>
-                        <option value="starWarsCharacters">Star Wars Characters</option>
+                        <option value="option5">Star Wars Characters</option>
                     </select>
                 </div>
+                <form className="random-ranking-form">
+                    <h3>Rank random words</h3>
+                    <button
+                        className="item-btn"
+                        id="random-btn"
+                        onClick={generateRandomWords}
+                        disabled={wordsLoading}
+                    >
+                        {wordsLoading ? 'Loading Words...' : 'Generate Words'}
+                    </button>
+                </form>
             </div>
         </div>
         <div className="column2">
