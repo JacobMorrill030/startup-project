@@ -10,32 +10,32 @@ const authCookieName = 'token';
 const TIER_KEYS = ['S', 'A', 'B', 'C', 'D'];
 
 function normalizeText(value) {
-return String(value || '').trim().toLowerCase();
+  return String(value || '').trim().toLowerCase();
 }
 
 function normalizeItems(items) {
-if (!Array.isArray(items)) return [];
-return items
-.map((item) => normalizeText(item))
-.filter(Boolean);
+  if (!Array.isArray(items)) return [];
+  return items
+  .map((item) => normalizeText(item))
+  .filter(Boolean);
 }
 
 function normalizeTiers(tiers) {
-const safe = tiers && typeof tiers === 'object' ? tiers : {};
-return TIER_KEYS.reduce((acc, key) => {
-acc[key] = normalizeItems(safe[key]);
-return acc;
-}, {});
+  const safe = tiers && typeof tiers === 'object' ? tiers : {};
+  return TIER_KEYS.reduce((acc, key) => {
+  acc[key] = normalizeItems(safe[key]);
+  return acc;
+  }, {});
 }
 
 
 function buildRankingFingerprint(ranking = {}) {
-const normalized = {
-title: normalizeText(ranking.title || 'Untitled Ranking'),
-orderedItems: normalizeItems(ranking.orderedItems),
-tiers: normalizeTiers(ranking.tiers),
-};
-return JSON.stringify(normalized);
+  const normalized = {
+  title: normalizeText(ranking.title || 'Untitled Ranking'),
+  orderedItems: normalizeItems(ranking.orderedItems),
+  tiers: normalizeTiers(ranking.tiers),
+  };
+  return JSON.stringify(normalized);
 }
 
 function createRankingRecord(userName, ranking = {}) {
@@ -132,6 +132,7 @@ apiRouter.delete('/auth/logout', async (req, res) => {
   const user = await findUser('token', req.cookies[authCookieName]);
   if (user) {
     await DB.updateUserRemoveAuth(user);
+    // delete user.token;
   }
   res.clearCookie(authCookieName);
   res.status(204).end();
@@ -224,6 +225,8 @@ async function createUser(userName, password) {
 async function findUser(field, value) {
   if (!value) return null;
 
+  // return users.find(user => user[field] === value);
+
   if (field === 'token') {
     return DB.getUserByToken(value);
   }
@@ -234,8 +237,8 @@ async function findUser(field, value) {
 function setAuthCookie(res, authToken) {
   res.cookie(authCookieName, authToken, {
     maxAge: 1000 * 60 * 60 * 24 * 365,
-    // secure: process.env.NODE_ENV === 'production',
-    secure: true,
+    secure: process.env.NODE_ENV === 'production',
+    // secure: true,
     httpOnly: true,
     sameSite: 'strict',
   });
