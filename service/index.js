@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const express = require('express');
 const uuid = require('uuid');
 const app = express();
+const DB = require('./database.js');
 
 const authCookieName = 'token';
 
@@ -61,7 +62,7 @@ function createRankingRecord(userName, ranking = {}) {
 }
 
 // The users are saved in memory and disappear whenever the service is restarted.
-let users = [];
+// let users = [];
 let rankings = [];
 
 // The service port. In production the front-end code is statically hosted by the service on the same port.
@@ -77,7 +78,7 @@ app.use(cookieParser());
 app.use(express.static('public'));
 
 // Router for service endpoints
-var apiRouter = express.Router();
+const apiRouter = express.Router();
 app.use(`/api`, apiRouter);
 
 // CreateAuth a new user
@@ -94,87 +95,49 @@ apiRouter.post('/auth/create', async (req, res) => {
 
 // GetAuth login an existing user
 apiRouter.post('/auth/login', async (req, res) => {
-  try {
-    const {userName, password} = req.body;
-    if (!userName || !password) {
-      return res.status(400).json({ ok: false, msg: 'Missing userName or password' });
-    }
-    const user = await findUser('userName', req.body.userName);
-    if ( user && user.password && await bcrypt.compare(req.body.password, user.password)) {
+  // try {
+  //   const {userName, password} = req.body;
+  //   if (!userName || !password) {
+  //     return res.status(400).json({ ok: false, msg: 'Missing userName or password' });
+  //   }
+  //   const user = await findUser('userName', req.body.userName);
+  //   if ( user && user.password && await bcrypt.compare(req.body.password, user.password)) {
+  //     user.token = uuid.v4();
+  //     await DB.updateUser(user);
+  //     setAuthCookie(res, user.token);
+  //     return res.json({ userName: user.userName });
+  //   }
+  //   return res.status(401).json({ ok: false, msg: 'Invalid userName or password' });
+  
+  // } catch (err) {
+  //   console.log('login error', err);
+  //   return res.status(500).json({ ok: false, msg: 'Server error' });
+  // }
+  const user = await findUser('userName', req.body.userName);
+  if (user) {
+    if (await bcrypt.compare(req.body.password, user.password)) {
       user.token = uuid.v4();
+      await DB.updateUser(user);
       setAuthCookie(res, user.token);
-      return res.json({ userName: user.userName });
+      res.send({ userName: user.userName });
       return;
     }
-    return res.status(401).json({ ok: false, msg: 'Invalid userName or password' });
-  
-  } catch (err) {
-    console.log('login error', err);
-    return res.status(500).json({ ok: false, msg: 'Server error' });
   }
+  res.status(401).send({ msg: 'Unauthorized' });
+
 });
 
 // DeleteAuth logout a user
 apiRouter.delete('/auth/logout', async (req, res) => {
   const user = await findUser('token', req.cookies[authCookieName]);
   if (user) {
-    delete user.token;
+    await DB.updateUserRemoveAuth(user);
   }
   res.clearCookie(authCookieName);
   res.status(204).end();
 });
 
-// Middleware to verify that the user is authorized to call an endpoint
-const verifyAuth = async (req, res, next) => {
-  const user = await findUser('token', req.cookies[authCookieName]);
-  if (user) {
-    next();
-  } else {
-    res.status(401).send({ msg: 'Unauthorized' });
-  }
-};
-
-// Default error handler
-app.use(function (err, req, res, next) {
-  res.status(500).send({ type: err.name, message: err.message });
-});
-
-// Return the application's default page if the path is unknown
-app.use((_req, res) => {
-  res.sendFile('index.html', { root: 'public' });
-});
-
-
-async function createUser(userName, password) {
-  const passwordHash = await bcrypt.hash(password, 10);
-
-  const user = {
-    userName: userName,
-    password: passwordHash,
-    token: uuid.v4(),
-  };
-  users.push(user);
-
-  return user;
-}
-
-async function findUser(field, value) {
-  if (!value) return null;
-
-  return users.find((u) => u[field] === value);
-}
-
-// setAuthCookie in the HTTP response
-function setAuthCookie(res, authToken) {
-  res.cookie(authCookieName, authToken, {
-    maxAge: 1000 * 60 * 60 * 24 * 365,
-    secure: process.env.NODE_ENV === 'production',
-    httpOnly: true,
-    sameSite: 'strict',
-  });
-}
-
-// retieve the rankings for the authenticated user, sorted by saved date with the most recent first
+// retrieve the rankings for the authenticated user, sorted by saved date with the most recent first
 apiRouter.get('/get/rankings', verifyAuth, async (req, res) => {
   const user = await findUser('token', req.cookies[authCookieName]);
   req.cookies[authCookieName];
@@ -225,6 +188,59 @@ apiRouter.delete('/rankings/:id', verifyAuth, async (req, res) => {
   res.status(204).end();
 });
 
-app.listen(port, () => {
+// Middleware to verify that the user is authorized to call an endpoint
+async function verifyAuth(req, res, next) {
+  const user = await findUser('token', req.cookies[authCookieName]);
+  if (user) {
+    next();
+  } else {
+    res.status(401).send({ msg: 'Unauthorized' });
+  }
+}
+
+// Default error handler
+app.use(function (err, req, res, next) {
+  res.status(500).send({ type: err.name, message: err.message });
+});
+
+// Return the application's default page if the path is unknown
+app.use((_req, res) => {
+  res.sendFile('index.html', { root: 'public' });
+});
+
+async function createUser(userName, password) {
+  const passwordHash = await bcrypt.hash(password, 10);
+
+  const user = {
+    userName: userName,
+    password: passwordHash,
+    token: uuid.v4(),
+  };
+  await DB.addUser(user);
+
+  return user;
+}
+
+async function findUser(field, value) {
+  if (!value) return null;
+
+  if (field === 'token') {
+    return DB.getUserByToken(value);
+  }
+  return DB.getUser(value);
+}
+
+// setAuthCookie in the HTTP response
+function setAuthCookie(res, authToken) {
+  res.cookie(authCookieName, authToken, {
+    maxAge: 1000 * 60 * 60 * 24 * 365,
+    // secure: process.env.NODE_ENV === 'production',
+    secure: true,
+    httpOnly: true,
+    sameSite: 'strict',
+  });
+}
+
+const httpService = app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });
