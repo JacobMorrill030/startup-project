@@ -121,3 +121,14 @@ For this deliverable I did the following:
   - Deleted save button on the share page: It was getting complicated to figure out, so I decided to remove it.
   - Added generate random button that renders 10 random words when pressed.
 
+## Database Deliverable
+
+- Completed prerequesites.
+- Stores data in MongoDB: Stores users and saved rankings. Removes rankings from MongoDM when the user deletes a ranking.
+- Use MongoDB to store credentials: Stores usernames and encrypted passwords.
+
+  ### Things added from last time
+  - Saved rankings no longer convert all items in the tier lists to lower case, they stay as the user inputted.
+
+  
+
