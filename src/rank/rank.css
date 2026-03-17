@@ -57,6 +57,14 @@ body {
     margin-right: 50px;
     cursor: pointer;
 }
+.ranked-list li {
+    display: list-item;
+    margin-top: 5px;
+}
+.ranked-item-content {
+    display: flex;
+    flex-direction: row;
+}
 #bank-item {
     text-align: center;
 }
@@ -84,7 +92,6 @@ input[type="text"]:hover {
 .input-container {
     display: flex;
     align-items: center;
-    /* gap: 8px; */
 }
 .color-square {
     width: 35px;

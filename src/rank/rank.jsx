@@ -11,7 +11,7 @@ import '../styles/app.css';
 
 const TASKS_STORAGE_KEY = 'rankTasks';
 const SAVED_RANKINGS_STORAGE_KEY = 'savedRankings';
-const RANDOM_WORDS_ENDPOINT = "https://random-word-api.herokuapp.com/word?number=10"
+const RANDOM_WORDS_ENDPOINT = "https://random-word-api.herokuapp.com/word?number=10";
 
 const DEFAULT_TASKS = [
     {id: 0, title: '', location: 'bank'},
@@ -158,7 +158,6 @@ export function Rank({ userName }) {
         };
 
         const savedRaw = localStorage.getItem(SAVED_RANKINGS_STORAGE_KEY);
-        let savedRankings = [];
 
         if (savedRaw) {
             try {
