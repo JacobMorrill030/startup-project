@@ -108,7 +108,7 @@ For this deliverable I did the following:
 
 ## Service Deliverable
 
-- Completed Prerequesites
+- Completed Prerequesites.
 - Created a Node.js server and express HTTP service.
 - Implemented static middleware for the frontend.
 - Call to a third party endpoint: Calls a service that randomly generates 10 words every time, and then uploads them for the user to rank.
@@ -117,9 +117,9 @@ For this deliverable I did the following:
 - Supports registration, login, logout, and restricted endpoint: All of this done on the backend.
 - Uses BCrypt to hash passwords.
 
-  ### Things added from last time
-  - Deleted save button on the share page: It was getting complicated to figure out, so I decided to remove it.
-  - Added generate random button that renders 10 random words when pressed.
+### Things added from last time
+- Deleted save button on the share page: It was getting complicated to figure out, so I decided to remove it.
+- Added generate random button that renders 10 random words when pressed.
 
 ## Database Deliverable
 
@@ -127,8 +127,8 @@ For this deliverable I did the following:
 - Stores data in MongoDB: Stores users and saved rankings. Removes rankings from MongoDM when the user deletes a ranking.
 - Use MongoDB to store credentials: Stores usernames and encrypted passwords.
 
-  ### Things added from last time
-  - Saved rankings no longer convert all items in the tier lists to lower case, they stay as the user inputted.
+### Things added from last time
+- Saved rankings no longer convert all items in the tier lists to lower case, they stay as the user inputted.
 
   
 
