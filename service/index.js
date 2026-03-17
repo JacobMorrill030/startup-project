@@ -129,26 +129,7 @@ apiRouter.get('/get/rankings', verifyAuth, async (req, res) => {
 apiRouter.post('/post/rankings', verifyAuth, async (req, res) => {
   const user = await findUser('token', req.cookies[authCookieName]);
   const rankingToSave = createRankingRecord(user.userName, req.body);
-
-  // const existingIndex = rankings.findIndex(
-  //   (ranking) =>
-  //     ranking.userName === user.userName &&
-  //     ranking.fingerprint === rankingToSave.fingerprint
-  // );
-
-  // if (existingIndex !== -1) {
-  //   const existing = rankings[existingIndex];
-  //   const updated = {
-  //     ...existing,
-  //     ...rankingToSave,
-  //     id: existing.id,
-  //     savedId: existing.savedId,
-  //     savedAt: existing.savedAt,
-  //   };
-  //   rankings.splice(existingIndex, 1);
-  //   rankings.unshift(updated);
-  //   return res.status(200).json(updated);
-  // }
+  
   await DB.addRanking(rankingToSave);
   return res.status(201).json(rankingToSave);
 });
