@@ -3,38 +3,39 @@ const bcrypt = require('bcryptjs');
 const express = require('express');
 const uuid = require('uuid');
 const app = express();
+const DB = require('./database.js');
 
 const authCookieName = 'token';
 
 const TIER_KEYS = ['S', 'A', 'B', 'C', 'D'];
 
 function normalizeText(value) {
-return String(value || '').trim().toLowerCase();
+  return String(value || '').trim();
 }
 
 function normalizeItems(items) {
-if (!Array.isArray(items)) return [];
-return items
-.map((item) => normalizeText(item))
-.filter(Boolean);
+  if (!Array.isArray(items)) return [];
+  return items
+  .map((item) => normalizeText(item))
+  .filter(Boolean);
 }
 
 function normalizeTiers(tiers) {
-const safe = tiers && typeof tiers === 'object' ? tiers : {};
-return TIER_KEYS.reduce((acc, key) => {
-acc[key] = normalizeItems(safe[key]);
-return acc;
-}, {});
+  const safe = tiers && typeof tiers === 'object' ? tiers : {};
+  return TIER_KEYS.reduce((acc, key) => {
+  acc[key] = normalizeItems(safe[key]);
+  return acc;
+  }, {});
 }
 
 
 function buildRankingFingerprint(ranking = {}) {
-const normalized = {
-title: normalizeText(ranking.title || 'Untitled Ranking'),
-orderedItems: normalizeItems(ranking.orderedItems),
-tiers: normalizeTiers(ranking.tiers),
-};
-return JSON.stringify(normalized);
+  const normalized = {
+  title: normalizeText(ranking.title || 'Untitled Ranking'),
+  orderedItems: normalizeItems(ranking.orderedItems),
+  tiers: normalizeTiers(ranking.tiers),
+  };
+  return JSON.stringify(normalized);
 }
 
 function createRankingRecord(userName, ranking = {}) {
@@ -61,8 +62,6 @@ function createRankingRecord(userName, ranking = {}) {
 }
 
 // The users are saved in memory and disappear whenever the service is restarted.
-let users = [];
-let rankings = [];
 
 // The service port. In production the front-end code is statically hosted by the service on the same port.
 const port = process.argv.length > 2 ? process.argv[2] : 3000;
@@ -77,7 +76,7 @@ app.use(cookieParser());
 app.use(express.static('public'));
 
 // Router for service endpoints
-var apiRouter = express.Router();
+const apiRouter = express.Router();
 app.use(`/api`, apiRouter);
 
 // CreateAuth a new user
@@ -94,45 +93,67 @@ apiRouter.post('/auth/create', async (req, res) => {
 
 // GetAuth login an existing user
 apiRouter.post('/auth/login', async (req, res) => {
-  try {
-    const {userName, password} = req.body;
-    if (!userName || !password) {
-      return res.status(400).json({ ok: false, msg: 'Missing userName or password' });
-    }
-    const user = await findUser('userName', req.body.userName);
-    if ( user && user.password && await bcrypt.compare(req.body.password, user.password)) {
+  const user = await findUser('userName', req.body.userName);
+  if (user) {
+    if (await bcrypt.compare(req.body.password, user.password)) {
       user.token = uuid.v4();
+      await DB.updateUser(user);
       setAuthCookie(res, user.token);
-      return res.json({ userName: user.userName });
+      res.send({ userName: user.userName });
       return;
     }
-    return res.status(401).json({ ok: false, msg: 'Invalid userName or password' });
-  
-  } catch (err) {
-    console.log('login error', err);
-    return res.status(500).json({ ok: false, msg: 'Server error' });
   }
+  res.status(401).send({ msg: 'Unauthorized' });
+
 });
 
 // DeleteAuth logout a user
 apiRouter.delete('/auth/logout', async (req, res) => {
   const user = await findUser('token', req.cookies[authCookieName]);
   if (user) {
-    delete user.token;
+    await DB.updateUserRemoveAuth(user);
   }
   res.clearCookie(authCookieName);
   res.status(204).end();
 });
 
+// retrieve the rankings for the authenticated user, sorted by saved date with the most recent first
+apiRouter.get('/get/rankings', verifyAuth, async (req, res) => {
+  const user = await findUser('token', req.cookies[authCookieName]);
+  const rankings = await DB.getRankings(user.userName);
+  res.json(rankings);
+});
+
+// post the ranking for the authenticated user, create a 
+// new ranking if the user doesn't have one with the same title
+apiRouter.post('/post/rankings', verifyAuth, async (req, res) => {
+  const user = await findUser('token', req.cookies[authCookieName]);
+  const rankingToSave = createRankingRecord(user.userName, req.body);
+  
+  await DB.addRanking(rankingToSave);
+  return res.status(201).json(rankingToSave);
+});
+
+// deletes rankings with the specified id for the authenticated user
+apiRouter.delete('/rankings/:id', verifyAuth, async (req, res) => {
+  const user = await findUser('token', 
+    req.cookies[authCookieName]);
+  const deletedCount = await DB.deleteRanking(user.userName, req.params.id);
+  if (!deletedCount) {
+    return res.status(404).json({ ok: false, msg: 'Ranking not found' });
+  }
+  res.status(204).end();
+});
+
 // Middleware to verify that the user is authorized to call an endpoint
-const verifyAuth = async (req, res, next) => {
+async function verifyAuth(req, res, next) {
   const user = await findUser('token', req.cookies[authCookieName]);
   if (user) {
     next();
   } else {
     res.status(401).send({ msg: 'Unauthorized' });
   }
-};
+}
 
 // Default error handler
 app.use(function (err, req, res, next) {
@@ -144,7 +165,6 @@ app.use((_req, res) => {
   res.sendFile('index.html', { root: 'public' });
 });
 
-
 async function createUser(userName, password) {
   const passwordHash = await bcrypt.hash(password, 10);
 
@@ -153,7 +173,7 @@ async function createUser(userName, password) {
     password: passwordHash,
     token: uuid.v4(),
   };
-  users.push(user);
+  await DB.addUser(user);
 
   return user;
 }
@@ -161,7 +181,12 @@ async function createUser(userName, password) {
 async function findUser(field, value) {
   if (!value) return null;
 
-  return users.find((u) => u[field] === value);
+  // return users.find(user => user[field] === value);
+
+  if (field === 'token') {
+    return DB.getUserByToken(value);
+  }
+  return DB.getUser(value);
 }
 
 // setAuthCookie in the HTTP response
@@ -169,62 +194,12 @@ function setAuthCookie(res, authToken) {
   res.cookie(authCookieName, authToken, {
     maxAge: 1000 * 60 * 60 * 24 * 365,
     secure: process.env.NODE_ENV === 'production',
+    // secure: true,
     httpOnly: true,
     sameSite: 'strict',
   });
 }
 
-// retieve the rankings for the authenticated user, sorted by saved date with the most recent first
-apiRouter.get('/get/rankings', verifyAuth, async (req, res) => {
-  const user = await findUser('token', req.cookies[authCookieName]);
-  req.cookies[authCookieName];
-  const userRankings = rankings.filter(r => r.userName === user.userName)
-  .sort((a, b) => new Date(b.savedAt) - new Date(a.savedAt));
-  res.json(userRankings);
-});
-
-// post the ranking for the authenticated user, create a 
-// new ranking if the user doesn't have one with the same title
-apiRouter.post('/post/rankings', verifyAuth, async (req, res) => {
-  const user = await findUser('token', req.cookies[authCookieName]);
-  const rankingToSave = createRankingRecord(user.userName, req.body);
-
-  const existingIndex = rankings.findIndex(
-    (ranking) =>
-      ranking.userName === user.userName &&
-      ranking.fingerprint === rankingToSave.fingerprint
-  );
-
-  if (existingIndex !== -1) {
-    const existing = rankings[existingIndex];
-    const updated = {
-      ...existing,
-      ...rankingToSave,
-      id: existing.id,
-      savedId: existing.savedId,
-      savedAt: existing.savedAt,
-    };
-    rankings.splice(existingIndex, 1);
-    rankings.unshift(updated);
-    return res.status(200).json(updated);
-  }
-
-  rankings.unshift(rankingToSave);
-  return res.status(201).json(rankingToSave);
-});
-
-// deletes rankings with the specified id for the authentcated user
-apiRouter.delete('/rankings/:id', verifyAuth, async (req, res) => {
-  const user = await findUser('token', req.cookies[authCookieName]);
-  const before = rankings.length;
-  rankings = rankings.filter(r => !(r.id === req.params.id && r.userName === user.userName));
-
-  if (rankings.length === before) {
-    return res.status(404).json({ ok: false, msg: 'Ranking not found' });
-  }
-  res.status(204).end();
-});
-
-app.listen(port, () => {
+const httpService = app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });

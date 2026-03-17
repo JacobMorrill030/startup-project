@@ -1,0 +1,70 @@
+const { MongoClient } = require('mongodb');
+const config = require('./dbConfig.json');
+
+const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostname}`;
+const databaseName = 'rankMe';
+const client = new MongoClient(url);
+const db = client.db(databaseName);
+const userCollection = db.collection('users');
+const rankingCollection = db.collection('rankings');
+
+
+// This will asynchronously test the connection and exit the process if it fails
+(async function testConnection() {
+  try {
+    await client.connect();
+    await db.command({ ping: 1 });
+    console.log(`Connected to MongoDB cluster; using database ${databaseName}`);
+  } catch (ex) {
+    console.log(`Unable to connect to database with ${url} because ${ex.message}`);
+    client.close(); 
+    process.exit(1);
+  }
+})();
+
+function getUser(userName) {
+  return userCollection.findOne({ userName: userName });
+}
+
+function getUserByToken(token) {
+  return userCollection.findOne({ token: token });
+}
+
+async function addUser(user) {
+  await userCollection.insertOne(user);
+}
+
+async function updateUser(user) {
+  await userCollection.updateOne({ userName: user.userName }, { $set: user });
+}
+
+async function updateUserRemoveAuth(user) {
+  await userCollection.updateOne({ userName: user.userName }, { $unset: { token: 1 } });
+}
+
+async function getRankings(userName) {
+  return rankingCollection.find({ userName: userName }).toArray();
+}
+
+async function addRanking(ranking) {
+  await rankingCollection.insertOne(ranking);
+}
+
+async function deleteRanking(userName, rankingId) {
+  const result = await rankingCollection.deleteOne({ 
+    userName,
+    $or: [{ savedId: rankingId }, { id: rankingId }],
+  });
+  return result.deletedCount;
+}
+
+module.exports = {
+  getUser,
+  getUserByToken,
+  addUser,
+  updateUser,
+  updateUserRemoveAuth,
+  getRankings,
+  addRanking,
+  deleteRanking,
+};

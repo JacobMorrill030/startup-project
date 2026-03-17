@@ -84,7 +84,7 @@ export function Login({ userName, authState, onAuthChange}) {
                 <input
                   type="login"
                   placeholder="username"
-                  size="25"
+                  size="35"
                   value={name}
                   onChange={e => {
                     setName(e.target.value);
@@ -93,12 +93,10 @@ export function Login({ userName, authState, onAuthChange}) {
                     }
                   }}
                 />
-            </div>
-            <div className="login-container">
                 <input
                   type="password"
                   placeholder="password"
-                  size="25"
+                  size="35"
                   value={password}
                   onChange={e => {
                     setPassword(e.target.value);
