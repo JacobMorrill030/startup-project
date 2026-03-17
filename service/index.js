@@ -10,7 +10,7 @@ const authCookieName = 'token';
 const TIER_KEYS = ['S', 'A', 'B', 'C', 'D'];
 
 function normalizeText(value) {
-  return String(value || '').trim().toLowerCase();
+  return String(value || '').trim();
 }
 
 function normalizeItems(items) {
@@ -62,8 +62,6 @@ function createRankingRecord(userName, ranking = {}) {
 }
 
 // The users are saved in memory and disappear whenever the service is restarted.
-// let users = [];
-let rankings = [];
 
 // The service port. In production the front-end code is statically hosted by the service on the same port.
 const port = process.argv.length > 2 ? process.argv[2] : 3000;
@@ -95,24 +93,6 @@ apiRouter.post('/auth/create', async (req, res) => {
 
 // GetAuth login an existing user
 apiRouter.post('/auth/login', async (req, res) => {
-  // try {
-  //   const {userName, password} = req.body;
-  //   if (!userName || !password) {
-  //     return res.status(400).json({ ok: false, msg: 'Missing userName or password' });
-  //   }
-  //   const user = await findUser('userName', req.body.userName);
-  //   if ( user && user.password && await bcrypt.compare(req.body.password, user.password)) {
-  //     user.token = uuid.v4();
-  //     await DB.updateUser(user);
-  //     setAuthCookie(res, user.token);
-  //     return res.json({ userName: user.userName });
-  //   }
-  //   return res.status(401).json({ ok: false, msg: 'Invalid userName or password' });
-  
-  // } catch (err) {
-  //   console.log('login error', err);
-  //   return res.status(500).json({ ok: false, msg: 'Server error' });
-  // }
   const user = await findUser('userName', req.body.userName);
   if (user) {
     if (await bcrypt.compare(req.body.password, user.password)) {
@@ -132,7 +112,6 @@ apiRouter.delete('/auth/logout', async (req, res) => {
   const user = await findUser('token', req.cookies[authCookieName]);
   if (user) {
     await DB.updateUserRemoveAuth(user);
-    // delete user.token;
   }
   res.clearCookie(authCookieName);
   res.status(204).end();
@@ -141,10 +120,8 @@ apiRouter.delete('/auth/logout', async (req, res) => {
 // retrieve the rankings for the authenticated user, sorted by saved date with the most recent first
 apiRouter.get('/get/rankings', verifyAuth, async (req, res) => {
   const user = await findUser('token', req.cookies[authCookieName]);
-  req.cookies[authCookieName];
-  const userRankings = rankings.filter(r => r.userName === user.userName)
-  .sort((a, b) => new Date(b.savedAt) - new Date(a.savedAt));
-  res.json(userRankings);
+  const rankings = await DB.getRankings(user.userName);
+  res.json(rankings);
 });
 
 // post the ranking for the authenticated user, create a 
@@ -153,37 +130,35 @@ apiRouter.post('/post/rankings', verifyAuth, async (req, res) => {
   const user = await findUser('token', req.cookies[authCookieName]);
   const rankingToSave = createRankingRecord(user.userName, req.body);
 
-  const existingIndex = rankings.findIndex(
-    (ranking) =>
-      ranking.userName === user.userName &&
-      ranking.fingerprint === rankingToSave.fingerprint
-  );
+  // const existingIndex = rankings.findIndex(
+  //   (ranking) =>
+  //     ranking.userName === user.userName &&
+  //     ranking.fingerprint === rankingToSave.fingerprint
+  // );
 
-  if (existingIndex !== -1) {
-    const existing = rankings[existingIndex];
-    const updated = {
-      ...existing,
-      ...rankingToSave,
-      id: existing.id,
-      savedId: existing.savedId,
-      savedAt: existing.savedAt,
-    };
-    rankings.splice(existingIndex, 1);
-    rankings.unshift(updated);
-    return res.status(200).json(updated);
-  }
-
-  rankings.unshift(rankingToSave);
+  // if (existingIndex !== -1) {
+  //   const existing = rankings[existingIndex];
+  //   const updated = {
+  //     ...existing,
+  //     ...rankingToSave,
+  //     id: existing.id,
+  //     savedId: existing.savedId,
+  //     savedAt: existing.savedAt,
+  //   };
+  //   rankings.splice(existingIndex, 1);
+  //   rankings.unshift(updated);
+  //   return res.status(200).json(updated);
+  // }
+  await DB.addRanking(rankingToSave);
   return res.status(201).json(rankingToSave);
 });
 
-// deletes rankings with the specified id for the authentcated user
+// deletes rankings with the specified id for the authenticated user
 apiRouter.delete('/rankings/:id', verifyAuth, async (req, res) => {
-  const user = await findUser('token', req.cookies[authCookieName]);
-  const before = rankings.length;
-  rankings = rankings.filter(r => !(r.id === req.params.id && r.userName === user.userName));
-
-  if (rankings.length === before) {
+  const user = await findUser('token', 
+    req.cookies[authCookieName]);
+  const deletedCount = await DB.deleteRanking(user.userName, req.params.id);
+  if (!deletedCount) {
     return res.status(404).json({ ok: false, msg: 'Ranking not found' });
   }
   res.status(204).end();

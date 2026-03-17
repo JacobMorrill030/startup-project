@@ -6,6 +6,7 @@ const databaseName = 'rankMe';
 const client = new MongoClient(url);
 const db = client.db(databaseName);
 const userCollection = db.collection('users');
+const rankingCollection = db.collection('rankings');
 
 
 // This will asynchronously test the connection and exit the process if it fails
@@ -41,10 +42,29 @@ async function updateUserRemoveAuth(user) {
   await userCollection.updateOne({ userName: user.userName }, { $unset: { token: 1 } });
 }
 
+async function getRankings(userName) {
+  return rankingCollection.find({ userName: userName }).toArray();
+}
+
+async function addRanking(ranking) {
+  await rankingCollection.insertOne(ranking);
+}
+
+async function deleteRanking(userName, rankingId) {
+  const result = await rankingCollection.deleteOne({ 
+    userName,
+    $or: [{ savedId: rankingId }, { id: rankingId }],
+  });
+  return result.deletedCount;
+}
+
 module.exports = {
   getUser,
   getUserByToken,
   addUser,
   updateUser,
   updateUserRemoveAuth,
+  getRankings,
+  addRanking,
+  deleteRanking,
 };
