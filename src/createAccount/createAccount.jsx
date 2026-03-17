@@ -83,7 +83,7 @@ export function CreateAccount({ userName, authState, onAuthChange }) {
               <input
                 type="login"
                 placeholder="username"
-                size="25"
+                size="35"
                 value={name}
                 onChange={e => {
                   setName(e.target.value);
@@ -97,7 +97,7 @@ export function CreateAccount({ userName, authState, onAuthChange }) {
               <input
                 type="password"
                 placeholder="password"
-                size="25"
+                size="35"
                 value={password}
                 onChange={e => {
                   setPassword(e.target.value);
@@ -111,7 +111,7 @@ export function CreateAccount({ userName, authState, onAuthChange }) {
               <input
                 type="password"
                 placeholder="confirm password"
-                size="25"
+                size="35"
                 value={confirm}
                 onChange={e => {
                   setConfirm(e.target.value);
