@@ -43,22 +43,20 @@ export const Task = ({id, title, onChange, onDelete, onTypedChange}) => {
             className="ranked-item" 
             >
             <div className="ranked-item-content">
-                {/* <div className="input-container"> */}
-                    <div className="color-square"></div>
-                    <input
-                        onFocus={() => setShowButton(true)} 
-                        onBlur={() => setShowButton(false)} 
-                        type="text"
-                        placeholder="item"
-                        value={value}
-                        onChange={handleInput}
-                        onPointerDown={e => {
-                            e.stopPropagation();
-                        }}
-                        onKeyDown={e => e.stopPropagation()}  /* allow space/arrow keys */
-                        onKeyUp={e => e.stopPropagation()}
-                    />
-                {/* </div> */}
+                <div className="color-square"></div>
+                <input
+                    onFocus={() => setShowButton(true)} 
+                    onBlur={() => setShowButton(false)} 
+                    type="text"
+                    placeholder="item"
+                    value={value}
+                    onChange={handleInput}
+                    onPointerDown={e => {
+                        e.stopPropagation();
+                    }}
+                    onKeyDown={e => e.stopPropagation()}  /* allow space/arrow keys */
+                    onKeyUp={e => e.stopPropagation()}
+                />
                 {showButton && ( <button className="item-btn" id="delete-btn" onMouseDown={e => { e.preventDefault(); e.stopPropagation(); }} onPointerDown={e => e.stopPropagation()} onTouchStart={e => e.stopPropagation()} onClick={handleDelete}>
                     Delete Item
                 </button> )}

@@ -126,6 +126,16 @@ export function Rank({ userName }) {
         }
     });
 
+    async function handleClear() {
+        localStorage.removeItem(TASKS_STORAGE_KEY);
+        localStorage.removeItem('title');
+        setTasks(DEFAULT_TASKS.map(item => ({ ...item })));
+        setTitle('');
+        setSelectedRanking('');
+        setSorted(false);
+        setTyped(false);
+    }
+
     async function handleSave() {
         const tiers = { S: [], A: [], B: [], C: [], D: [] };
 
@@ -328,6 +338,9 @@ export function Rank({ userName }) {
         </div>
         <div className="save-share">
             <button className="item-btn" id="delete-btn" onClick={handleSave} disabled={!sorted && !typed}>Save and Clear</button>
+        </div>
+        <div>
+            <button className="item-btn" id="clear-btn" onClick={handleClear}>Clear</button>
         </div>
     </div>
     <br />

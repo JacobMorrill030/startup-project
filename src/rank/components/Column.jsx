@@ -22,7 +22,7 @@ export const Column = ({tasks, onUpdateTask, onDeleteTask, onTypedChange}) => {
                             );
                         })}
                     </SortableContext>
-            </ol>
+                </ol>
             </div>
         </div>
     );
