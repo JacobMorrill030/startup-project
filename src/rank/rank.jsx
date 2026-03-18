@@ -168,6 +168,7 @@ export function Rank({ userName }) {
         };
 
         const savedRaw = localStorage.getItem(SAVED_RANKINGS_STORAGE_KEY);
+         let savedRankings = [];
 
         if (savedRaw) {
             try {

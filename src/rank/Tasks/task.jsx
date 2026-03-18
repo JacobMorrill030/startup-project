@@ -57,10 +57,16 @@ export const Task = ({id, title, onChange, onDelete, onTypedChange}) => {
                     onKeyDown={e => e.stopPropagation()}  /* allow space/arrow keys */
                     onKeyUp={e => e.stopPropagation()}
                 />
-                {showButton && ( <button className="item-btn" id="delete-btn" onMouseDown={e => { e.preventDefault(); e.stopPropagation(); }} onPointerDown={e => e.stopPropagation()} onTouchStart={e => e.stopPropagation()} onClick={handleDelete}>
-                    Delete Item
-                </button> )}
             </div>
+            {showButton && ( <button 
+                className="item-btn" 
+                id="delete-btn" 
+                onMouseDown={e => { e.preventDefault(); e.stopPropagation(); }} 
+                onPointerDown={e => e.stopPropagation()} 
+                onTouchStart={e => e.stopPropagation()} 
+                onClick={handleDelete}>
+                Delete Item
+            </button> )}
         </li>
     );
 }
