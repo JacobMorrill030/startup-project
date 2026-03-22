@@ -117,8 +117,20 @@ ol li {
     display: flex;
     justify-content: center;
 }
+.drag-preview {
+    opacity: 1;
+    transform: scale(1);
+    filter: none;
+}
+.drag-preview .bank-input {
+    box-shadow: 3px 22px 22px 1px rgba(24, 16, 16, 0.24);
+}
+.drag-placeholder {
+    opacity: 0.45;
+}
 .bank-item {
     width: 250px;
+    list-style: none;
 }
 .bank-item .input-container {
     width: 80%;

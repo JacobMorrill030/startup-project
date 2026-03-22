@@ -8,7 +8,7 @@ export const Column = ({tasks, onUpdateTask, onDeleteTask, onTypedChange}) => {
         <div className="column">
             <div className="list-container">
                 <ol className="ranked-list">
-                    <SortableContext items={tasks} strategy={verticalListSortingStrategy}>
+                    <SortableContext items={tasks.map(task => task.id)} strategy={verticalListSortingStrategy}>
                         {tasks.map((task) => {
                             return (
                                 <Task
