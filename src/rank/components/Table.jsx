@@ -29,14 +29,19 @@ export const Table = ({tasks, onUpdateTask}) => {
                             <td className={`${tier.toLowerCase()}-tier`}>{tier}</td>
                             <Cell id={tier}>
                                 <div className="tier-cell-items order-normal">
-                                    {tasks.filter(t => t.location === tier).map(t => (
-                                        <Bank
-                                            key={t.id}
-                                            id={t.id}
-                                            title={t.title}
-                                            onChange={onUpdateTask}
-                                        />
-                                    ))}
+                                    <SortableContext
+                                        items={tasks.filter(t => t.location === tier).map(t => t.id)}
+                                        strategy={verticalListSortingStrategy}
+                                    >
+                                        {tasks.filter(t => t.location === tier).map(t => (
+                                            <Bank
+                                                key={t.id}
+                                                id={t.id}
+                                                title={t.title}
+                                                onChange={onUpdateTask}
+                                            />
+                                        ))}
+                                    </SortableContext>
                                 </div>
                             </Cell>
                         </tr>
@@ -47,14 +52,19 @@ export const Table = ({tasks, onUpdateTask}) => {
             <fieldset ref={setBankNodeRef} className={isBankOver ? 'item-bank over' : 'item-bank'}>
                 <div>
                     <ul className="bank-list">
-                        {tasks.filter(t => t.location === 'bank').map(task => (
-                            <Bank
-                                key={task.id}
-                                id={task.id}
-                                title={task.title}
-                                onChange={onUpdateTask}
-                            />
-                        ))}
+                        <SortableContext
+                            items={tasks.filter(t => t.location === 'bank').map(task => task.id)}
+                            strategy={verticalListSortingStrategy}
+                        >
+                            {tasks.filter(t => t.location === 'bank').map(task => (
+                                <Bank
+                                    key={task.id}
+                                    id={task.id}
+                                    title={task.title}
+                                    onChange={onUpdateTask}
+                                />
+                            ))}
+                        </SortableContext>
                     </ul>
                 </div>
             </fieldset>

@@ -25,6 +25,7 @@ export function Saved({ userName }) {
   const [pendingDeleteKey, setPendingDeleteKey] = React.useState(null);
   const [deleteButton, setDeleteButton] = React.useState(null);
   const [selectedRanking, setSelectedRanking] = React.useState(null); 
+  const [border, setBorder] = React.useState(false);
 
   React.useEffect(() => {
     const refreshSavedRankings = () => setSavedRankings(parseSavedRankings());
@@ -166,9 +167,15 @@ export function Saved({ userName }) {
                   onClick={() => {
                     setDeleteButton(rankingKey);
                     setSelectedRanking(ranking);
+                    if (border === false) {
+                      setBorder(true);
+                    }
+                    if (border === true) {
+                      setBorder(false);
+                      setDeleteButton(null);
+                    }
                   }} 
-                  onBlur={() => setDeleteButton(null)}
-                  style={{ border: selectedRanking === ranking ? '3px solid white' : 'none' }}
+                  style={{ border: selectedRanking === ranking && border ? '3px solid white' : 'none' }}
                 >
                   <div className="col1-container">
                     <div>

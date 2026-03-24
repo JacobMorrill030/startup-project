@@ -51,10 +51,6 @@ main {
     padding: 10px 15px;
     border: 1px solid #333;
 }
-.search-button:focus {
-    background-color: rgba(109, 108, 108, 0.402);
-    outline: none;
-}
 .scroll-user {
     overflow-y: auto;
     overflow-x: hidden;

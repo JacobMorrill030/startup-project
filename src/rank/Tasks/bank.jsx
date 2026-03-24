@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {useDraggable} from '@dnd-kit/core';
+import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
 import '../rank.css';
 
 export const Bank = ({id, title, onChange}) => {
-    const {attributes, listeners, setNodeRef, 
-        transform, transition} = useDraggable({id});
+    const {attributes, listeners, setNodeRef,
+        transform, transition, isDragging} = useSortable({id});
 
     const [value, setValue] = useState(title);
 
@@ -16,7 +16,7 @@ export const Bank = ({id, title, onChange}) => {
 
     const style = {
         transition,
-        transform: CSS.Translate.toString(transform),
+        transform: CSS.Transform.toString(transform),
     };
 
     return (
@@ -25,7 +25,7 @@ export const Bank = ({id, title, onChange}) => {
             {...attributes} 
             {...listeners}
             style={style}
-            className="bank-container" 
+            className={`bank-container ${isDragging ? 'drag-placeholder' : ''}`}
             >
             <li id="bank-item" className="bank-item">
                 <div className="input-container">

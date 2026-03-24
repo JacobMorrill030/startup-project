@@ -35,34 +35,38 @@ export const Task = ({id, title, onChange, onDelete, onTypedChange}) => {
     };
 
     return (
-        <div 
+        <li 
             ref={setNodeRef} 
             {...attributes} 
             {...listeners}
             style={style}
-            className="bank-container" 
+            className="ranked-item" 
             >
-            <li className="ranked-item">
-                <div className="input-container">
-                    <div className="color-square"></div>
-                    <input
-                        onFocus={() => setShowButton(true)} 
-                        onBlur={() => setShowButton(false)} 
-                        type="text"
-                        placeholder="item"
-                        value={value}
-                        onChange={handleInput}
-                        onPointerDown={e => {
-                            e.stopPropagation();
-                        }}
-                        onKeyDown={e => e.stopPropagation()}  /* allow space/arrow keys */
-                        onKeyUp={e => e.stopPropagation()}
-                    />
-                </div>
-                {showButton && ( <button className="item-btn" id="delete-btn" onMouseDown={e => { e.preventDefault(); e.stopPropagation(); }} onPointerDown={e => e.stopPropagation()} onTouchStart={e => e.stopPropagation()} onClick={handleDelete}>
-                    Delete Item
-                </button> )}
-            </li>
-        </div>
+            <div className="ranked-item-content">
+                <div className="color-square"></div>
+                <input
+                    onFocus={() => setShowButton(true)} 
+                    onBlur={() => setShowButton(false)} 
+                    type="text"
+                    placeholder="item"
+                    value={value}
+                    onChange={handleInput}
+                    onPointerDown={e => {
+                        e.stopPropagation();
+                    }}
+                    onKeyDown={e => e.stopPropagation()}  /* allow space/arrow keys */
+                    onKeyUp={e => e.stopPropagation()}
+                />
+            </div>
+            {showButton && ( <button 
+                className="item-btn" 
+                id="delete-btn" 
+                onMouseDown={e => { e.preventDefault(); e.stopPropagation(); }} 
+                onPointerDown={e => e.stopPropagation()} 
+                onTouchStart={e => e.stopPropagation()} 
+                onClick={handleDelete}>
+                Delete Item
+            </button> )}
+        </li>
     );
 }

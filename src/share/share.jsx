@@ -3,8 +3,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './share.css';
 
-const SAVED_RANKINGS_STORAGE_KEY = 'savedRankings';
-
 const SHARED_WITH_ME = [
     {
         id: 'shared-1',
@@ -35,16 +33,13 @@ const SHARED_WITH_ME = [
 ];
 
 export function Share() {
-  const navigate = useNavigate();
   const location = useLocation();
-  const rankingToShare = location.state?.rankingToShare;
-    const rankingOwner = rankingToShare?.from || rankingToShare?.userName || 'Unknown';
-  const [selectedId, setSelectedId] = React.useState('');
-  const selectedRanking = SHARED_WITH_ME.find(ranking => ranking.id === selectedId);
+  const rankingToShare = location.state?.rankingToShare
   const [showSent, setShowSent] = React.useState(false);
   const [displayRanking, setDisplayRanking] = React.useState(true);
   const [selectedUser, setSelectedUser] = React.useState(null);
   const [sending, setSending] = React.useState(false);
+  const [selected, setSelected] = React.useState(false);
   const MESSAGE_TIMEOUT_MS = 2000;
 
     React.useEffect(() => {
@@ -72,35 +67,6 @@ export function Share() {
         return () => clearTimeout(timeoutId);
     }, [sending]);
 
-    
-
-    async function toSaved(e) {
-        e.preventDefault(); 
-        if (!selectedRanking) {
-            return;
-        }
-
-        const rankingToSave = {
-            ...selectedRanking,
-            from: selectedRanking.from || selectedRanking.userName || 'Unknown',
-            savedId: `${selectedRanking.id}-${Date.now()}`,
-            savedAt: new Date().toISOString(),
-        };
-
-        const response = await fetch('/api/post/rankings', {
-            method: 'POST',
-            credentials: 'include',
-            body: JSON.stringify(rankingToSave),
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-            },
-        });
-        if (!response.ok) {
-            return alert('Error saving ranking to server');
-        } else {
-            navigate('/saved'); 
-        }
-    }
 
   return (
    <main>
@@ -133,7 +99,6 @@ export function Share() {
                                 </table>
                             </div>
                         </div>
-                        <div>User: {rankingOwner}</div>
                     </div>
                 )}
             </div>
@@ -145,19 +110,69 @@ export function Share() {
             <div className="scroll-user">
                 <table className="search-user" border="1">
                     <tr>
-                        <td className="search-data"><button onClick={() => setSelectedUser('GoldenCow@5543')}  className="search-button">GoldenCow@5543</button></td>
+                        <td className="search-data"><button onClick={() => {
+                            setSelectedUser('GoldenCow@5543');
+                            if (selected == false) {
+                                setSelected(true);
+                            }
+                            if (selected == true) {
+                                setSelected(false);
+                            }
+                        }}  
+                            style={{backgroundColor: selected && selectedUser === 'GoldenCow@5543' ? 'rgba(35, 33, 33, 0.4)' : 'initial'}}
+                            className="search-button">GoldenCow@5543</button></td>
                     </tr>
                     <tr>
-                        <td className="search-data"><button onClick={() => setSelectedUser('anonymous_whale')} className="search-button">anonymous_whale</button></td>
+                        <td className="search-data"><button onClick={() => {
+                            setSelectedUser('anonymous_whale');
+                            if (selected == false) {
+                                setSelected(true);
+                            }
+                            if (selected == true) {
+                                setSelected(false);
+                            }
+                        }}  
+                            style={{backgroundColor: selected && selectedUser === 'anonymous_whale' ? 'rgba(35, 33, 33, 0.4)' : 'initial'}}
+                            className="search-button">anonymous_whale</button></td>
                     </tr>
                     <tr>
-                        <td className="search-data"><button onClick={() => setSelectedUser('joe')} className="search-button">joe</button></td>
+                        <td className="search-data"><button onClick={() => {
+                            setSelectedUser('joe');
+                            if (selected == false) {
+                                setSelected(true);
+                            }
+                            if (selected == true) {
+                                setSelected(false);
+                            }
+                        }}  
+                            style={{backgroundColor: selected && selectedUser === 'joe' ? 'rgba(35, 33, 33, 0.4)' : 'initial'}}
+                            className="search-button">joe</button></td>
                     </tr>
                     <tr>
-                        <td className="search-data"><button onClick={() => setSelectedUser('freddy_345')} className="search-button">freddy_345</button></td>
+                        <td className="search-data"><button onClick={() => {
+                            setSelectedUser('freddy_345');
+                            if (selected == false) {
+                                setSelected(true);
+                            }
+                            if (selected == true) {
+                                setSelected(false);
+                            }
+                        }}  
+                            style={{backgroundColor: selected && selectedUser === 'freddy_345' ? 'rgba(35, 33, 33, 0.4)' : 'initial'}}
+                            className="search-button">freddy_345</button></td>
                     </tr>
                     <tr>
-                        <td className="search-data"><button onClick={() => setSelectedUser('heehee_funnyman345')} className="search-button">heehee_funnyman345</button></td>
+                        <td className="search-data"><button onClick={() => {
+                            setSelectedUser('heehee_funnyman345');
+                            if (selected == false) {
+                                setSelected(true);
+                            }
+                            if (selected == true) {
+                                setSelected(false);
+                            }
+                        }}  
+                            style={{backgroundColor: selected && selectedUser === 'heehee_funnyman345' ? 'rgba(35, 33, 33, 0.4)' : 'initial'}}
+                            className="search-button">heehee_funnyman345</button></td>
                     </tr>
                 </table>
             </div>
@@ -178,21 +193,9 @@ export function Share() {
         <div className="share-me">
             <div></div>
             <h1>Shared with me</h1>
-            {/* <div className="save-text">
-                <form onSubmit={toSaved}>
-                    <button className="save" disabled={!selectedRanking}>Save</button>
-                </form>
-                <p>Select one you would like to save</p>
-            </div> */}
             <div className="scroll-me">
                 {SHARED_WITH_ME.map((ranking) => (
                   <div key={ranking.id}>
-                    {/* <button
-                      className="table-button"
-                      type="button"
-                      onClick={() => setSelectedId(ranking.id)}
-                      aria-pressed={selectedId === ranking.id}
-                    > */}
                         <div className="share-container">
                             <div className="share-order">
                                 <ol>
@@ -217,8 +220,7 @@ export function Share() {
                                 </table>
                             </div>
                         </div>
-                    {/* </button> */}
-                                        User: {ranking.from || ranking.userName || 'Unknown'}
+                        <div>User: {ranking.from || ranking.userName || 'Unknown'}</div>
                   </div>
                 ))}
             </div>

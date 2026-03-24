@@ -24,6 +24,11 @@ body {
     padding: 10px 30px;
     align-self: center;
 }
+#clear-btn {
+    margin: 5px;
+    padding: 10px 30px;
+    align-self: center;
+}   
 .item-btn:hover {
     background-color: rgba(128, 128, 128, 0.509);
     color: rgb(240, 230, 230);
@@ -47,7 +52,7 @@ body {
 }
 #title {
     font-size: 20px;
-    width: 60%;
+    width: 70%;
     padding: 5px;
     box-sizing: border-box;
     border-radius: 5px;
@@ -56,6 +61,14 @@ body {
 .ranked-list {
     margin-right: 50px;
     cursor: pointer;
+}
+.ranked-list li {
+    display: list-item;
+    margin-top: 5px;
+}
+.ranked-item-content {
+    display: flex;
+    flex-direction: row;
 }
 #bank-item {
     text-align: center;
@@ -84,7 +97,6 @@ input[type="text"]:hover {
 .input-container {
     display: flex;
     align-items: center;
-    /* gap: 8px; */
 }
 .color-square {
     width: 35px;
@@ -105,8 +117,20 @@ ol li {
     display: flex;
     justify-content: center;
 }
+.drag-preview {
+    opacity: 1;
+    transform: scale(1);
+    filter: none;
+}
+.drag-preview .bank-input {
+    box-shadow: 3px 22px 22px 1px rgba(24, 16, 16, 0.24);
+}
+.drag-placeholder {
+    opacity: 0.45;
+}
 .bank-item {
     width: 250px;
+    list-style: none;
 }
 .bank-item .input-container {
     width: 80%;
@@ -230,23 +254,9 @@ tr {
 .rank-info {
     display: flex;
     align-items: center;  
-    gap: 20px;             
 }
 .rank-info div {
     display: inline;
-}
-.save-share {
-    flex: 1;
-    gap: 10px;
-    font-size: 25;
-}
-.save-share a { 
-    color: rgb(240, 230, 230);
-    margin: 10px;
-}
-.save-share a:hover {
-    color: rgb(143, 133, 133);
-    transition: all 0.3s ease;
 }
 .user-info {
     flex: 1;
