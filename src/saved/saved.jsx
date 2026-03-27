@@ -177,6 +177,7 @@ export function Saved({ userName }) {
                   }} 
                   style={{ border: selectedRanking === ranking && border ? '3px solid white' : 'none' }}
                 >
+                  <p style={{ color: 'white' }}>Title: {ranking.title}</p>
                   <div className="col1-container">
                     <div>
                       <ol>
@@ -201,7 +202,6 @@ export function Saved({ userName }) {
                     </div>
                   </div>
                 </button>
-                <p style={{ color: 'white' }}>Title: {ranking.title}</p>
                 {deleteButton === rankingKey && (<button
                   className="delete-saved"
                   type="button"
@@ -212,6 +212,7 @@ export function Saved({ userName }) {
                 >
                   Delete
                 </button>)}
+                <p>Saved on: {ranking.date || 'Unknown Date'}</p>
                 </div>
               );
             })
