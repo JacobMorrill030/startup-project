@@ -152,8 +152,14 @@ const moveTierTaskByDropTarget = (tasks, activeId, overId) => {
     }
 
     if (isContainerDrop && activeTask.location === targetLocation) {
+    const tierItems = tasks.filter(task => task.location === targetLocation);
+    const lastTierItemId = tierItems[tierItems.length - 1]?.id;
+
+    // No-op only if already at the bottom of this tier
+    if (lastTierItemId === activeId) {
         return tasks;
     }
+}
 
     const withoutActive = tasks.filter(task => task.id !== activeId);
     const movedTask = {...activeTask, location: targetLocation};
@@ -168,11 +174,25 @@ const moveTierTaskByDropTarget = (tasks, activeId, overId) => {
         return next;
     }
 
+    const activeIndex = tasks.findIndex(task => task.id === activeId);
+    const overIndexInOriginal = tasks.findIndex(task => task.id === overId);
+    if (overIndexInOriginal === -1 || activeIndex === -1) return tasks;
+
     const overIndex = withoutActive.findIndex(task => task.id === overId);
     if (overIndex === -1) return tasks;
 
+    // Same tier reorder:
+    // - dragging down => place after target
+    // - dragging up => place before target
+    const isSameLocationReorder = activeTask.location === targetLocation;
+    const isMovingDown = activeIndex < overIndexInOriginal;
+    const insertIndex =
+        isSameLocationReorder && isMovingDown
+            ? overIndex + 1
+            : overIndex;
+
     const next = [...withoutActive];
-    next.splice(overIndex, 0, movedTask);
+    next.splice(insertIndex, 0, movedTask);
     return next;
 };
 
@@ -283,6 +303,14 @@ export function Rank({ userName }) {
         }
     }
 
+    function addItem() {
+        const nextId = tasks.length ? Math.max(...tasks.map(task => task.id)) + 1 : 0;
+        setTasks(ts => [...ts, {id: nextId, title: '', location: 'bank'}]);
+        setOrderedTaskIds(ids => [...ids, nextId]);
+        setItems(it => [...it, '']);
+        setTyped(true);
+    }
+
     const updateTaskTitle = (id, newTitle) => {
         setTasks(ts => ts.map(t => t.id === id ? {...t, title: newTitle} : t));
     };
@@ -390,14 +418,6 @@ export function Rank({ userName }) {
             coordinateGetter: sortableKeyboardCoordinates
         })
         );
-
-    function addItem() {
-        const nextId = tasks.length ? Math.max(...tasks.map(task => task.id)) + 1 : 0;
-        setTasks(ts => [...ts, {id: nextId, title: '', location: 'bank'}]);
-        setOrderedTaskIds(ids => [...ids, nextId]);
-        setItems(it => [...it, '']);
-        setTyped(true);
-    }
 
     async function generateRandomWords(event) {
         event.preventDefault();
@@ -512,8 +532,7 @@ export function Rank({ userName }) {
                 collisionDetection={closestCorners}>
                 <div className="column">
                     <Table tasks={tasks} onUpdateTask={updateTaskTitle} />
-                </div>
-                <DragOverlay>
+                    <DragOverlay>
                     {activeTierDragTask ? (
                         <div className="bank-container drag-preview">
                             <li id="bank-item" className="bank-item">
@@ -529,6 +548,8 @@ export function Rank({ userName }) {
                         </div>
                     ) : null}
                 </DragOverlay>
+                </div>
+                
             </DndContext>
            
         </div>

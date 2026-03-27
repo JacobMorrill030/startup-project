@@ -179,7 +179,6 @@ export function Saved({ userName }) {
                 >
                   <div className="col1-container">
                     <div>
-                      <p style={{ color: 'white' }}>Title: {ranking.title}</p>
                       <ol>
                         {(ranking.orderedItems || []).map((item) => (
                           <li key={`${rankingKey}-${item}`}>
@@ -202,6 +201,7 @@ export function Saved({ userName }) {
                     </div>
                   </div>
                 </button>
+                <p style={{ color: 'white' }}>Title: {ranking.title}</p>
                 {deleteButton === rankingKey && (<button
                   className="delete-saved"
                   type="button"

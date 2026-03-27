@@ -139,8 +139,8 @@ ol li {
     width: 225px;
     min-width: 225px;
     max-width: 225px;
-    margin-top: -30px;
-    margin-bottom: -30px;
+    margin-top: -20px;
+    margin-bottom: -20px;
     box-sizing: border-box;
 }
 .column1 {
@@ -190,9 +190,9 @@ ol li {
     align-items: flex-start;
     gap: 10px;
 }
-.tier-cell-items.order-normal {
+/* .tier-cell-items.order-normal {
     flex-direction: row;
-}
+} */
 .tier-cell-items.order-reverse {
     flex-direction: row-reverse;
 }
