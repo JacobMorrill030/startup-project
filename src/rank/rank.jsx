@@ -236,6 +236,7 @@ export function Rank({ userName }) {
 
     async function handleSave() {
         const tiers = { S: [], A: [], B: [], C: [], D: [] };
+        // const date = new Date().toLocaleDateString();
 
         tasks.forEach((task) => {
             if (!task || typeof task.title !== 'string') return;
@@ -263,10 +264,11 @@ export function Rank({ userName }) {
             tiers,
             savedId: `my-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
             savedAt: new Date().toISOString(),
+            date: new Date().toLocaleDateString()
         };
 
         const savedRaw = localStorage.getItem(SAVED_RANKINGS_STORAGE_KEY);
-         let savedRankings = [];
+        let savedRankings = [];
 
         if (savedRaw) {
             try {

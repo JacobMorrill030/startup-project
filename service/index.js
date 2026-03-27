@@ -4,6 +4,7 @@ const express = require('express');
 const uuid = require('uuid');
 const app = express();
 const DB = require('./database.js');
+// const { peerProxy } = require('./peerProxy.js');
 
 const authCookieName = 'token';
 
@@ -117,6 +118,11 @@ apiRouter.delete('/auth/logout', async (req, res) => {
   res.status(204).end();
 });
 
+apiRouter.get('/users/all', async (req, res) => {
+  const users = await DB.getAllUsers();
+  res.json(users);
+});
+
 // retrieve the rankings for the authenticated user, sorted by saved date with the most recent first
 apiRouter.get('/get/rankings', verifyAuth, async (req, res) => {
   const user = await findUser('token', req.cookies[authCookieName]);
@@ -203,3 +209,5 @@ function setAuthCookie(res, authToken) {
 const httpService = app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });
+
+// peerProxy(httpService);

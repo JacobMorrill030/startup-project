@@ -42,6 +42,10 @@ async function updateUserRemoveAuth(user) {
   await userCollection.updateOne({ userName: user.userName }, { $unset: { token: 1 } });
 }
 
+async function getAllUsers() {
+  return userCollection.find({}).toArray();
+}
+
 async function getRankings(userName) {
   return rankingCollection.find({ userName: userName }).toArray();
 }
@@ -58,6 +62,7 @@ async function deleteRanking(userName, rankingId) {
   return result.deletedCount;
 }
 
+
 module.exports = {
   getUser,
   getUserByToken,
@@ -67,4 +72,5 @@ module.exports = {
   getRankings,
   addRanking,
   deleteRanking,
+  getAllUsers,
 };

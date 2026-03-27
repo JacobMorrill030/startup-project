@@ -40,7 +40,26 @@ export function Share() {
   const [selectedUser, setSelectedUser] = React.useState(null);
   const [sending, setSending] = React.useState(false);
   const [selected, setSelected] = React.useState(false);
+  const [users, setUsers] = React.useState([]);
   const MESSAGE_TIMEOUT_MS = 2000;
+
+    React.useEffect(() => {
+        async function fetchUsers() {
+            try { 
+                const response = await fetch('/api/users/all', {
+                    method: 'GET',
+                    credentials: 'include',
+                });
+                const data = await response.json();
+                setUsers(data);
+            } catch (error) {
+                console.error('Error fetching users:', error);
+            }
+        }
+
+        fetchUsers();
+    }, []);
+
 
     React.useEffect(() => {
         if (!showSent) {
@@ -109,71 +128,22 @@ export function Share() {
             <br />
             <div className="scroll-user">
                 <table className="search-user" border="1">
-                    <tr>
-                        <td className="search-data"><button onClick={() => {
-                            setSelectedUser('GoldenCow@5543');
-                            if (selected == false) {
-                                setSelected(true);
-                            }
-                            if (selected == true) {
-                                setSelected(false);
-                            }
-                        }}  
-                            style={{backgroundColor: selected && selectedUser === 'GoldenCow@5543' ? 'rgba(35, 33, 33, 0.4)' : 'initial'}}
-                            className="search-button">GoldenCow@5543</button></td>
-                    </tr>
-                    <tr>
-                        <td className="search-data"><button onClick={() => {
-                            setSelectedUser('anonymous_whale');
-                            if (selected == false) {
-                                setSelected(true);
-                            }
-                            if (selected == true) {
-                                setSelected(false);
-                            }
-                        }}  
-                            style={{backgroundColor: selected && selectedUser === 'anonymous_whale' ? 'rgba(35, 33, 33, 0.4)' : 'initial'}}
-                            className="search-button">anonymous_whale</button></td>
-                    </tr>
-                    <tr>
-                        <td className="search-data"><button onClick={() => {
-                            setSelectedUser('joe');
-                            if (selected == false) {
-                                setSelected(true);
-                            }
-                            if (selected == true) {
-                                setSelected(false);
-                            }
-                        }}  
-                            style={{backgroundColor: selected && selectedUser === 'joe' ? 'rgba(35, 33, 33, 0.4)' : 'initial'}}
-                            className="search-button">joe</button></td>
-                    </tr>
-                    <tr>
-                        <td className="search-data"><button onClick={() => {
-                            setSelectedUser('freddy_345');
-                            if (selected == false) {
-                                setSelected(true);
-                            }
-                            if (selected == true) {
-                                setSelected(false);
-                            }
-                        }}  
-                            style={{backgroundColor: selected && selectedUser === 'freddy_345' ? 'rgba(35, 33, 33, 0.4)' : 'initial'}}
-                            className="search-button">freddy_345</button></td>
-                    </tr>
-                    <tr>
-                        <td className="search-data"><button onClick={() => {
-                            setSelectedUser('heehee_funnyman345');
-                            if (selected == false) {
-                                setSelected(true);
-                            }
-                            if (selected == true) {
-                                setSelected(false);
-                            }
-                        }}  
-                            style={{backgroundColor: selected && selectedUser === 'heehee_funnyman345' ? 'rgba(35, 33, 33, 0.4)' : 'initial'}}
-                            className="search-button">heehee_funnyman345</button></td>
-                    </tr>
+                    {users.map((user) => (
+                        <tr key={user.userName}>
+                            <td className="search-data">
+                                <button onClick={() => {
+                                    setSelectedUser(user.userName);
+                                    if (selected == false) {
+                                        setSelected(true);
+                                    }
+                                    if (selected == true) {
+                                        setSelected(false);
+                                    }
+                                }}  
+                                    style={{backgroundColor: selected && selectedUser === user.userName ? 'rgba(35, 33, 33, 0.4)' : 'initial'}}
+                                    className="search-button">{user.userName}</button></td>
+                        </tr>
+                    ))}
                 </table>
             </div>
             <br />
