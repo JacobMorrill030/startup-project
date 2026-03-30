@@ -248,6 +248,9 @@ tr {
 .bank-list li {
     list-style-type: none;
 }
+.bank-start-slot {
+    grid-column: 1 / -1;
+}
 .item-bank .bank-container {
     justify-content: flex-start;
 }

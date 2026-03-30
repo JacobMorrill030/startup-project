@@ -14,7 +14,6 @@ const ORDERED_TASK_IDS_STORAGE_KEY = 'rankOrderedTaskIds';
 const SAVED_RANKINGS_STORAGE_KEY = 'savedRankings';
 const RANDOM_WORDS_ENDPOINT = "https://random-word-api.herokuapp.com/word?number=10";
 const TIER_IDS = ['S', 'A', 'B', 'C', 'D'];
-
 const DEFAULT_TASKS = [
     {id: 0, title: '', location: 'bank'},
 ];
@@ -137,7 +136,7 @@ const buildInitialOrderedTaskIds = (tasks) => {
 };
 
 const moveTierTaskByDropTarget = (tasks, activeId, overId) => {
-    if (!overId) return tasks;
+    if (overId === null || overId === undefined) return tasks;
 
     const isContainerDrop = overId === 'bank' || TIER_IDS.includes(overId);
     const activeTask = tasks.find(task => task.id === activeId);
