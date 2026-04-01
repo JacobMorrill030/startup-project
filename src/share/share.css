@@ -61,6 +61,11 @@ main {
 .search-container{
     margin-left: 100px;
 }
+.shared-empty {
+    text-align: center;
+    position: relative;
+    top: 150px;
+}
 .search-bar {
     width: 75%;
     font-size: 25px;

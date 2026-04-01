@@ -119,7 +119,7 @@ function App() {
             } />
             <Route path='/share' element={
               authState === AuthState.Authenticated ? (
-                <Share />
+                <Share userName={userName} />
               ) : (
                 <Navigate to='/' />
               )

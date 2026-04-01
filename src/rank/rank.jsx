@@ -8,7 +8,6 @@ import {Column} from './components/Column';
 import {Table} from './components/Table';
 import '../styles/app.css';
 
-
 const TASKS_STORAGE_KEY = 'rankTasks';
 const ORDERED_TASK_IDS_STORAGE_KEY = 'rankOrderedTaskIds';
 const SAVED_RANKINGS_STORAGE_KEY = 'savedRankings';
