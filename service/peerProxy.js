@@ -1,36 +1,59 @@
-// const { WebSocketServer, WebSocket } = require('ws');
+const { WebSocketServer } = require('ws');
 
-// function peerProxy(httpServer) {
-//   // Create a websocket object
-//   const socketServer = new WebSocketServer({ server: httpServer });
+function peerProxy(httpServer) {
+  const socketServer = new WebSocketServer({ server: httpServer });
 
-//   socketServer.on('connection', (socket) => {
-//     socket.isAlive = true;
+  socketServer.on('connection', (socket) => {
+    console.log('WebSocket connected');
+    socket.userName = null;
 
-//     // Forward messages to everyone except the sender
-//     socket.on('message', function message(data) {
-//       socketServer.clients.forEach((client) => {
-//         if (client !== socket && client.readyState === WebSocket.OPEN) {
-//           client.send(data);
-//         }
-//       });
-//     });
+    socket.on('message', (message) => {
+      let data;
+      try {
+        data = JSON.parse(message.toString());
+      } catch (error) {
+        console.error('Invalid WebSocket message received:', error);
+        return;
+      }
 
-//     // Respond to pong messages by marking the connection alive
-//     socket.on('pong', () => {
-//       socket.isAlive = true;
-//     });
-//   });
+      if (data?.type === 'register') {
+        socket.userName = data.userName || null;
+        console.log('WebSocket registered user:', socket.userName);
+        return;
+      }
 
-//   // Periodically send out a ping message to make sure clients are alive
-//   setInterval(() => {
-//     socketServer.clients.forEach(function each(client) {
-//       if (client.isAlive === false) return client.terminate();
+      if (data?.type === 'share-ranking') {
+        const outgoing = JSON.stringify({
+          type: 'share-ranking',
+          from: data.from,
+          to: data.to,
+          ranking: data.ranking,
+          timestamp: data.timestamp || new Date().toISOString(),
+          message:
+            data.message ||
+            `${data.from || 'Someone'} shared ${data.ranking?.title || 'a ranking'}`,
+        });
 
-//       client.isAlive = false;
-//       client.ping();
-//     });
-//   }, 10000);
-// }
+        socketServer.clients.forEach((client) => {
+          if (
+            client.readyState === client.OPEN &&
+            client.userName &&
+            client.userName === data.to
+          ) {
+            client.send(outgoing);
+          }
+        });
+      }
+    });
 
-// module.exports = { peerProxy };
+    socket.on('close', () => {
+      console.log('WebSocket disconnected');
+    });
+
+    socket.on('error', (error) => {
+      console.error('WebSocket error:', error);
+    });
+  });
+}
+
+module.exports = { peerProxy };

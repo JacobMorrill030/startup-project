@@ -4,7 +4,7 @@ const express = require('express');
 const uuid = require('uuid');
 const app = express();
 const DB = require('./database.js');
-// const { peerProxy } = require('./peerProxy.js');
+const { peerProxy } = require('./peerProxy.js');
 
 const authCookieName = 'token';
 
@@ -39,6 +39,18 @@ function buildRankingFingerprint(ranking = {}) {
   return JSON.stringify(normalized);
 }
 
+function createShareRankingRecord(fromUserName, toUserName, payload = {}) {
+  const ranking = payload.ranking || payload;
+  return {
+    ...createRankingRecord(toUserName, {
+      ...ranking,
+      from: fromUserName,
+    }),
+    to: toUserName,
+    sharedMessage: payload.message || '',
+  };
+}
+
 function createRankingRecord(userName, ranking = {}) {
   const timestamp = new Date().toISOString();
   const savedId = ranking.savedId || ranking.id || uuid.v4();
@@ -53,7 +65,6 @@ function createRankingRecord(userName, ranking = {}) {
     id: savedId,
     savedId,
     userName,
-    from: rankingOwner,
     title: typeof ranking.title === 'string' && ranking.title.trim() ? ranking.title.trim() : 'Untitled Ranking',
     orderedItems: Array.isArray(ranking.orderedItems) ? ranking.orderedItems : [],
     tiers,
@@ -130,6 +141,19 @@ apiRouter.get('/get/rankings', verifyAuth, async (req, res) => {
   res.json(rankings);
 });
 
+apiRouter.get('/get/shared', verifyAuth, async (req, res) => {
+  const user = await findUser('token', req.cookies[authCookieName]);
+  const sharedRankings = await DB.getSharedRankings(user.userName);
+  res.json(sharedRankings);
+});
+
+apiRouter.post('/post/shared', verifyAuth, async (req, res) => {
+  const user = await findUser('token', req.cookies[authCookieName]);
+  const sharedRanking = createShareRankingRecord(user.userName, req.body.to, req.body);
+  await DB.addSharedRanking(sharedRanking);
+  res.status(201).json(sharedRanking);
+});
+
 // post the ranking for the authenticated user, create a 
 // new ranking if the user doesn't have one with the same title
 apiRouter.post('/post/rankings', verifyAuth, async (req, res) => {
@@ -139,6 +163,7 @@ apiRouter.post('/post/rankings', verifyAuth, async (req, res) => {
   await DB.addRanking(rankingToSave);
   return res.status(201).json(rankingToSave);
 });
+
 
 // deletes rankings with the specified id for the authenticated user
 apiRouter.delete('/rankings/:id', verifyAuth, async (req, res) => {
@@ -187,7 +212,7 @@ async function createUser(userName, password) {
 async function findUser(field, value) {
   if (!value) return null;
 
-  // return users.find(user => user[field] === value);
+  //return users.find(user => user[field] === value);
 
   if (field === 'token') {
     return DB.getUserByToken(value);
@@ -210,4 +235,4 @@ const httpService = app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });
 
-// peerProxy(httpService);
+peerProxy(httpService);

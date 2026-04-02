@@ -1,51 +1,26 @@
 import React from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './share.css';
 
-const SHARED_WITH_ME = [
-    {
-        id: 'shared-1',
-        from: 'GoldenCow@5543',
-        title: 'Ice cream flavors',
-        orderedItems: ['Moose Tracks', 'Chocolate', 'Vanilla', 'Strawberry'],
-        tiers: {
-            S: ['Moose Tracks'],
-            A: ['Chocolate'],
-            B: ['Vanilla'],
-            C: ['Strawberry'],
-            D: [],
-        },
-    },
-    {
-        id: 'shared-2',
-        from: 'GoldenCow@5543',
-        title: 'Star Wars Jedi',
-        orderedItems: ['Dinosaur Jedi', 'Obi-Wan Kenobi', 'Anakin Skywalker', 'Mace Windu', 'Pon Krell'],
-        tiers: {
-            S: ['Obi-Wan Kenobi'],
-            A: ['Anakin Skywalker'],
-            B: ['Dinosaur Jedi'],
-            C: ['Mace Windu'],
-            D: ['Pon Krell'],
-        },
-    },
-];
-
-export function Share() {
-  const location = useLocation();
-  const rankingToShare = location.state?.rankingToShare
-  const [showSent, setShowSent] = React.useState(false);
-  const [displayRanking, setDisplayRanking] = React.useState(true);
-  const [selectedUser, setSelectedUser] = React.useState(null);
-  const [sending, setSending] = React.useState(false);
-  const [selected, setSelected] = React.useState(false);
-  const [users, setUsers] = React.useState([]);
-  const MESSAGE_TIMEOUT_MS = 2000;
+export function Share({ userName }) {
+    const location = useLocation();
+    const rankingToShare = location.state?.rankingToShare;
+    const [showSent, setShowSent] = React.useState(false);
+    const [displayRanking, setDisplayRanking] = React.useState(true);
+    const [selectedUser, setSelectedUser] = React.useState(null);
+    const [sending, setSending] = React.useState(false);
+    const [users, setUsers] = React.useState([]);
+    const [notifications, setNotifications] = React.useState([]);
+    const [sharedWithMe, setSharedWithMe] = React.useState([]);
+    const [socketConnected, setSocketConnected] = React.useState(false);
+    const [socketError, setSocketError] = React.useState('');
+    const [socket, setSocket] = React.useState(null);
+    const MESSAGE_TIMEOUT_MS = 2000;
 
     React.useEffect(() => {
         async function fetchUsers() {
-            try { 
+            try {
                 const response = await fetch('/api/users/all', {
                     method: 'GET',
                     credentials: 'include',
@@ -60,6 +35,96 @@ export function Share() {
         fetchUsers();
     }, []);
 
+    React.useEffect(() => {
+        async function fetchSharedRankings() {
+            if (!userName) {
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/get/shared', {
+                    method: 'GET',
+                    credentials: 'include',
+                });
+                const data = await response.json();
+                const sharedRankings = Array.isArray(data)
+                    ? data.filter((ranking) => ranking.to === userName)
+                    : [];
+                setSharedWithMe(sharedRankings);
+            } catch (error) {
+                console.error('Error fetching shared rankings:', error);
+            }
+        }
+
+        fetchSharedRankings();
+    }, [userName]);
+
+    React.useEffect(() => {
+        const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+        const currentPort = window.location.port;
+        const socketPort = currentPort === '5173' || currentPort === '' ? '4000' : currentPort;
+        const socketUrl = `${protocol}://${window.location.hostname}${socketPort ? `:${socketPort}` : ''}`;
+        const websocket = new WebSocket(socketUrl);
+
+        websocket.onopen = () => {
+            setSocketConnected(true);
+            setSocketError('');
+            if (userName) {
+                websocket.send(JSON.stringify({
+                    type: 'register',
+                    userName,
+                }));
+            }
+        };
+
+        websocket.onmessage = (event) => {
+            try {
+                const data = JSON.parse(event.data);
+                if (data?.type === 'share-ranking') {
+                    const incomingRanking = data.ranking || {};
+                    const notificationItem = {
+                        id: `${data.timestamp || new Date().toISOString()}-${Math.random()}`,
+                        title: incomingRanking.title || 'Untitled Ranking',
+                        from: data.from || 'Unknown',
+                        to: data.to || 'Everyone',
+                        message:
+                            data.message ||
+                            `${data.from || 'Someone'} shared ranking: ${incomingRanking.title || 'a ranking'}`,
+                        timestamp: data.timestamp || new Date().toISOString(),
+                    };
+
+                    setNotifications((prevNotifications) => [notificationItem, ...prevNotifications].slice(0, 10));
+                    setSharedWithMe((prevShared) => [
+                        {
+                            id: incomingRanking.id || notificationItem.id,
+                            from: data.from || 'Unknown',
+                            title: incomingRanking.title || 'Untitled Ranking',
+                            orderedItems: incomingRanking.orderedItems || [],
+                            tiers: incomingRanking.tiers || { S: [], A: [], B: [], C: [], D: [] },
+                        },
+                        ...prevShared,
+                    ]);
+                }
+            } catch (error) {
+                console.error('Invalid WebSocket message:', error);
+            }
+        };
+
+        websocket.onclose = () => {
+            setSocketConnected(false);
+        };
+
+        websocket.onerror = (error) => {
+            console.error('WebSocket error:', error);
+            setSocketError('Unable to connect to live notifications.');
+        };
+
+        setSocket(websocket);
+
+        return () => {
+            websocket.close();
+        };
+    }, []);
 
     React.useEffect(() => {
         if (!showSent) {
@@ -86,6 +151,50 @@ export function Share() {
         return () => clearTimeout(timeoutId);
     }, [sending]);
 
+    async function sendMsg() {
+        if (!selectedUser || !rankingToShare) {
+            return;
+        }
+
+        const payload = {
+            type: 'share-ranking',
+            from: userName || 'Unknown',
+            to: selectedUser,
+            ranking: rankingToShare,
+            timestamp: new Date().toISOString(),
+            message: `${userName || 'Someone'} sent ranking titled: ${rankingToShare.title || 'a ranking'} with you!`,
+        };
+
+        setSending(true);
+
+        try {
+            const response = await fetch('/api/post/shared', {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+
+            if (!response.ok) {
+                const errorBody = await response.json().catch(() => null);
+                setSocketError(errorBody?.msg || 'Unable to share ranking.');
+                setSending(false);
+                return;
+            }
+
+            if (socket && socket.readyState === WebSocket.OPEN) {
+                socket.send(JSON.stringify(payload));
+            }
+
+            setDisplayRanking(false);
+        } catch (error) {
+            console.error('Share request failed:', error);
+            setSocketError('Unable to share ranking.');
+            setSending(false);
+        }
+    }
 
   return (
    <main>
@@ -121,37 +230,46 @@ export function Share() {
                     </div>
                 )}
             </div>
-            <h1>Share</h1>
-             <div className="search-container">
-                <input className="search-bar" type="search" placeholder="Search by username"/>
+            <div className="notifications-panel">
+                {notifications.length === 0 ? (
+                    <div className="notification-empty">No notifications yet.</div>
+                ) : (
+                    notifications.map((notification) => (
+                        <div key={notification.id} className="notification-card">
+                            <div className="notification-message">{notification.message}</div>
+                            <div className="notification-time">{new Date(notification.timestamp).toLocaleString()}</div>
+                        </div>
+                    ))
+                )}
             </div>
+            <h1>Share</h1>
+             {/* <div className="search-container">
+                <input className="search-bar" type="search" placeholder="Search by username"/>
+            </div> */}
             <br />
             <div className="scroll-user">
                 <table className="search-user" border="1">
                     {users.map((user) => (
                         <tr key={user.userName}>
                             <td className="search-data">
-                                <button onClick={() => {
-                                    setSelectedUser(user.userName);
-                                    if (selected == false) {
-                                        setSelected(true);
-                                    }
-                                    if (selected == true) {
-                                        setSelected(false);
-                                    }
-                                }}  
-                                    style={{backgroundColor: selected && selectedUser === user.userName ? 'rgba(35, 33, 33, 0.4)' : 'initial'}}
-                                    className="search-button">{user.userName}</button></td>
+                                <button
+                                    onClick={() => setSelectedUser(user.userName)}
+                                    style={{
+                                        backgroundColor: selectedUser === user.userName ? 'rgba(35, 33, 33, 0.4)' : 'initial',
+                                    }}
+                                    className="search-button"
+                                >
+                                    {user.userName}
+                                </button>
+                            </td>
                         </tr>
                     ))}
                 </table>
             </div>
             <br />
             {rankingToShare && displayRanking && selectedUser && (
-            <button className="send" onClick={() => {
-                setSending(true);
-                setDisplayRanking(false);
-            }}>Send</button>
+            <button className="send" onClick={sendMsg}
+            >Send</button>
                 )}
             {sending && rankingToShare && selectedUser && (
                 <div className="send-status">Sending...</div>
@@ -164,7 +282,10 @@ export function Share() {
             <div></div>
             <h1>Shared with me</h1>
             <div className="scroll-me">
-                {SHARED_WITH_ME.map((ranking) => (
+                {sharedWithMe.length === 0 ? (
+                    <div className="shared-empty">No rankings shared with you yet.</div>
+                ) : (
+                sharedWithMe.map((ranking) => (
                   <div key={ranking.id}>
                         <div className="share-container">
                             <div className="share-order">
@@ -190,9 +311,9 @@ export function Share() {
                                 </table>
                             </div>
                         </div>
-                        <div>User: {ranking.from || ranking.userName || 'Unknown'}</div>
+                        <div>Sent by: {ranking.from || ranking.userName || 'Unknown'}, on {ranking.date || "Unknown Date"}</div>
                   </div>
-                ))}
+                )))}
             </div>
         </div>
     </div>
