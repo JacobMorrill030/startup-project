@@ -208,15 +208,15 @@ table {
 }
 .share-container {
     background-color: rgba(31, 31, 57, 0.979);
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    flex-direction: row;
     column-rule: 2px solid;
 }
 .share-order {
-    padding: 10px;
+    flex:1;
 }
 .share-tier {
-    padding: 10px;
+    flex:1;
 }
 .title {
     margin: 30px;

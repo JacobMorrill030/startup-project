@@ -45,33 +45,29 @@ function createShareRankingRecord(fromUserName, toUserName, payload = {}) {
     ...createRankingRecord(toUserName, {
       ...ranking,
       from: fromUserName,
+      to: toUserName,
     }),
-    to: toUserName,
     sharedMessage: payload.message || '',
   };
 }
 
-function createRankingRecord(userName, ranking = {}) {
-  const timestamp = new Date().toISOString();
-  const savedId = ranking.savedId || ranking.id || uuid.v4();
-  const tiers = normalizeTiers(ranking.tiers);
-  const rankingOwner =
-    (typeof ranking.from === 'string' && ranking.from.trim()) ||
-    (typeof ranking.userName === 'string' && ranking.userName.trim()) ||
-    userName;
+// function createRankingRecord(userName, ranking = {}) {
+//   const timestamp = new Date().toISOString();
+//   const savedId = ranking.savedId || ranking.id || uuid.v4();
+//   const tiers = normalizeTiers(ranking.tiers);
 
-  return {
-    ...ranking,
-    id: savedId,
-    savedId,
-    userName,
-    title: typeof ranking.title === 'string' && ranking.title.trim() ? ranking.title.trim() : 'Untitled Ranking',
-    orderedItems: Array.isArray(ranking.orderedItems) ? ranking.orderedItems : [],
-    tiers,
-    fingerprint: buildRankingFingerprint({ ...ranking, tiers }),
-    savedAt: ranking.savedAt || timestamp,
-  };
-}
+//   return {
+//     ...ranking,
+//     id: savedId,
+//     savedId,
+//     userName,
+//     title: typeof ranking.title === 'string' && ranking.title.trim() ? ranking.title.trim() : 'Untitled Ranking',
+//     orderedItems: Array.isArray(ranking.orderedItems) ? ranking.orderedItems : [],
+//     tiers,
+//     fingerprint: buildRankingFingerprint({ ...ranking, tiers }),
+//     savedAt: ranking.savedAt || timestamp,
+//   };
+// }
 
 // The users are saved in memory and disappear whenever the service is restarted.
 
@@ -141,6 +137,16 @@ apiRouter.get('/get/rankings', verifyAuth, async (req, res) => {
   res.json(rankings);
 });
 
+// post the ranking for the authenticated user, create a 
+// new ranking if the user doesn't have one with the same title
+apiRouter.post('/post/rankings', verifyAuth, async (req, res) => {
+  //const user = await findUser('token', req.cookies[authCookieName]);
+  const rankingToSave = req.body;
+  
+  await DB.addRanking(rankingToSave);
+  return res.status(201).json(rankingToSave);
+});
+
 apiRouter.get('/get/shared', verifyAuth, async (req, res) => {
   const user = await findUser('token', req.cookies[authCookieName]);
   const sharedRankings = await DB.getSharedRankings(user.userName);
@@ -148,22 +154,33 @@ apiRouter.get('/get/shared', verifyAuth, async (req, res) => {
 });
 
 apiRouter.post('/post/shared', verifyAuth, async (req, res) => {
-  const user = await findUser('token', req.cookies[authCookieName]);
-  const sharedRanking = createShareRankingRecord(user.userName, req.body.to, req.body);
-  await DB.addSharedRanking(sharedRanking);
-  res.status(201).json(sharedRanking);
-});
+  const sender = await findUser('token', req.cookies[authCookieName]);
+  const recipientName = typeof req.body.to === 'string' && req.body.to.trim() ? req.body.to.trim() : '';
 
-// post the ranking for the authenticated user, create a 
-// new ranking if the user doesn't have one with the same title
-apiRouter.post('/post/rankings', verifyAuth, async (req, res) => {
-  const user = await findUser('token', req.cookies[authCookieName]);
-  const rankingToSave = createRankingRecord(user.userName, req.body);
-  
-  await DB.addRanking(rankingToSave);
+  if (!recipientName) {
+    return res.status(400).send({ msg: 'Recipient username is required' });
+  }
+
+  const recipient = await findUser('userName', recipientName);
+
+  if (!recipient) {
+    return res.status(404).send({ msg: 'Recipient not found' });
+  }
+
+  // const rankingToSave = createShareRankingRecord(sender.userName, recipient.userName, {
+  //   ...req.body,
+  //   from: sender.userName,
+  //   userName: recipient.userName,
+  // });
+    const rankingToSave = {
+    ...req.body,
+    from: sender.userName,
+    to: recipient.userName,
+  };
+
+  await DB.addSharedRanking(rankingToSave);
   return res.status(201).json(rankingToSave);
 });
-
 
 // deletes rankings with the specified id for the authenticated user
 apiRouter.delete('/rankings/:id', verifyAuth, async (req, res) => {

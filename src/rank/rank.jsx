@@ -92,7 +92,7 @@ const providedRankingTitles = {
     option2: 'Fast Food Restaurants',
     option3: 'Types of Chairs',
     option4: 'Dinosaurs',
-    starWarsCharacters: 'Star Wars Characters',
+    option5: 'Star Wars Characters',
 };
 
 const isValidTask = (task) => (
@@ -255,13 +255,12 @@ export function Rank({ userName }) {
         ];
 
         const rankingToSave = {
+            userName,
             id: `my-${Date.now()}`,
-            from: userName || 'Unknown',
             title: title.trim() || 'Untitled Ranking',
             orderedItems,
             tiers,
             savedId: `my-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-            savedAt: new Date().toISOString(),
             date: new Date().toLocaleDateString()
         };
 

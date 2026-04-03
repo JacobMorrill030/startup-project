@@ -18,6 +18,34 @@ export function Share({ userName }) {
     const [socket, setSocket] = React.useState(null);
     const MESSAGE_TIMEOUT_MS = 2000;
 
+    const NOTIFICATIONS_KEY = `notifications-${userName}`;
+
+    const loadNotifications = () => {
+        if (!userName) return [];
+        try {
+            const stored = localStorage.getItem(NOTIFICATIONS_KEY);
+            return stored ? JSON.parse(stored) : [];
+        } catch (error) {
+            console.error('Error loading notifications:', error);
+            return [];
+        }
+    };
+
+    const saveNotifications = (nots) => {
+        if (!userName) return;
+        try {
+            localStorage.setItem(NOTIFICATIONS_KEY, JSON.stringify(nots));
+        } catch (error) {
+            console.error('Error saving notifications:', error);
+        }
+    };
+
+    React.useEffect(() => {
+        if (!userName) return;
+        const nots = loadNotifications();
+        setNotifications(nots);
+    }, [userName]);
+
     React.useEffect(() => {
         async function fetchUsers() {
             try {
@@ -48,9 +76,35 @@ export function Share({ userName }) {
                 });
                 const data = await response.json();
                 const sharedRankings = Array.isArray(data)
-                    ? data.filter((ranking) => ranking.to === userName)
+                    ? data.filter((ranking) => ranking.to === userName).map((item) => ({
+                        ...item.ranking,
+                        from: item.from,
+                        to: item.to,
+                        timestamp: item.timestamp,
+                        message: item.message,
+                        id: item.ranking.id || item._id,
+                    }))
                     : [];
                 setSharedWithMe(sharedRankings);
+                
+                // Generate notifications for shared rankings that don't have one
+                const currentNotifications = loadNotifications();
+                const existingTimestamps = new Set(currentNotifications.map(n => n.timestamp));
+                const newNotifications = sharedRankings
+                    .filter(item => item.timestamp && !existingTimestamps.has(item.timestamp))
+                    .map(item => ({
+                        id: `${item.timestamp}-${Math.random()}`,
+                        title: item.title || 'Untitled Ranking',
+                        from: item.from || 'Unknown',
+                        to: item.to || 'Everyone',
+                        message: item.message || `${item.from || 'Someone'} shared ranking: ${item.title || 'a ranking'}`,
+                        timestamp: item.timestamp,
+                    }));
+                if (newNotifications.length > 0) {
+                    const allNotifications = [...newNotifications, ...currentNotifications].slice(0, 2);
+                    setNotifications(allNotifications);
+                    saveNotifications(allNotifications);
+                }
             } catch (error) {
                 console.error('Error fetching shared rankings:', error);
             }
@@ -88,12 +142,15 @@ export function Share({ userName }) {
                         from: data.from || 'Unknown',
                         to: data.to || 'Everyone',
                         message:
-                            data.message ||
                             `${data.from || 'Someone'} shared ranking: ${incomingRanking.title || 'a ranking'}`,
                         timestamp: data.timestamp || new Date().toISOString(),
                     };
 
-                    setNotifications((prevNotifications) => [notificationItem, ...prevNotifications].slice(0, 10));
+                    setNotifications((prevNotifications) => {
+                        const newNots = [notificationItem, ...prevNotifications].slice(0, 2);
+                        saveNotifications(newNots);
+                        return newNots;
+                    });
                     setSharedWithMe((prevShared) => [
                         {
                             id: incomingRanking.id || notificationItem.id,
@@ -234,7 +291,7 @@ export function Share({ userName }) {
                 {notifications.length === 0 ? (
                     <div className="notification-empty">No notifications yet.</div>
                 ) : (
-                    notifications.map((notification) => (
+                    notifications.slice(0, 2).map((notification) => (
                         <div key={notification.id} className="notification-card">
                             <div className="notification-message">{notification.message}</div>
                             <div className="notification-time">{new Date(notification.timestamp).toLocaleString()}</div>
@@ -311,7 +368,7 @@ export function Share({ userName }) {
                                 </table>
                             </div>
                         </div>
-                        <div>Sent by: {ranking.from || ranking.userName || 'Unknown'}, on {ranking.date || "Unknown Date"}</div>
+                        <div>Sent by {ranking.from || ranking.userName || 'Unknown'} on {ranking.timestamp ? new Date(ranking.timestamp).toLocaleDateString() : ranking.date || "Unknown Date"}</div>
                   </div>
                 )))}
             </div>
