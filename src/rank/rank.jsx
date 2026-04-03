@@ -261,7 +261,8 @@ export function Rank({ userName }) {
             orderedItems,
             tiers,
             savedId: `my-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-            date: new Date().toLocaleDateString()
+            date: new Date().toLocaleDateString(),
+            timestamp: new Date().toISOString()
         };
 
         const savedRaw = localStorage.getItem(SAVED_RANKINGS_STORAGE_KEY);

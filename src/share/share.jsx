@@ -42,7 +42,9 @@ export function Share({ userName }) {
 
     React.useEffect(() => {
         if (!userName) return;
-        const nots = loadNotifications();
+        const nots = loadNotifications()
+            .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+            .slice(0, 2);
         setNotifications(nots);
     }, [userName]);
 
@@ -101,7 +103,9 @@ export function Share({ userName }) {
                         timestamp: item.timestamp,
                     }));
                 if (newNotifications.length > 0) {
-                    const allNotifications = [...newNotifications, ...currentNotifications].slice(0, 2);
+                    const allNotifications = [...newNotifications, ...currentNotifications]
+                        .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+                        .slice(0, 2);
                     setNotifications(allNotifications);
                     saveNotifications(allNotifications);
                 }
@@ -147,7 +151,9 @@ export function Share({ userName }) {
                     };
 
                     setNotifications((prevNotifications) => {
-                        const newNots = [notificationItem, ...prevNotifications].slice(0, 2);
+                        const newNots = [notificationItem, ...prevNotifications]
+                            .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+                            .slice(0, 2);
                         saveNotifications(newNots);
                         return newNots;
                     });
@@ -260,6 +266,7 @@ export function Share({ userName }) {
             <div className="display-ranking">
                 {rankingToShare && displayRanking && (
                     <div className="ranking-display">
+                        <p>Title: {rankingToShare.title}</p>
                         <div className="share-container">
                             <div className="share-order">
                                 <ol>
@@ -267,12 +274,9 @@ export function Share({ userName }) {
                                         <li key={index}><input className="list-input" value={item} readOnly/></li>
                                     ))}
                                 </ol>
-                                <div className="title">
-                                    <p>Title: {rankingToShare.title}</p>
-                                </div>
                             </div>
                             <div className="share-tier">
-                                <table border="1" cellPadding="10">
+                                <table border="1" cellPadding="10" className="shared-tier-table">
                                     <tbody>
                                         {['S', 'A', 'B', 'C', 'D'].map((tier) => (
                                             <tr key={tier}>
@@ -291,11 +295,14 @@ export function Share({ userName }) {
                 {notifications.length === 0 ? (
                     <div className="notification-empty">No notifications yet.</div>
                 ) : (
-                    notifications.slice(0, 2).map((notification) => (
-                        <div key={notification.id} className="notification-card">
-                            <div className="notification-message">{notification.message}</div>
-                            <div className="notification-time">{new Date(notification.timestamp).toLocaleString()}</div>
-                        </div>
+                    [...notifications]
+                        .slice(0, 2)
+                        .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+                        .map((notification) => (
+                            <div key={notification.id} className="notification-card">
+                                <div className="notification-message">{notification.message}</div>
+                                <div className="notification-time">{new Date(notification.timestamp).toLocaleString()}</div>
+                            </div>
                     ))
                 )}
             </div>
@@ -305,7 +312,7 @@ export function Share({ userName }) {
             </div> */}
             <br />
             <div className="scroll-user">
-                <table className="search-user" border="1">
+                <table className="search-user" border="1"> 
                     {users.map((user) => (
                         <tr key={user.userName}>
                             <td className="search-data">
@@ -342,8 +349,12 @@ export function Share({ userName }) {
                 {sharedWithMe.length === 0 ? (
                     <div className="shared-empty">No rankings shared with you yet.</div>
                 ) : (
-                sharedWithMe.map((ranking) => (
+                [...sharedWithMe]
+                    .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+                    .map((ranking) => (
                   <div key={ranking.id}>
+                    <div className="ranking-display">
+                            Title: {ranking.title}
                         <div className="share-container">
                             <div className="share-order">
                                 <ol>
@@ -351,12 +362,9 @@ export function Share({ userName }) {
                                       <li key={item}><input className="list-input" value={item} readOnly/></li>
                                     ))}
                                 </ol>
-                                <div className="title">
-                                    <p>Title: {ranking.title}</p>
-                                </div>
                             </div>
                             <div className="share-tier">
-                                <table border="1" cellPadding="10">
+                                <table border="1" cellPadding="10" className="shared-tier-table">
                                     <tbody>
                                         {['S', 'A', 'B', 'C', 'D'].map((tier) => (
                                           <tr key={`${ranking.id}-${tier}`}>
@@ -368,7 +376,8 @@ export function Share({ userName }) {
                                 </table>
                             </div>
                         </div>
-                        <div>Sent by {ranking.from || ranking.userName || 'Unknown'} on {ranking.timestamp ? new Date(ranking.timestamp).toLocaleDateString() : ranking.date || "Unknown Date"}</div>
+                        </div>
+                    <div>Sent by {ranking.from || ranking.userName || 'Unknown'} on {ranking.timestamp ? new Date(ranking.timestamp).toLocaleDateString() : ranking.date || "Unknown Date"}</div>
                   </div>
                 )))}
             </div>

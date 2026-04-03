@@ -156,7 +156,20 @@ export function Saved({ userName }) {
         ) : savedRankings.length === 0 ? (
           'you have no saved rankings yet'
         ) : (
-          savedRankings.map((ranking) => {
+          [...savedRankings]
+          .sort((a, b) => {
+            // Use timestamp if available, otherwise fall back to savedId timestamp or date
+            const getTime = (ranking) => {
+              if (ranking.timestamp) return new Date(ranking.timestamp).getTime();
+              if (ranking.savedId && ranking.savedId.startsWith('my-')) {
+                const timestamp = ranking.savedId.split('-')[1];
+                if (!isNaN(timestamp)) return parseInt(timestamp);
+              }
+              return new Date(ranking.date || '1970-01-01').getTime();
+            };
+            return getTime(b) - getTime(a);
+          })
+          .map((ranking) => {
             const rankingKey = ranking.savedId || ranking.id;
 
             return (
@@ -214,7 +227,7 @@ export function Saved({ userName }) {
                 </button>)}
                 <p>Saved on: {ranking.date || 'Unknown Date'}</p>
                 </div>
-              );
+          );
             })
         )}
       </div>
