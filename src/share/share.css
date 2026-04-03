@@ -61,6 +61,11 @@ main {
 .search-container{
     margin-left: 100px;
 }
+.shared-empty {
+    text-align: center;
+    position: relative;
+    top: 150px;
+}
 .search-bar {
     width: 75%;
     font-size: 25px;
@@ -203,18 +208,17 @@ table {
 }
 .share-container {
     background-color: rgba(31, 31, 57, 0.979);
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-rule: 2px solid;
+    display: flex;
+    flex-direction: row;
 }
 .share-order {
-    padding: 10px;
+    flex:1;
 }
 .share-tier {
-    padding: 10px;
+    flex:1;
 }
 .title {
-    margin: 30px;
+    margin-bottom: -30px;
     color: rgb(240, 230, 230);
 }
 @media(max-width: 800px) {

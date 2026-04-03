@@ -3,7 +3,7 @@ import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
 import '../rank.css';
 
-export const Task = ({id, title, onChange, onDelete, onTypedChange}) => {
+export const Task = ({id, taskId, title, onChange, onDelete, onTypedChange}) => {
     const [showButton, setShowButton] = useState(false); 
     const {attributes, listeners, setNodeRef, 
         transform, transition} = useSortable({id});
@@ -18,7 +18,7 @@ export const Task = ({id, title, onChange, onDelete, onTypedChange}) => {
         const newVal = e.target.value;
         setValue(newVal);
         if (onChange) {
-            onChange(id, newVal);
+            onChange(taskId ?? id, newVal);
             onTypedChange?.(true);
         }
     };
@@ -31,7 +31,7 @@ export const Task = ({id, title, onChange, onDelete, onTypedChange}) => {
     const handleDelete = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        onDelete?.(id);
+        onDelete?.(taskId ?? id);
     };
 
     return (

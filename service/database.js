@@ -7,6 +7,7 @@ const client = new MongoClient(url);
 const db = client.db(databaseName);
 const userCollection = db.collection('users');
 const rankingCollection = db.collection('rankings');
+const sharedCollection = db.collection('shared');
 
 
 // This will asynchronously test the connection and exit the process if it fails
@@ -42,8 +43,20 @@ async function updateUserRemoveAuth(user) {
   await userCollection.updateOne({ userName: user.userName }, { $unset: { token: 1 } });
 }
 
+async function getAllUsers() {
+  return userCollection.find({}).toArray();
+}
+
 async function getRankings(userName) {
   return rankingCollection.find({ userName: userName }).toArray();
+}
+
+async function addSharedRanking(sharedRanking) {
+  await sharedCollection.insertOne(sharedRanking);
+}
+
+async function getSharedRankings(userName) {
+  return sharedCollection.find({ to: userName }).toArray();
 }
 
 async function addRanking(ranking) {
@@ -58,6 +71,7 @@ async function deleteRanking(userName, rankingId) {
   return result.deletedCount;
 }
 
+
 module.exports = {
   getUser,
   getUserByToken,
@@ -67,4 +81,7 @@ module.exports = {
   getRankings,
   addRanking,
   deleteRanking,
+  getAllUsers,
+  getSharedRankings,
+  addSharedRanking,
 };

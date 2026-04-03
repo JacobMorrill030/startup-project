@@ -4,6 +4,7 @@ const express = require('express');
 const uuid = require('uuid');
 const app = express();
 const DB = require('./database.js');
+const { peerProxy } = require('./peerProxy.js');
 
 const authCookieName = 'token';
 
@@ -38,28 +39,35 @@ function buildRankingFingerprint(ranking = {}) {
   return JSON.stringify(normalized);
 }
 
-function createRankingRecord(userName, ranking = {}) {
-  const timestamp = new Date().toISOString();
-  const savedId = ranking.savedId || ranking.id || uuid.v4();
-  const tiers = normalizeTiers(ranking.tiers);
-  const rankingOwner =
-    (typeof ranking.from === 'string' && ranking.from.trim()) ||
-    (typeof ranking.userName === 'string' && ranking.userName.trim()) ||
-    userName;
-
+function createShareRankingRecord(fromUserName, toUserName, payload = {}) {
+  const ranking = payload.ranking || payload;
   return {
-    ...ranking,
-    id: savedId,
-    savedId,
-    userName,
-    from: rankingOwner,
-    title: typeof ranking.title === 'string' && ranking.title.trim() ? ranking.title.trim() : 'Untitled Ranking',
-    orderedItems: Array.isArray(ranking.orderedItems) ? ranking.orderedItems : [],
-    tiers,
-    fingerprint: buildRankingFingerprint({ ...ranking, tiers }),
-    savedAt: ranking.savedAt || timestamp,
+    ...createRankingRecord(toUserName, {
+      ...ranking,
+      from: fromUserName,
+      to: toUserName,
+    }),
+    sharedMessage: payload.message || '',
   };
 }
+
+// function createRankingRecord(userName, ranking = {}) {
+//   const timestamp = new Date().toISOString();
+//   const savedId = ranking.savedId || ranking.id || uuid.v4();
+//   const tiers = normalizeTiers(ranking.tiers);
+
+//   return {
+//     ...ranking,
+//     id: savedId,
+//     savedId,
+//     userName,
+//     title: typeof ranking.title === 'string' && ranking.title.trim() ? ranking.title.trim() : 'Untitled Ranking',
+//     orderedItems: Array.isArray(ranking.orderedItems) ? ranking.orderedItems : [],
+//     tiers,
+//     fingerprint: buildRankingFingerprint({ ...ranking, tiers }),
+//     savedAt: ranking.savedAt || timestamp,
+//   };
+// }
 
 // The users are saved in memory and disappear whenever the service is restarted.
 
@@ -117,6 +125,11 @@ apiRouter.delete('/auth/logout', async (req, res) => {
   res.status(204).end();
 });
 
+apiRouter.get('/users/all', async (req, res) => {
+  const users = await DB.getAllUsers();
+  res.json(users);
+});
+
 // retrieve the rankings for the authenticated user, sorted by saved date with the most recent first
 apiRouter.get('/get/rankings', verifyAuth, async (req, res) => {
   const user = await findUser('token', req.cookies[authCookieName]);
@@ -127,10 +140,45 @@ apiRouter.get('/get/rankings', verifyAuth, async (req, res) => {
 // post the ranking for the authenticated user, create a 
 // new ranking if the user doesn't have one with the same title
 apiRouter.post('/post/rankings', verifyAuth, async (req, res) => {
-  const user = await findUser('token', req.cookies[authCookieName]);
-  const rankingToSave = createRankingRecord(user.userName, req.body);
+  //const user = await findUser('token', req.cookies[authCookieName]);
+  const rankingToSave = req.body;
   
   await DB.addRanking(rankingToSave);
+  return res.status(201).json(rankingToSave);
+});
+
+apiRouter.get('/get/shared', verifyAuth, async (req, res) => {
+  const user = await findUser('token', req.cookies[authCookieName]);
+  const sharedRankings = await DB.getSharedRankings(user.userName);
+  res.json(sharedRankings);
+});
+
+apiRouter.post('/post/shared', verifyAuth, async (req, res) => {
+  const sender = await findUser('token', req.cookies[authCookieName]);
+  const recipientName = typeof req.body.to === 'string' && req.body.to.trim() ? req.body.to.trim() : '';
+
+  if (!recipientName) {
+    return res.status(400).send({ msg: 'Recipient username is required' });
+  }
+
+  const recipient = await findUser('userName', recipientName);
+
+  if (!recipient) {
+    return res.status(404).send({ msg: 'Recipient not found' });
+  }
+
+  // const rankingToSave = createShareRankingRecord(sender.userName, recipient.userName, {
+  //   ...req.body,
+  //   from: sender.userName,
+  //   userName: recipient.userName,
+  // });
+    const rankingToSave = {
+    ...req.body,
+    from: sender.userName,
+    to: recipient.userName,
+  };
+
+  await DB.addSharedRanking(rankingToSave);
   return res.status(201).json(rankingToSave);
 });
 
@@ -181,7 +229,7 @@ async function createUser(userName, password) {
 async function findUser(field, value) {
   if (!value) return null;
 
-  // return users.find(user => user[field] === value);
+  //return users.find(user => user[field] === value);
 
   if (field === 'token') {
     return DB.getUserByToken(value);
@@ -203,3 +251,5 @@ function setAuthCookie(res, authToken) {
 const httpService = app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });
+
+peerProxy(httpService);

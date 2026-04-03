@@ -8,13 +8,11 @@ import {Column} from './components/Column';
 import {Table} from './components/Table';
 import '../styles/app.css';
 
-
 const TASKS_STORAGE_KEY = 'rankTasks';
 const ORDERED_TASK_IDS_STORAGE_KEY = 'rankOrderedTaskIds';
 const SAVED_RANKINGS_STORAGE_KEY = 'savedRankings';
 const RANDOM_WORDS_ENDPOINT = "https://random-word-api.herokuapp.com/word?number=10";
 const TIER_IDS = ['S', 'A', 'B', 'C', 'D'];
-
 const DEFAULT_TASKS = [
     {id: 0, title: '', location: 'bank'},
 ];
@@ -94,7 +92,7 @@ const providedRankingTitles = {
     option2: 'Fast Food Restaurants',
     option3: 'Types of Chairs',
     option4: 'Dinosaurs',
-    starWarsCharacters: 'Star Wars Characters',
+    option5: 'Star Wars Characters',
 };
 
 const isValidTask = (task) => (
@@ -137,7 +135,7 @@ const buildInitialOrderedTaskIds = (tasks) => {
 };
 
 const moveTierTaskByDropTarget = (tasks, activeId, overId) => {
-    if (!overId) return tasks;
+    if (overId === null || overId === undefined) return tasks;
 
     const isContainerDrop = overId === 'bank' || TIER_IDS.includes(overId);
     const activeTask = tasks.find(task => task.id === activeId);
@@ -152,8 +150,14 @@ const moveTierTaskByDropTarget = (tasks, activeId, overId) => {
     }
 
     if (isContainerDrop && activeTask.location === targetLocation) {
+    const tierItems = tasks.filter(task => task.location === targetLocation);
+    const lastTierItemId = tierItems[tierItems.length - 1]?.id;
+
+    // No-op only if already at the bottom of this tier
+    if (lastTierItemId === activeId) {
         return tasks;
     }
+}
 
     const withoutActive = tasks.filter(task => task.id !== activeId);
     const movedTask = {...activeTask, location: targetLocation};
@@ -168,11 +172,25 @@ const moveTierTaskByDropTarget = (tasks, activeId, overId) => {
         return next;
     }
 
+    const activeIndex = tasks.findIndex(task => task.id === activeId);
+    const overIndexInOriginal = tasks.findIndex(task => task.id === overId);
+    if (overIndexInOriginal === -1 || activeIndex === -1) return tasks;
+
     const overIndex = withoutActive.findIndex(task => task.id === overId);
     if (overIndex === -1) return tasks;
 
+    // Same tier reorder:
+    // - dragging down => place after target
+    // - dragging up => place before target
+    const isSameLocationReorder = activeTask.location === targetLocation;
+    const isMovingDown = activeIndex < overIndexInOriginal;
+    const insertIndex =
+        isSameLocationReorder && isMovingDown
+            ? overIndex + 1
+            : overIndex;
+
     const next = [...withoutActive];
-    next.splice(overIndex, 0, movedTask);
+    next.splice(insertIndex, 0, movedTask);
     return next;
 };
 
@@ -216,6 +234,7 @@ export function Rank({ userName }) {
 
     async function handleSave() {
         const tiers = { S: [], A: [], B: [], C: [], D: [] };
+        // const date = new Date().toLocaleDateString();
 
         tasks.forEach((task) => {
             if (!task || typeof task.title !== 'string') return;
@@ -236,17 +255,18 @@ export function Rank({ userName }) {
         ];
 
         const rankingToSave = {
+            userName,
             id: `my-${Date.now()}`,
-            from: userName || 'Unknown',
             title: title.trim() || 'Untitled Ranking',
             orderedItems,
             tiers,
             savedId: `my-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-            savedAt: new Date().toISOString(),
+            date: new Date().toLocaleDateString(),
+            timestamp: new Date().toISOString()
         };
 
         const savedRaw = localStorage.getItem(SAVED_RANKINGS_STORAGE_KEY);
-         let savedRankings = [];
+        let savedRankings = [];
 
         if (savedRaw) {
             try {
@@ -281,6 +301,14 @@ export function Rank({ userName }) {
             setTyped(false);
             navigate('/saved');
         }
+    }
+
+    function addItem() {
+        const nextId = tasks.length ? Math.max(...tasks.map(task => task.id)) + 1 : 0;
+        setTasks(ts => [...ts, {id: nextId, title: '', location: 'bank'}]);
+        setOrderedTaskIds(ids => [...ids, nextId]);
+        setItems(it => [...it, '']);
+        setTyped(true);
     }
 
     const updateTaskTitle = (id, newTitle) => {
@@ -390,14 +418,6 @@ export function Rank({ userName }) {
             coordinateGetter: sortableKeyboardCoordinates
         })
         );
-
-    function addItem() {
-        const nextId = tasks.length ? Math.max(...tasks.map(task => task.id)) + 1 : 0;
-        setTasks(ts => [...ts, {id: nextId, title: '', location: 'bank'}]);
-        setOrderedTaskIds(ids => [...ids, nextId]);
-        setItems(it => [...it, '']);
-        setTyped(true);
-    }
 
     async function generateRandomWords(event) {
         event.preventDefault();
@@ -512,8 +532,7 @@ export function Rank({ userName }) {
                 collisionDetection={closestCorners}>
                 <div className="column">
                     <Table tasks={tasks} onUpdateTask={updateTaskTitle} />
-                </div>
-                <DragOverlay>
+                    <DragOverlay>
                     {activeTierDragTask ? (
                         <div className="bank-container drag-preview">
                             <li id="bank-item" className="bank-item">
@@ -529,6 +548,8 @@ export function Rank({ userName }) {
                         </div>
                     ) : null}
                 </DragOverlay>
+                </div>
+                
             </DndContext>
            
         </div>

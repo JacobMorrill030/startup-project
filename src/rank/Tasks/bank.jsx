@@ -20,14 +20,14 @@ export const Bank = ({id, title, onChange}) => {
     };
 
     return (
-        <div 
+        <li 
             ref={setNodeRef} 
             {...attributes} 
             {...listeners}
             style={style}
             className={`bank-container ${isDragging ? 'drag-placeholder' : ''}`}
             >
-            <li id="bank-item" className="bank-item">
+            <div id="bank-item" className="bank-item">
                 <div className="input-container">
                     <input
                         className="bank-input"
@@ -36,7 +36,7 @@ export const Bank = ({id, title, onChange}) => {
                         value={value}
                     />
                 </div>
-            </li>
-        </div>
+            </div>
+        </li>
     );
 }
