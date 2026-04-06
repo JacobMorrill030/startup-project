@@ -477,16 +477,14 @@ export function Rank({ userName }) {
                     sensors={sensors} 
                     onDragEnd={handleOrderedListDragEnd}
                     collisionDetection={closestCorners}>
-                    <div className="list-container">
-                        <Column
-                            tasks={orderedTaskIds
-                                .map(id => tasks.find(task => task.id === id))
-                                .filter(Boolean)}
-                            onUpdateTask={updateTaskTitle}
-                            onDeleteTask={deleteTask}
-                            onTypedChange={setTyped}
-                        />
-                    </div>
+                    <Column
+                        tasks={orderedTaskIds
+                            .map(id => tasks.find(task => task.id === id))
+                            .filter(Boolean)}
+                        onUpdateTask={updateTaskTitle}
+                        onDeleteTask={deleteTask}
+                        onTypedChange={setTyped}
+                    />
                     </DndContext>
                 </div>
                 <div className="item-container">
