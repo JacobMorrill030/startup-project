@@ -217,6 +217,24 @@ table {
 .share-tier {
     flex:1;
 }
+.notifications-panel {
+    display: flex;
+    flex-direction: row;
+     align-items: center;
+}
+.notification-header {
+    flex: 1;
+}
+.notification-empty {
+    flex: 1;
+    text-align: center;
+}
+.notification-card {
+    flex: 1;
+}
+.empty {
+    flex: 1;
+}
 .title {
     margin-bottom: -30px;
     color: rgb(240, 230, 230);
