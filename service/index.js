@@ -30,45 +30,6 @@ function normalizeTiers(tiers) {
 }
 
 
-function buildRankingFingerprint(ranking = {}) {
-  const normalized = {
-  title: normalizeText(ranking.title || 'Untitled Ranking'),
-  orderedItems: normalizeItems(ranking.orderedItems),
-  tiers: normalizeTiers(ranking.tiers),
-  };
-  return JSON.stringify(normalized);
-}
-
-function createShareRankingRecord(fromUserName, toUserName, payload = {}) {
-  const ranking = payload.ranking || payload;
-  return {
-    ...createRankingRecord(toUserName, {
-      ...ranking,
-      from: fromUserName,
-      to: toUserName,
-    }),
-    sharedMessage: payload.message || '',
-  };
-}
-
-// function createRankingRecord(userName, ranking = {}) {
-//   const timestamp = new Date().toISOString();
-//   const savedId = ranking.savedId || ranking.id || uuid.v4();
-//   const tiers = normalizeTiers(ranking.tiers);
-
-//   return {
-//     ...ranking,
-//     id: savedId,
-//     savedId,
-//     userName,
-//     title: typeof ranking.title === 'string' && ranking.title.trim() ? ranking.title.trim() : 'Untitled Ranking',
-//     orderedItems: Array.isArray(ranking.orderedItems) ? ranking.orderedItems : [],
-//     tiers,
-//     fingerprint: buildRankingFingerprint({ ...ranking, tiers }),
-//     savedAt: ranking.savedAt || timestamp,
-//   };
-// }
-
 // The users are saved in memory and disappear whenever the service is restarted.
 
 // The service port. In production the front-end code is statically hosted by the service on the same port.
@@ -166,12 +127,6 @@ apiRouter.post('/post/shared', verifyAuth, async (req, res) => {
   if (!recipient) {
     return res.status(404).send({ msg: 'Recipient not found' });
   }
-
-  // const rankingToSave = createShareRankingRecord(sender.userName, recipient.userName, {
-  //   ...req.body,
-  //   from: sender.userName,
-  //   userName: recipient.userName,
-  // });
     const rankingToSave = {
     ...req.body,
     from: sender.userName,

@@ -16,6 +16,7 @@ export function Share({ userName }) {
     const [socketConnected, setSocketConnected] = React.useState(false);
     const [socketError, setSocketError] = React.useState('');
     const [socket, setSocket] = React.useState(null);
+    const [search, setSearch] = React.useState('');
     const MESSAGE_TIMEOUT_MS = 2000;
 
     const NOTIFICATIONS_KEY = `notifications-${userName}`;
@@ -157,6 +158,7 @@ export function Share({ userName }) {
                         saveNotifications(newNots);
                         return newNots;
                     });
+                    
                     setSharedWithMe((prevShared) => [
                         {
                             id: incomingRanking.id || notificationItem.id,
@@ -261,6 +263,26 @@ export function Share({ userName }) {
 
   return (
    <main>
+    <div className="notifications-panel">
+        <div className="empty"></div>
+        <div className="notification-header">
+            <h2>Notifications: </h2>
+        </div>
+            {notifications.length === 0 ? (
+                <div className="notification-empty">No notifications yet.</div>
+            ) : (
+                [...notifications]
+                    .slice(0, 1)
+                    .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+                    .map((notification) => (
+                        <div key={notification.id} className="notification-card">
+                            <div className="notification-message">{notification.message}</div>
+                            <div className="notification-time">{new Date(notification.timestamp).toLocaleString()}</div>
+                        </div>
+                ))
+            )}
+            <div className="empty"></div>
+        </div>
     <div className="container">
         <div className="share-other">
             <div className="display-ranking">
@@ -291,29 +313,14 @@ export function Share({ userName }) {
                     </div>
                 )}
             </div>
-            <div className="notifications-panel">
-                {notifications.length === 0 ? (
-                    <div className="notification-empty">No notifications yet.</div>
-                ) : (
-                    [...notifications]
-                        .slice(0, 2)
-                        .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
-                        .map((notification) => (
-                            <div key={notification.id} className="notification-card">
-                                <div className="notification-message">{notification.message}</div>
-                                <div className="notification-time">{new Date(notification.timestamp).toLocaleString()}</div>
-                            </div>
-                    ))
-                )}
-            </div>
             <h1>Share</h1>
-             {/* <div className="search-container">
-                <input className="search-bar" type="search" placeholder="Search by username"/>
-            </div> */}
+             <div className="search-container">
+                <input className="search-bar" type="search" placeholder="Search by username" value={search} onChange={(e) => setSearch(e.target.value)}/>
+            </div>
             <br />
             <div className="scroll-user">
                 <table className="search-user" border="1"> 
-                    {users.map((user) => (
+                    {users.filter(user => user.userName.toLowerCase().includes(search.toLowerCase())).map((user) => (
                         <tr key={user.userName}>
                             <td className="search-data">
                                 <button
