@@ -75,20 +75,20 @@ For this deliverable I did the following:
 - Use of CSS Framework: Used Bootstrap framework for formatting headers and footers, as well as buttons and font colors.
 - All visual elements styled using CSS
 - Responsive to window resizing using flexbox and/or grid display: Used flexbox.
-- Use of Imported font: Used 'Outfit'
-- Use of different types of selectors including element, class, ID, and pseudo selectors
+- Use of imported font: Used 'Outfit.'
+- Use of different types of selectors, including element, class, ID, and pseudo selectors
 
 ### Things added from last time
 
 - Added a button to share past rankings with people as well.
 - When you click save on rank.html, it now takes you to saved.html.
-- Now, there is a sign in button instead of create account button on createAccount.html, and it takes you to rank.html. '
+- Now, there is a sign-in button instead of the create account button on createAccount.html, and it takes you to rank.html. '
 
 ## React Part 1: Routing Deliverable
 
 - Bundled using Vite: It is now easy to use.
 - Components: Brought code over from CSS and HTML and reworked them.
-- Router: Created the routing between compnents.
+- Router: Created the routing between components.
 
 ### Things added from last time
 
@@ -98,8 +98,8 @@ For this deliverable I did the following:
 
 ## React Part 2: Interactivity Deliverable
 
-- Completed prerequesites for deliverable (GitHub link, Git Commits, and deployed Simon).
-- All functionality is mocked out- Drag and droppable items in the ordered list and the tier list. Can save rankings you have done, and rankings sent to you. Used setTimeout to simulate sending rankings to others.
+- Completed prerequisites for deliverable (GitHub link, Git Commits, and deployed Simon).
+- All functionality is mocked out- Drag and droppable items in the ordered list and the tier list. Can save rankings you have done, and the rankings sent to you. Used setTimeout to simulate sending rankings to others.
 - Hooks - Used useState and useEffect on the drag-drop functionality, authenticating the user, and saving and clearing rankings.
 
 ### Things added from last time
@@ -108,27 +108,37 @@ For this deliverable I did the following:
 
 ## Service Deliverable
 
-- Completed Prerequesites.
-- Created a Node.js server and express HTTP service.
+- Completed Prerequisites.
+- Created a Node.js server and Express HTTP service.
 - Implemented static middleware for the frontend.
-- Call to a third party endpoint: Calls a service that randomly generates 10 words every time, and then uploads them for the user to rank.
-- Backend service endpoints: Endpoints for authenticating, creating, and deleting users. Also endpoints for posting, getting, and deleting rankings.
+- Call to a third-party endpoint: Calls a service that randomly generates 10 words every time, and then uploads them for the user to rank.
+- Backend service endpoints: Endpoints for authenticating, creating, and deleting users. Also, endpoints for posting, getting, and deleting rankings.
 - Frontend calls service endpoints with the fetch function.
-- Supports registration, login, logout, and restricted endpoint: All of this done on the backend.
+- Supports registration, login, logout, and restricted endpoint: All of this is done on the backend.
 - Uses BCrypt to hash passwords.
 
 ### Things added from last time
 - Deleted save button on the share page: It was getting complicated to figure out, so I decided to remove it.
-- Added generate random button that renders 10 random words when pressed.
+- Added a generate random button that renders 10 random words when pressed.
 
 ## Database Deliverable
 
-- Completed prerequesites.
+- Completed prerequisites.
 - Stores data in MongoDB: Stores users and saved rankings. Removes rankings from MongoDM when the user deletes a ranking.
 - Use MongoDB to store credentials: Stores usernames and encrypted passwords.
 
 ### Things added from last time
-- Saved rankings no longer convert all items in the tier lists to lower case, they stay as the user inputted.
+- Saved rankings no longer convert all items in the tier lists to lowercase; they stay as the user inputted.
+
+## WebSocket Deliverable
+
+- Completed prerequisites (Simon deployed, GitHub updated).
+- Backend listens for WebSocket connection in peerProxy.js.
+- Frontend makes WebSocket connection in share.jsx when the user sends a ranking to another user.
+- Data is sent over WebSocket connection in share.jsx.
+- WebSocket data is displayed in the messages column on the share page when user A sends a ranking to user B, and the notification section displays the two most recent rankings that were sent, and updates in real-time.
+
+
 
   
 
