@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
-import {DndContext, DragOverlay, closestCorners, useSensors, useSensor, PointerSensor, TouchSensor, KeyboardSensor} from '@dnd-kit/core';
+import {DndContext, DragOverlay, pointerWithin, useSensors, useSensor, PointerSensor, TouchSensor, KeyboardSensor, closestCorners} from '@dnd-kit/core';
 import {sortableKeyboardCoordinates} from '@dnd-kit/sortable';
 import {arrayMove} from '@dnd-kit/sortable';
 import './rank.css';
@@ -527,7 +527,7 @@ export function Rank({ userName }) {
                 onDragOver={handleTierDragOver}
                 onDragEnd={handleDragEnd}
                 onDragCancel={handleTierDragCancel}
-                collisionDetection={closestCorners}>
+                collisionDetection={pointerWithin}>
                 <div className="column">
                     <Table tasks={tasks} onUpdateTask={updateTaskTitle} />
                     <DragOverlay>
