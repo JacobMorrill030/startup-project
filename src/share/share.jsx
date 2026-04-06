@@ -19,6 +19,17 @@ export function Share({ userName }) {
     const [search, setSearch] = React.useState('');
     const MESSAGE_TIMEOUT_MS = 2000;
 
+const getDefaultColor = (tier) => {
+  const defaults = {
+    S: 'red',
+    A: 'orange',
+    B: 'yellow',
+    C: 'rgb(30, 210, 30)',
+    D: 'rgb(59, 59, 233)',
+  };
+  return defaults[tier] || 'white';
+};
+
     const NOTIFICATIONS_KEY = `notifications-${userName}`;
 
     const loadNotifications = () => {
@@ -302,7 +313,9 @@ export function Share({ userName }) {
                                     <tbody>
                                         {['S', 'A', 'B', 'C', 'D'].map((tier) => (
                                             <tr key={tier}>
-                                                <td className={`${tier.toLowerCase()}-tier`}>{tier}</td>
+                                                <td style={{ backgroundColor: (rankingToShare.tierColors && rankingToShare.tierColors[tier]) || getDefaultColor(tier) }}>
+                                                    {tier}
+                                                </td>
                                                 <td className="row">{((rankingToShare.tiers && rankingToShare.tiers[tier]) || []).join(', ')}</td>
                                             </tr>
                                         ))}
@@ -375,7 +388,9 @@ export function Share({ userName }) {
                                     <tbody>
                                         {['S', 'A', 'B', 'C', 'D'].map((tier) => (
                                           <tr key={`${ranking.id}-${tier}`}>
-                                              <td className={`${tier.toLowerCase()}-tier`}>{tier}</td>
+                                              <td style={{ backgroundColor: (ranking.tierColors && ranking.tierColors[tier]) || getDefaultColor(tier) }}>
+                                                  {tier}
+                                              </td>
                                               <td className="row">{(ranking.tiers[tier] || []).join(', ')}</td>
                                           </tr>
                                         ))}

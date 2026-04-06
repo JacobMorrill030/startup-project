@@ -11,8 +11,16 @@ import '../styles/app.css';
 const TASKS_STORAGE_KEY = 'rankTasks';
 const ORDERED_TASK_IDS_STORAGE_KEY = 'rankOrderedTaskIds';
 const SAVED_RANKINGS_STORAGE_KEY = 'savedRankings';
+const TIER_COLORS_STORAGE_KEY = 'tierColors';
 const RANDOM_WORDS_ENDPOINT = "https://random-word-api.herokuapp.com/word?number=10";
 const TIER_IDS = ['S', 'A', 'B', 'C', 'D'];
+const DEFAULT_TIER_COLORS = {
+    S: 'red',
+    A: 'orange',
+    B: 'yellow',
+    C: 'rgb(30, 210, 30)',
+    D: 'rgb(59, 59, 233)',
+};
 const DEFAULT_TASKS = [
     {id: 0, title: '', location: 'bank'},
 ];
@@ -220,6 +228,19 @@ export function Rank({ userName }) {
     });
     const [orderedTaskIds, setOrderedTaskIds] = React.useState(() => buildInitialOrderedTaskIds(tasks));
 
+    const [tierColors, setTierColors] = useState(() => {
+        const savedColors = localStorage.getItem(TIER_COLORS_STORAGE_KEY);
+        if (savedColors) {
+            try {
+                const parsed = JSON.parse(savedColors);
+                return { ...DEFAULT_TIER_COLORS, ...parsed };
+            } catch {
+                return DEFAULT_TIER_COLORS;
+            }
+        }
+        return DEFAULT_TIER_COLORS;
+    });
+
     async function handleClear() {
         localStorage.removeItem(TASKS_STORAGE_KEY);
         localStorage.removeItem(ORDERED_TASK_IDS_STORAGE_KEY);
@@ -230,6 +251,7 @@ export function Rank({ userName }) {
         setSelectedRanking('');
         setSorted(false);
         setTyped(false);
+        setTierColors(DEFAULT_TIER_COLORS);
     }
 
     async function handleSave() {
@@ -260,6 +282,7 @@ export function Rank({ userName }) {
             title: title.trim() || 'Untitled Ranking',
             orderedItems,
             tiers,
+            tierColors,
             savedId: `my-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
             date: new Date().toLocaleDateString(),
             timestamp: new Date().toISOString()
@@ -321,6 +344,10 @@ export function Rank({ userName }) {
         setTyped(true);
     };
 
+    const updateTierColor = (tier, color) => {
+        setTierColors(prev => ({ ...prev, [tier]: color }));
+    };
+
     const [title, setTitle] = useState(() => localStorage.getItem("title") || "");
 
     const handleProvidedRankingChange = (event) => {
@@ -358,7 +385,10 @@ export function Rank({ userName }) {
     }, [orderedTaskIds]);
 
     useEffect(() => {
-        setOrderedTaskIds((ids) => {
+        localStorage.setItem(TIER_COLORS_STORAGE_KEY, JSON.stringify(tierColors));
+    }, [tierColors]);
+
+    useEffect(() => {        setOrderedTaskIds((ids) => {
             const validTaskIds = new Set(tasks.map(task => task.id));
             const nextIds = ids.filter(id => validTaskIds.has(id));
             const nextIdSet = new Set(nextIds);
@@ -529,7 +559,12 @@ export function Rank({ userName }) {
                 onDragCancel={handleTierDragCancel}
                 collisionDetection={pointerWithin}>
                 <div className="column">
-                    <Table tasks={tasks} onUpdateTask={updateTaskTitle} />
+                    <Table
+                        tasks={tasks}
+                        onUpdateTask={updateTaskTitle}
+                        tierColors={tierColors}
+                        onUpdateTierColor={updateTierColor}
+                    />
                     <DragOverlay>
                     {activeTierDragTask ? (
                         <div className="bank-container drag-preview">

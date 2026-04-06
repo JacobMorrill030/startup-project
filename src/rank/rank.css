@@ -217,10 +217,16 @@ ol li {
     background-color: rgb(59, 59, 233);
 }
 tr {
+    color: black;
     border: 1px solid black;
 }
 .t-row {
     width: 800px;
+}
+input[type="color"] {
+    padding: 0;
+    border: none;
+    cursor: pointer;
 }
 .item-bank {
     align-items: center;

@@ -17,6 +17,17 @@ const parseSavedRankings = () => {
   }
 };
 
+const getDefaultColor = (tier) => {
+  const defaults = {
+    S: 'red',
+    A: 'orange',
+    B: 'yellow',
+    C: 'rgb(30, 210, 30)',
+    D: 'rgb(59, 59, 233)',
+  };
+  return defaults[tier] || 'white';
+};
+
 export function Saved({ userName }) {
   const navigate = useNavigate(); 
   const [savedRankings, setSavedRankings] = React.useState(() => parseSavedRankings());
@@ -206,7 +217,9 @@ export function Saved({ userName }) {
                         <tbody>
                           {['S', 'A', 'B', 'C', 'D'].map((tier) => (
                             <tr key={`${rankingKey}-${tier}`}>
-                              <td className={`${tier.toLowerCase()}-tier`}>{tier}</td>
+                              <td style={{ backgroundColor: (ranking.tierColors && ranking.tierColors[tier]) || getDefaultColor(tier) }}>
+                                {tier}
+                              </td>
                               <td className="row">{((ranking.tiers && ranking.tiers[tier]) || []).join(', ')}</td>
                             </tr>
                           ))}
