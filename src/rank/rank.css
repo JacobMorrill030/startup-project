@@ -60,7 +60,6 @@ body {
 }
 .ranked-list {
     margin-right: 50px;
-    cursor: pointer;
 }
 .ranked-list li {
     display: list-item;
@@ -92,7 +91,6 @@ input[type="text"] {
 }
 input[type="text"]:hover {
     border-color: #daf511; 
-    cursor: pointer;
 }
 .input-container {
     display: flex;
@@ -136,6 +134,7 @@ ol li {
     width: 80%;
 }
 .bank-input {
+    cursor: pointer;
     width: 225px;
     min-width: 225px;
     max-width: 225px;
@@ -217,10 +216,16 @@ ol li {
     background-color: rgb(59, 59, 233);
 }
 tr {
+    color: black;
     border: 1px solid black;
 }
 .t-row {
     width: 800px;
+}
+input[type="color"] {
+    padding: 0;
+    border: none;
+    cursor: pointer;
 }
 .item-bank {
     align-items: center;

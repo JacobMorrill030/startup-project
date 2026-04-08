@@ -4,19 +4,13 @@ import {Bank} from '../Tasks/bank';
 import {SortableContext, verticalListSortingStrategy} from '@dnd-kit/sortable';
 import '../rank.css';
 
-
-// function StartDropZone({id}) {
-//     const {isOver, setNodeRef} = useDroppable({id});
-
-//     return (
-//         <div
-//             ref={setNodeRef}
-//             className={isOver ? 'start-drop-zone over' : 'start-drop-zone'}
-//             aria-hidden="true"
-//         />
-//     );
-// }
-
+const DEFAULT_TIER_COLORS = {
+    S: 'red',
+    A: 'orange',
+    B: 'yellow',
+    C: 'rgb(30, 210, 30)',
+    D: 'rgb(59, 59, 233)',
+};
 
 // helper cell component with droppable hook
 function Cell({id, children}) {
@@ -28,17 +22,35 @@ function Cell({id, children}) {
     );
 }
 
-export const Table = ({tasks, onUpdateTask}) => {
+export const Table = ({tasks, onUpdateTask, tierColors, onUpdateTierColor}) => {
     // tasks array contains location property
-    const cells = ['S','A','B','C','D'];
+    const cells = ['S', 'A', 'B', 'C', 'D'];
     const {isOver: isBankOver, setNodeRef: setBankNodeRef} = useDroppable({id: 'bank'});
+    const colorInputRefs = React.useRef({});
+
+    const handleTierClick = (tier) => {
+        if (colorInputRefs.current[tier]) {
+            colorInputRefs.current[tier].click();
+        }
+    };
 
     return (
         <div>
             <table border="1" className="tier-list" cellPadding="30">
                 {cells.map(tier => (
                     <tr key={tier}>
-                        <td className={`${tier.toLowerCase()}-tier`}>{tier}</td>
+                        <td
+                            style={{ backgroundColor: tierColors[tier] || DEFAULT_TIER_COLORS[tier], cursor: 'pointer' }}
+                            onClick={() => handleTierClick(tier)}
+                        >
+                            {tier}
+                            <input
+                                ref={(el) => colorInputRefs.current[tier] = el}
+                                type="color"
+                                value={tierColors[tier] || DEFAULT_TIER_COLORS[tier]}
+                                onChange={(e) => onUpdateTierColor(tier, e.target.value)}
+                                style={{ position: 'absolute', opacity: 0, width: 0, height: 0, pointerEvents: 'none' }}/>
+                        </td>
                         <Cell id={tier}>
                             <div className="tier-cell-items order-normal">
                                 <SortableContext

@@ -21,15 +21,6 @@ function normalizeItems(items) {
   .filter(Boolean);
 }
 
-function normalizeTiers(tiers) {
-  const safe = tiers && typeof tiers === 'object' ? tiers : {};
-  return TIER_KEYS.reduce((acc, key) => {
-  acc[key] = normalizeItems(safe[key]);
-  return acc;
-  }, {});
-}
-
-
 // The users are saved in memory and disappear whenever the service is restarted.
 
 // The service port. In production the front-end code is statically hosted by the service on the same port.
@@ -208,3 +199,4 @@ const httpService = app.listen(port, () => {
 });
 
 peerProxy(httpService);
+console.log(httpService);

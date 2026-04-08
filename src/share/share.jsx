@@ -16,8 +16,20 @@ export function Share({ userName }) {
     const [socketConnected, setSocketConnected] = React.useState(false);
     const [socketError, setSocketError] = React.useState('');
     const [socket, setSocket] = React.useState(null);
+    const socketRef = React.useRef(null);
     const [search, setSearch] = React.useState('');
     const MESSAGE_TIMEOUT_MS = 2000;
+
+const getDefaultColor = (tier) => {
+  const defaults = {
+    S: 'red',
+    A: 'orange',
+    B: 'yellow',
+    C: 'rgb(30, 210, 30)',
+    D: 'rgb(59, 59, 233)',
+  };
+  return defaults[tier] || 'white';
+};
 
     const NOTIFICATIONS_KEY = `notifications-${userName}`;
 
@@ -119,24 +131,32 @@ export function Share({ userName }) {
     }, [userName]);
 
     React.useEffect(() => {
+        if (!userName) {
+            return;
+        }
+
         const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
         const currentPort = window.location.port;
         const socketPort = currentPort === '5173' || currentPort === '' ? '4000' : currentPort;
-        const socketUrl = `${protocol}://${window.location.hostname}${socketPort ? `:${socketPort}` : ''}`;
+        const socketUrl = `${protocol}://${window.location.hostname}${socketPort ? `:${socketPort}` : ''}/`;
+        console.log('Attempting WebSocket connection to:', socketUrl);
         const websocket = new WebSocket(socketUrl);
+        socketRef.current = websocket;
+        let didCleanup = false;
 
         websocket.onopen = () => {
+            if (didCleanup) return;
+            console.log('WebSocket connected successfully');
             setSocketConnected(true);
             setSocketError('');
-            if (userName) {
-                websocket.send(JSON.stringify({
-                    type: 'register',
-                    userName,
-                }));
-            }
+            websocket.send(JSON.stringify({
+                type: 'register',
+                userName,
+            }));
         };
 
         websocket.onmessage = (event) => {
+            if (didCleanup) return;
             try {
                 const data = JSON.parse(event.data);
                 if (data?.type === 'share-ranking') {
@@ -158,7 +178,7 @@ export function Share({ userName }) {
                         saveNotifications(newNots);
                         return newNots;
                     });
-                    
+
                     setSharedWithMe((prevShared) => [
                         {
                             id: incomingRanking.id || notificationItem.id,
@@ -176,20 +196,32 @@ export function Share({ userName }) {
         };
 
         websocket.onclose = () => {
+            if (didCleanup) return;
+            console.log('WebSocket disconnected');
             setSocketConnected(false);
         };
 
         websocket.onerror = (error) => {
-            console.error('WebSocket error:', error);
+            if (didCleanup) return;
+            console.error('WebSocket connection error:', error);
+            console.error('WebSocket readyState:', websocket.readyState);
             setSocketError('Unable to connect to live notifications.');
         };
 
         setSocket(websocket);
 
         return () => {
-            websocket.close();
+            didCleanup = true;
+            websocket.onopen = null;
+            websocket.onmessage = null;
+            websocket.onclose = null;
+            websocket.onerror = null;
+            if (websocket.readyState === WebSocket.OPEN || websocket.readyState === WebSocket.CONNECTING) {
+                websocket.close();
+            }
+            socketRef.current = null;
         };
-    }, []);
+    }, [userName]);
 
     React.useEffect(() => {
         if (!showSent) {
@@ -249,8 +281,8 @@ export function Share({ userName }) {
                 return;
             }
 
-            if (socket && socket.readyState === WebSocket.OPEN) {
-                socket.send(JSON.stringify(payload));
+            if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
+                socketRef.current.send(JSON.stringify(payload));
             }
 
             setDisplayRanking(false);
@@ -302,7 +334,9 @@ export function Share({ userName }) {
                                     <tbody>
                                         {['S', 'A', 'B', 'C', 'D'].map((tier) => (
                                             <tr key={tier}>
-                                                <td className={`${tier.toLowerCase()}-tier`}>{tier}</td>
+                                                <td style={{ backgroundColor: (rankingToShare.tierColors && rankingToShare.tierColors[tier]) || getDefaultColor(tier) }}>
+                                                    {tier}
+                                                </td>
                                                 <td className="row">{((rankingToShare.tiers && rankingToShare.tiers[tier]) || []).join(', ')}</td>
                                             </tr>
                                         ))}
@@ -375,7 +409,9 @@ export function Share({ userName }) {
                                     <tbody>
                                         {['S', 'A', 'B', 'C', 'D'].map((tier) => (
                                           <tr key={`${ranking.id}-${tier}`}>
-                                              <td className={`${tier.toLowerCase()}-tier`}>{tier}</td>
+                                              <td style={{ backgroundColor: (ranking.tierColors && ranking.tierColors[tier]) || getDefaultColor(tier) }}>
+                                                  {tier}
+                                              </td>
                                               <td className="row">{(ranking.tiers[tier] || []).join(', ')}</td>
                                           </tr>
                                         ))}
