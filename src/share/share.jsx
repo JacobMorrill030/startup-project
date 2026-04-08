@@ -133,10 +133,12 @@ const getDefaultColor = (tier) => {
         const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
         const currentPort = window.location.port;
         const socketPort = currentPort === '5173' || currentPort === '' ? '4000' : currentPort;
-        const socketUrl = `${protocol}://${window.location.hostname}${socketPort ? `:${socketPort}` : ''}`;
+        const socketUrl = `${protocol}://${window.location.hostname}${socketPort ? `:${socketPort}` : ''}/`;
+        console.log('Attempting WebSocket connection to:', socketUrl);
         const websocket = new WebSocket(socketUrl);
 
         websocket.onopen = () => {
+            console.log('WebSocket connected successfully');
             setSocketConnected(true);
             setSocketError('');
             if (userName) {
@@ -187,11 +189,13 @@ const getDefaultColor = (tier) => {
         };
 
         websocket.onclose = () => {
+            console.log('WebSocket disconnected');
             setSocketConnected(false);
         };
 
         websocket.onerror = (error) => {
-            console.error('WebSocket error:', error);
+            console.error('WebSocket connection error:', error);
+            console.error('WebSocket readyState:', websocket.readyState);
             setSocketError('Unable to connect to live notifications.');
         };
 

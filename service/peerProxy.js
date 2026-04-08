@@ -1,4 +1,4 @@
-const { WebSocketServer } = require('ws');
+const { WebSocketServer, WebSocket } = require('ws');
 
 function peerProxy(httpServer) {
   const socketServer = new WebSocketServer({ server: httpServer });
@@ -53,6 +53,10 @@ function peerProxy(httpServer) {
     socket.on('error', (error) => {
       console.error('WebSocket error:', error);
     });
+  });
+
+  socketServer.on('error', (error) => {
+    console.error('WebSocket server error:', error);
   });
 }
 
