@@ -4,7 +4,7 @@ body {
 .main {
     color: rgb(240, 230, 230);
     font-size: 20px;
-    min-height: 100vh;
+    /* min-height: 100vh; */
     text-align: right;
     display: inline-block;
 }
@@ -29,5 +29,28 @@ body {
 @media(max-width: 900px) {
     .container {
         flex-direction: column;
+    }
+}
+@media (orientation: portrait) {
+    .about-text {
+        font-size: 14px;
+    }
+    .image {
+        display: none;
+    }
+    .about {
+        /* margin: 10px; */
+        width: 100%;
+    }
+    .main {
+        text-align: center;
+        margin: none;
+    }
+    .container {
+        margin: none;
+        align-items: center;
+    }
+    .container div {
+        margin: none;
     }
 }

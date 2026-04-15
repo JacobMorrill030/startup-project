@@ -240,3 +240,24 @@ ol li {
         grid-template-columns: 1fr;
     }
 }
+
+@media (orientation: portrait) {
+    .rank-info {
+        flex-direction: column;
+    }
+    .rank-info h1 {
+        font-size: 35px;
+    }
+    .saved-tier-table td:first-child {
+        width: 20%;
+        min-width: 0;
+        max-width: none;
+        text-align: left;
+    }
+    .saved-tier-table td:last-child {
+        width: 100%;
+    }
+    .col1-container {
+        grid-template-columns: 1fr;
+    }
+}

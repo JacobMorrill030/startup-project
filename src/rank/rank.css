@@ -72,13 +72,6 @@ body {
 #bank-item {
     text-align: center;
 }
-input[type="login"] {
-    font-size: 20px;
-    padding: 7px;
-    box-sizing: border-box;
-    border-radius: 5px;
-    margin: 20px;
-}
 input[type="text"] {
     font-size: 20px;
     width: 80%;

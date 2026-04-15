@@ -12,21 +12,21 @@ h2 {
     font-size: 40px;
     margin: 20px;
 }
-input[type="login"] {
-    font-size: 10px;
-    padding: 7px;
+.login-input {
+    font-size: 20px;
+    padding: 4px;
     box-sizing: border-box;
     border-radius: 5px;
     margin: 10px;
-    /* width: 400px; */
+    width: 350px;
 }
 input[type="password"] {
     font-size: 20px;
-    padding: 7px;
+    padding: 4px;
     box-sizing: border-box;
     border-radius: 5px;
     margin: 10px;
-    /* width: 400px; */
+    width: 350px;
 }
 .login-container {
     display: flex;
@@ -69,4 +69,38 @@ input[type="password"] {
     color: rgb(255, 255, 255);
     font-size: 16px;
     margin-top: 6px;
+}
+
+@media (orientation: portrait) {
+    .welcome-message {
+        font-size: 30px;
+        margin-top: 100px;
+    }
+    h1 {
+        font-size: 35px;
+    }
+    h2 {
+        font-size: 20px;
+        margin: 10px;
+    }
+    .login-input {
+        font-size: 15px;
+        padding: 5px;
+        box-sizing: border-box;
+        border-radius: 5px;
+        margin: 10px;
+        width: 200px;
+    }
+    input[type="password"] {
+        font-size: 15px;
+        padding: 5px;
+        box-sizing: border-box;
+        border-radius: 5px;
+        margin: 10px;
+        width: 200px;
+    }
+    .btn {
+        padding: 10px 30px;
+        margin: 5px;
+    }
 }

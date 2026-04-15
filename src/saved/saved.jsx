@@ -145,6 +145,8 @@ export function Saved({ userName }) {
   return (
     <main>
       <div className="rank-info">
+        <div className="empty"></div>
+        <h1>Saved Rankings</h1> 
         <div className="select">
             <p></p>
             <div>
@@ -155,8 +157,6 @@ export function Saved({ userName }) {
             <p></p>
             <div className="select-txt">Select one you would like to share</div>
         </div>
-        <h1>Saved Rankings</h1> 
-        <div className="empty"></div>
       </div>
       <br />
       <div className="saved-rankings">

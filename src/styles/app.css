@@ -2,7 +2,7 @@
 
 * {
     font-family:'Outfit';
-    /* outline: 1px solid red; */
+    outline: 1px solid red;
 }
 main {
     min-height: 100vh;
@@ -46,16 +46,42 @@ menu a:hover {
     font-weight: normal;
 }
 menu {
-    padding: 0;
+    padding: 2px;
     margin-top: 0px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 .nav-item {
     display: inline;
-    margin-right: 15px;
     font-size: 15px;
 }
-#logout {
-    text-align: right;
+.logout-button {
+    padding: 7px 20px;
+    background-color: gray; 
+    color: black;
+    border: none;
+    border-color: black;
+    border-radius: 10px;
+    text-decoration: none; 
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;   
+    font-weight: bold;                
+    box-shadow: 3px 22px 22px 1px rgba(0, 0, 0, 0.24);
+}
+.logout-button:hover {
+    background-color: rgba(74, 72, 72, 0.509);
+    color: white;
+    transition: all 0.3s ease;
+}
+.logout-button:active {
+    transform: scale(0.98);
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+}
+#user {
+    font-size: 20px;
+    margin-left: auto;
 }
 .header-container {
     margin: 0px !important;
@@ -92,6 +118,13 @@ menu {
 @media (orientation: portrait) {
   main {
     flex-direction: column;
+  }
+  .nav-item {
+    font-size: 12px;
+  }
+  .menu {
+    gap: none;
+    padding: 0px;
   }
 }
 

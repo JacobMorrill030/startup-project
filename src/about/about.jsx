@@ -6,7 +6,7 @@ export function About() {
     <main className="main">
         <div className="container">
             <div className="about">
-                <div>Have you ever debated with friends about the best pizza topping, the greatest ice cream flavor, or the most powerful superhero of all time—
+                <div className = "about-text">Have you ever debated with friends about the best pizza topping, the greatest ice cream flavor, or the most powerful superhero of all time—
                 but struggled to organize everyone’s opinions? RankMe gives you a fun and simple way to settle (or fuel) those arguments by letting you create 
                 custom rankings for any category you can imagine. Build ordered lists or tier lists, revisit your past rankings, 
                 and share them with others anytime. Instead of losing track of opinions or limiting discussions to in-person conversations, 

@@ -10,6 +10,7 @@ import { Saved } from './saved/saved';
 import { Share } from './share/share';
 import { CreateAccount } from './createAccount/createAccount';
 import { AuthState } from './login/authState';
+import './styles/account.css';
 
 function App() {
     const navigate = useNavigate();
@@ -76,10 +77,15 @@ function App() {
                         </li>
                     )}
                     {authState == AuthState.Authenticated && (
+                        <li className="nav-item" id="user">
+                            User: {userName}
+                        </li>
+                    )}
+                    {authState == AuthState.Authenticated && (
                         <li className="nav-item" id="logout">
-                            <NavLink className="nav-item" to="/" onClick={handleLogout}>
+                            <button className="logout-button" to="/" onClick={handleLogout}>
                                 Logout
-                            </NavLink>
+                            </button>
                         </li>
                     )}
                 </menu>

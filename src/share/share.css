@@ -220,7 +220,7 @@ table {
 .notifications-panel {
     display: flex;
     flex-direction: row;
-     align-items: center;
+    align-items: center;
 }
 .notification-header {
     flex: 1;
@@ -242,5 +242,29 @@ table {
 @media(max-width: 800px) {
     .container {
         flex-direction: column;
+    }
+}
+
+@media (orientation: portrait) {
+    .share-container {
+        flex-direction: column;
+    }
+    .notifications-panel {
+        flex-direction: column;
+    }
+    .search-bar {
+        width: 90%;
+    }
+    .scroll-user {
+        width: 275px;
+    }
+    .search-button {
+        width: 200px;
+    }
+    .ranking-display {
+        width: 275px;
+    }
+    .scroll-me {
+        width: 275px;
     }
 }
