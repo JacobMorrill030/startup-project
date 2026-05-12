@@ -127,9 +127,16 @@ export function Login({ userName, authState, onAuthChange}) {
                 </button>
                 <button
                   className="btn"
-                  onClick={async e => {
+                  id="create-account-btn"
+                  onClick={e => {
+                    if (!canSubmit) {
+                      e.preventDefault();
+                      setShowValidation(true);
+                      return;
+                    }
+                    setShowValidation(false);
                     onAuthChange(name, AuthState.Unauthenticated);
-                    navigate('/createAccount');
+                    navigate('/createAccount', { state: { userName: name, password } });
                   }}
                 >
                   Create Account

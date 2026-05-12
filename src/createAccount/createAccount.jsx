@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { Unauthenticated } from './unauthenticated';
 import { Authenticated } from './authenticated';
 import { AuthState } from '../login/authState';
@@ -9,8 +9,10 @@ import '../styles/app.css';
 
 export function CreateAccount({ userName, authState, onAuthChange }) {
   const navigate = useNavigate();
-  const [name, setName] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const location = useLocation();
+  const { userName: initialUserName = '', password: initialPassword = '' } = location.state || {};
+  const [name, setName] = React.useState(() => initialUserName);
+  const [password, setPassword] = React.useState(() => initialPassword);
   const [confirm, setConfirm] = React.useState('');
   const [validationMessage, setValidationMessage] = React.useState('');
   const [displayError, setDisplayError] = React.useState(null);
@@ -20,13 +22,17 @@ export function CreateAccount({ userName, authState, onAuthChange }) {
     password === confirm;
 
   React.useEffect(() => {
-    if (authState === AuthState.Unauthenticated) {
+    if (
+      authState === AuthState.Unauthenticated &&
+      !initialUserName &&
+      !initialPassword
+    ) {
       setName('');
       setPassword('');
       setConfirm('');
       setValidationMessage('');
     }
-  }, [authState]);
+  }, [authState, initialUserName, initialPassword]);
 
   async function createUser() {
     loginOrCreate(`/api/auth/create`);
