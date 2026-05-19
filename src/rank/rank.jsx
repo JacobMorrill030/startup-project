@@ -204,6 +204,10 @@ const moveTierTaskByDropTarget = (tasks, activeId, overId) => {
 
 export function Rank({ userName }) {
     const navigate = useNavigate();
+    const [ordered, setOrdered] = useState(false);
+    const [tier, setTier] = useState(false);
+    const [both, setBoth] = useState(true);
+    const [selectedOption, setSelectedOption] = useState('both');
     const [items, setItems] = React.useState(['']);
     const [selectedRanking, setSelectedRanking] = useState('');
     const [sorted, setSorted] = useState(false);
@@ -481,10 +485,10 @@ export function Rank({ userName }) {
         ? null
         : tasks.find(task => task.id === activeTierDragId);
 
+
   return (
     <main className="main">
     <div className="rank-info">
-        <div className="user-info">User: {userName}</div>
         <div className="title-group">
             <label>Title:</label><input id="title" placeholder="title" value={title} onChange={(e) => {
                 setTitle(e.target.value);
@@ -493,12 +497,132 @@ export function Rank({ userName }) {
         </div>
         <div className="save-share">
             <button className="item-btn" id="delete-btn" onClick={handleSave} disabled={!sorted && !typed}>Save and Clear</button>
-        </div>
-        <div>
             <button className="item-btn" id="clear-btn" onClick={handleClear}>Clear</button>
-        </div>
+        </div>  
     </div>
-    <br />
+    <div className="option-container"> 
+        <label className="option">
+            <input type="radio" value="ordered" checked={selectedOption === 'ordered'} onChange={() => setSelectedOption('ordered')}
+                onClick={() => {
+                    setOrdered(true);
+                    setTier(false);
+                    setBoth(false);
+                } }/>
+            Ordered List
+        </label>
+        <label className="option">
+            <input type="radio" value="tier" checked={selectedOption === 'tier'} onChange={() => setSelectedOption('tier')}
+                onClick={() => {
+                    setOrdered(false);
+                    setTier(true);
+                    setBoth(false);
+                } }/>
+            Tier List
+        </label>
+        <label className="option">
+            <input type="radio" value="both" checked={selectedOption === 'both'} onChange={() => setSelectedOption('both')}
+                onClick={() => {
+                    setOrdered(false);
+                    setTier(false);
+                    setBoth(true);
+                } }/>
+            Both
+        </label>
+    </div>
+    <br/>
+    {ordered == true && (
+    <div className="ordered-container">
+        <div className="ordered-col1">
+            <div className="list_button">
+                <div>
+                    <DndContext 
+                    sensors={sensors} 
+                    onDragEnd={handleOrderedListDragEnd}
+                    collisionDetection={closestCorners}>
+                    <Column
+                        tasks={orderedTaskIds
+                            .map(id => tasks.find(task => task.id === id))
+                            .filter(Boolean)}
+                        onUpdateTask={updateTaskTitle}
+                        onDeleteTask={deleteTask}
+                        onTypedChange={setTyped}
+                    />
+                    </DndContext>
+                </div>
+            </div>
+        </div>
+        <div className="ordered-col2">
+            <div className="item-container">
+                <button className="item-btn" onClick={addItem}>+ Add Item</button>
+            </div>
+            <div className="drop-down">
+                <h3>Use Provided Rankings</h3>
+                <div className="drop-down-container">
+                    <select
+                        className="drop-down-box"
+                        value={selectedRanking}
+                        onChange={handleProvidedRankingChange}
+                    >
+                        <option value="">Select a ranking</option>
+                        <option value="option1">Superheroes</option>
+                        <option value="option2">Fast Food Restaurants</option>
+                        <option value="option3">Types of Chairs</option>
+                        <option value="option4">Dinosaurs</option>
+                        <option value="option5">Star Wars Characters</option>
+                    </select>
+                </div>
+                <form className="random-ranking-form">
+                    <h3>Rank random words</h3>
+                    <button
+                        className="item-btn"
+                        id="random-btn"
+                        onClick={generateRandomWords}
+                        disabled={wordsLoading}
+                    >
+                        {wordsLoading ? 'Loading Words...' : 'Generate Words'}
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>)}
+    {tier == true && (
+    <div className="container">
+        <div className="column2">
+        <DndContext
+            sensors={sensors} 
+            onDragStart={handleTierDragStart}
+            onDragOver={handleTierDragOver}
+            onDragEnd={handleDragEnd}
+            onDragCancel={handleTierDragCancel}
+            collisionDetection={pointerWithin}>
+            <div className="column">
+                <Table
+                    tasks={tasks}
+                    onUpdateTask={updateTaskTitle}
+                    tierColors={tierColors}
+                    onUpdateTierColor={updateTierColor}
+                />
+                <DragOverlay>
+                {activeTierDragTask ? (
+                    <div className="bank-container drag-preview">
+                        <li id="bank-item" className="bank-item">
+                            <div className="input-container">
+                                <input
+                                    className="bank-input"
+                                    type="text"
+                                    readOnly
+                                    value={activeTierDragTask.title}
+                                />
+                            </div>
+                        </li>
+                    </div>
+                ) : null}
+            </DragOverlay>
+            </div>
+        </DndContext>
+        </div>
+    </div> )}
+    {both == true && (
     <div className="container">
         <div className="column1">
             <div className="list_button">
@@ -582,11 +706,9 @@ export function Rank({ userName }) {
                     ) : null}
                 </DragOverlay>
                 </div>
-                
             </DndContext>
-           
         </div>
-    </div>
-</main>
+    </div> )}
+    </main>
   );
 }

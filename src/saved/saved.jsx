@@ -155,7 +155,7 @@ export function Saved({ userName }) {
                 </form>
             </div>
             <p></p>
-            <div className="select-txt">Select one you would like to share</div>
+            <div className="select-txt">Select which ranking you would like to share</div>
         </div>
       </div>
       <br />

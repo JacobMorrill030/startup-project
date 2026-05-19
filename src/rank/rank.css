@@ -4,6 +4,7 @@ body {
 .main {
     color: rgb(240, 230, 230);
     margin: 60px;
+    width: 90%;
 }
 .item-btn {
     margin: 40px;
@@ -20,15 +21,30 @@ body {
     box-shadow: 3px 22px 22px 1px rgba(0, 0, 0, 0.24);             
 }
 #delete-btn {
-    margin: 5px;
+    margin: 20px;
     padding: 10px 30px;
     align-self: center;
 }
 #clear-btn {
-    margin: 5px;
+    margin: 20px;
     padding: 10px 30px;
     align-self: center;
 }   
+.option-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+}
+.option {
+    display: block;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
 .item-btn:hover {
     background-color: rgba(128, 128, 128, 0.509);
     color: rgb(240, 230, 230);
@@ -45,7 +61,6 @@ body {
 .list-container {
     width: 400px;
     height: 500px;
-    margin-left: 25px;
     overflow-y: auto;
     overflow-x: hidden;
     scroll-behavior: smooth;
@@ -99,10 +114,20 @@ input[type="text"]:hover {
 ol li {
     font-size: 30px;
 }
+.ordered-container {
+    display: flex;
+    flex-direction: row;
+}
+.ordered-col1 {
+    flex: 1;
+}
+.ordered-col2 {
+    flex: 1;
+}
 .container {
     display: flex;
     flex-direction: row;
-    /* gap: 20px; */
+    width: 100%;
 }
 .bank-container {
     display: flex;
@@ -259,11 +284,11 @@ input[type="color"] {
 .rank-info div {
     display: inline;
 }
-.user-info {
+.save-share {
     flex: 1;
-    font-size: 25px;
-    color: rgb(240, 230, 230);
-    display: flex;
+    /* justify-content: center; */
+    position: relative;
+    gap: 100px;
 }
 .title-group {
     flex: 1.5;

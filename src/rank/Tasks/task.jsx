@@ -48,7 +48,7 @@ export const Task = ({id, taskId, title, onChange, onDelete, onTypedChange}) => 
                     onFocus={() => setShowButton(true)} 
                     onBlur={() => setShowButton(false)} 
                     type="text"
-                    placeholder="item"
+                    placeholder="type item to rank"
                     value={value}
                     onChange={handleInput}
                     onPointerDown={e => {
